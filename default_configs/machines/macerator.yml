@@ -1,0 +1,13 @@
+COAL: hydrated_coal_dust
+DIAMOND: diamond_dust
+IRON_INGOT: iron_dust
+tin_ingot: tin_dust
+copper_ingot: copper_dust
+STONE: GRAVEL
+copper: copper_dust
+tin: tin_dust
+IRON_ORE: iron_dust
+uranium: contaminated_uranium_dust
+STONE: GRAVEL
+GRAVEL: FLINT
+COBBLESTONE: SAND

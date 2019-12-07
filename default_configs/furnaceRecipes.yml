@@ -1,0 +1,8 @@
+copper_ingot:
+   input: copper
+   burntime: 500
+   exp: 4
+rubber:
+   input: SLIME_BALL
+   burntime: 500
+   exp: 0

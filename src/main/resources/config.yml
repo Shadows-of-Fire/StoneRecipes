@@ -1,0 +1,46 @@
+powerGenerator:
+  gui: 1
+  bar: 54
+  white: 66
+  max: 100
+  timer: 1
+  coal: 5
+  instrument: GUITAR
+  note: 11
+armorCharger:
+  gui: 200
+  charge: 3
+  timer: 60
+  instrument: PIANO
+  note: 6
+playerTP:
+  cooldown: 60
+  powerCost: 20
+  maxPower: 100
+  start_progress: 161
+  instrument: PIANO
+  note: 7
+itemTP:
+  powerCost: 5
+  maxPower: 100
+  start_progress: 150
+  instrument: PIANO
+  note: 8
+nuclearReactor:
+  instrument: PIANO
+  note: 9
+  start_progress: 171
+  uraniumPower: 10
+  timer: 10
+  uraniumHeat: 10
+  maxHeat: 100
+  coolantHeat: 5
+  iceHeat: 4
+  packedIceHeat: 3
+  maxPower: 1000
+reactorChamber:
+  instrument: PIANO
+  note: 10
+industrialBattery:
+  instrument: PIANO
+  note: 11

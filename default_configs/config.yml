@@ -1,0 +1,30 @@
+powerGenerator:
+ gui: 128
+ bar: 54
+ white: 66
+ max_power: 1000
+ timer: 20
+ coal_power: 100
+armorCharger:
+ gui: 216
+ charge: 5
+ timer: 60
+playerTP:
+ cooldown: 50
+ powerCost: 200
+ maxPower: 2000
+ start_progress: 224
+itemTP: 
+ powerCost: 100
+ maxPower: 1000
+ start_progress: 234
+nuclearReactor:
+ start_progress: 171
+ uraniumPower: 10
+ timer: 10
+ uraniumHeat: 10
+ maxHeat: 100
+ coolantHeat: 5
+ iceHeat: 4
+ packedIceHeat: 3
+ maxPower: 1000

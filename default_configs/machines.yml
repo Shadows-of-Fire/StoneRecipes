@@ -1,0 +1,35 @@
+# machine_name: The display name of the machine in the inventory. Must match the key of an item in items.yml
+# start_progress: Durability of the first item in the progress hoes
+# powerCost: Power consumed on operation completion (when an item would be converted to output).
+# timer: Ticks per cycle.  A machine completes an operation every 5 cycles.
+# deduction: The number of cycles a speed upgrade allows the machine to skip.  //NYI
+compressor: 
+ start_progress: 113
+ powerCost: 100
+ timer: 30
+ deduction: 10
+macerator:
+ start_progress: 118
+ powerCost: 100
+ timer: 40
+ deduction: 20
+extractor:
+ start_progress: 123
+ powerCost: 100
+ timer: 60
+ deduction: 20
+forge: 
+ start_progress: 206
+ powerCost: 50
+ timer: 20
+ deduction: 10
+vaporizer: 
+ start_progress: 211
+ powerCost: 500
+ timer: 100
+ deduction: 10
+cutter: 
+ start_progress: 201
+ powerCost: 250
+ timer: 50
+ deduction: 10

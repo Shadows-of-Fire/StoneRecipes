@@ -1,0 +1,42 @@
+# machine_name: The item id of the ore generator itself.  A generator is spawned when that item is placed.
+# ore: A custom item name OR a material enum name (for vanilla blocks) that this ore vein will generate.
+# interval: Ticks elapsed between ore generations.
+uranium_generator:
+ ore: uranium
+ interval: 7200
+copper_generator:
+ ore: copper
+ interval: 300
+silver_generator:
+ ore: silver
+ interval: 1800
+quartz_generator:
+ ore: quartz
+ interval: 3600
+titanium_generator:
+ ore: titanium
+ interval: 7200
+tin_generator:
+ ore: tin
+ interval: 1800
+iron_generator:
+ ore: IRON_ORE
+ interval: 300
+gold_generator:
+ ore: GOLD_ORE
+ interval: 3600
+coal_generator:
+ ore: COAL_ORE
+ interval: 60
+diamond_generator:
+ ore: DIAMOND_ORE
+ interval: 7200
+lapis_generator:
+ ore: LAPIS_ORE
+ interval: 7200
+redstone_generator:
+ ore: REDSTONE_ORE
+ interval: 60
+emerald_generator:
+ ore: EMERALD_ORE
+ interval: 10800

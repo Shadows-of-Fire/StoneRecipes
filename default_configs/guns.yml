@@ -1,0 +1,94 @@
+lava_shotgun:
+ projectile: false
+ distance: 10
+ spread: 25
+ pellets: 10
+ damage: 1
+ dot: 5
+ reloadTime: 50
+ particle: FLAME
+ bullet: lava_bullet
+ chargeSound: "shotguncharge,3"
+ reloadSound: "shotgunreload,2"
+ fireSound: "shotgunfire,3"
+portable_railgun:
+ projectile: false
+ distance: 35
+ spread: 0
+ pellets: 1
+ damage: 20
+ dot: 0
+ reloadTime: 200
+ particle: NAUTILUS
+ bullet: railgun_bullet
+ chargeSound: "railguncharge,3"
+ reloadSound: "railgunreload,2"
+ fireSound: "railgunfire,3"
+lightning_gauntlet: 
+ projectile: false
+ distance: 0
+ spread: 0
+ pellets: 0
+ damage: 10
+ dot: 5
+ reloadTime: 200
+ particle: FLAME
+ fireSound: "gauntlet,3"
+chainsword: 
+ projectile: false
+ armorBypass: true
+ distance: 0
+ spread: 0
+ pellets: 0
+ damage: 2
+ dot: 1
+ reloadTime: 200
+ particle: FLAME
+ fireSound: "chainsword,3"
+quantum_vaporizer: 
+ projectile: false
+ armorBypass: false
+ distance: 15
+ spread: 0
+ pellets: 1
+ damage: 5
+ dot: 10
+ reloadTime: 40
+ particle: REDSTONE
+ fireSound: "vaporizerfire,3"
+particle_cannon:
+ projectile: false
+ armorBypass: false
+ distance: 10
+ spread: 0
+ pellets: 1
+ damage: 1
+ dot: 0
+ reloadTime: 100
+ particle: VILLAGER_HAPPY
+ fireSound: "railgunfire,3"
+grenade_launcher:
+ projectile: true
+ armorBypass: false
+ distance: 10
+ spread: 4
+ pellets: 1
+ damage: 8
+ dot: 0
+ reloadTime: 100
+ particle: FLAME
+ fireSound: "grenadefire,3"
+ bullet: "grenade"
+little_gustav:
+ projectile: true
+ armorBypass: false
+ distance: 30
+ spread: 4
+ pellets: 1
+ damage: 40
+ dot: 10
+ charge: 40
+ reloadTime: 300
+ particle: FLAME
+ fireSound: "gustavfire,3"
+ bullet: "lil_gus"

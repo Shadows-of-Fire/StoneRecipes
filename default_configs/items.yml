@@ -1,0 +1,1496 @@
+#item_name: (must be unique)
+# material: material
+#following things are optional
+# unbreakable: true
+# durability: number you want
+# lore: (list of things for the lore)
+#  - 
+# enchants: (list)
+#  - KNOCKBACK,1
+# flags: (list of item flags)
+#  - HIDE_UNBREAKABLE
+
+#Items that you want to be a generator/Vein must have
+#a name in the format of "Item Vein" where Item is the item it should generate
+
+#the item "generator" must always be present
+#and it's name must contain "Generator"
+
+
+battery:
+ material: DIAMOND_HOE
+ durability: 13
+ name: "&rBattery"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+player_teleporter:
+ material: DIAMOND_HOE
+ durability: 222
+ name: "&rPlayer Teleporter"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 8
+item_teleporter:
+ material: DIAMOND_HOE
+ durability: 223
+ name: "&rItem Teleporter"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 9
+uranium_generator:
+ material: DIAMOND_HOE
+ durability: 84
+ name: "&rUranium Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 0
+  instrument: BASS_DRUM
+uranium:
+ material: DIAMOND_HOE
+ durability: 78
+ name: "&rUranium Ore"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 0
+  instrument: BASS_GUITAR
+copper_generator:
+ material: DIAMOND_HOE
+ durability: 87
+ name: "&rCopper Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 4
+  instrument: BASS_DRUM
+copper:
+ material: DIAMOND_HOE
+ durability: 79
+ name: "&rCopper Ore"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 4
+  instrument: BASS_GUITAR
+silver_generator:
+ material: DIAMOND_HOE
+ durability: 93
+ name: "&rSilver Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 3
+  instrument: BASS_DRUM
+silver:
+ material: DIAMOND_HOE
+ durability: 80
+ name: "&rSilver Ore"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 1
+  instrument: BASS_GUITAR
+quartz_generator:
+ material: DIAMOND_HOE
+ durability: 95
+ name: "&rQuartz Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 6
+  instrument: BASS_DRUM
+quartz:
+ material: DIAMOND_HOE
+ durability: 81
+ name: "&rQuartz Ore"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 6
+  instrument: BASS_GUITAR
+titanium_generator:
+ material: DIAMOND_HOE
+ durability: 85
+ name: "&rTitanium Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 2
+  instrument: BASS_DRUM
+titanium:
+ material: DIAMOND_HOE
+ durability: 82
+ name: "&rTitanium Ore"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 2
+  instrument: BASS_GUITAR
+tin_generator:
+ material: DIAMOND_HOE
+ durability: 92
+ name: "&rTin Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 1
+  instrument: BASS_DRUM
+tin:
+ material: DIAMOND_HOE
+ durability: 83
+ name: "&rTin Ore"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 3
+  instrument: BASS_GUITAR
+iron_generator:
+ material: DIAMOND_HOE
+ durability: 90
+ name: "&rIron Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 8
+  instrument: BASS_DRUM
+iron:
+ material: IRON_ORE
+gold_generator:
+ material: DIAMOND_HOE
+ durability: 91
+ name: "&rGold Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 9
+  instrument: BASS_DRUM
+gold:
+ material: GOLD_ORE
+coal_generator:
+ material: DIAMOND_HOE
+ durability: 86
+ name: "&rCoal Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 11
+  instrument: BASS_DRUM
+coal:
+ material: COAL
+diamond_generator:
+ material: DIAMOND_HOE
+ durability: 88
+ name: "&rDiamond Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 12
+  instrument: BASS_DRUM
+diamond:
+ material: DIAMOND
+lapis_generator:
+ material: DIAMOND_HOE
+ durability: 96
+ name: "&rLapis Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 7
+  instrument: BASS_DRUM
+lapis:
+ material: LAPIS_LAZULI
+redstone_generator:
+ material: DIAMOND_HOE
+ durability: 94
+ name: "&rRedstone Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 5
+  instrument: BASS_DRUM
+redstone:
+ material: REDSTONE
+emerald_generator:
+ material: DIAMOND_HOE
+ durability: 89
+ name: "&rEmerald Vein"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 10
+  instrument: BASS_DRUM
+emerald:
+ material: EMERALD
+steel_plate:
+ material: DIAMOND_HOE
+ durability: 129
+ name: "&rSteel Plate"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+steel_spike:
+ material: DIAMOND_HOE
+ durability: 130
+ name: "&rSteel Spike"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+tetrachloride:
+ material: DIAMOND_HOE
+ durability: 131
+ name: "&rTetrachloride"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+tin_dust:
+ material: DIAMOND_HOE
+ durability: 132
+ name: "&rTin Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+tin_ingot:
+ material: DIAMOND_HOE
+ durability: 133
+ name: "&rTin Ingot"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_dust:
+ material: DIAMOND_HOE
+ durability: 134
+ name: "&rTitanium Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_gas:
+ material: DIAMOND_HOE
+ durability: 135
+ name: "&rTitanium Gas"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_ingot:
+ material: DIAMOND_HOE
+ durability: 136
+ name: "&rTitanium Ingot"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_plate:
+ material: DIAMOND_HOE
+ durability: 137
+ name: "&rTitanium Plate"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_sponge:
+ material: DIAMOND_HOE
+ durability: 138
+ name: "&rTitanium Sponge"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+tri-metal_dust:
+ material: DIAMOND_HOE
+ durability: 139
+ name: "&rTri-Metal Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+tri-metal_ingot:
+ material: DIAMOND_HOE
+ durability: 140
+ name: "&rTri-Metal Ingot"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+tri-metal_plate:
+ material: DIAMOND_HOE
+ durability: 141
+ name: "&rTri-Metal Plate"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+valve:
+ material: DIAMOND_HOE
+ durability: 142
+ name: "&rValve"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+visor:
+ material: DIAMOND_HOE
+ durability: 143
+ name: "&rReinforced Visor"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+electronic_circuit:
+ material: DIAMOND_HOE
+ durability: 18
+ name: "&rElectronic Circuit"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+advanced_circuit:
+ material: DIAMOND_HOE
+ durability: 144
+ name: "&rAdvanced Circuit"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_boot_frame:
+ material: DIAMOND_HOE
+ durability: 145
+ name: "&rCarbon Boot Frame"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_chest_frame:
+ material: DIAMOND_HOE
+ durability: 146
+ name: "&rCarbon Chest Frame"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_head_frame:
+ material: DIAMOND_HOE
+ durability: 147
+ name: "&rCarbon Head Frame"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_leg_frame:
+ material: DIAMOND_HOE
+ durability: 148
+ name: "&rCarbon Leg Frame"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_mesh:
+ material: DIAMOND_HOE
+ durability: 149
+ name: "&rCarbon Mesh"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_plate:
+ material: DIAMOND_HOE
+ durability: 150
+ name: "&rCarbon Plate"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+cylinder_head:
+ material: DIAMOND_HOE
+ durability: 151
+ name: "&rCylinder Head"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+coal_dust:
+ material: DIAMOND_HOE
+ durability: 152
+ name: "&rCoal Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+charcoal_dust:
+ material: DIAMOND_HOE
+ durability: 152
+ name: "&rCharcoal Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+conveyor_belt:
+ material: DIAMOND_HOE
+ durability: 153
+ name: "&rConveyor Belt"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+copper_coil:
+ material: DIAMOND_HOE
+ durability: 154
+ name: "&rCopper Coil"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+copper_cable:
+ material: DIAMOND_HOE
+ durability: 21
+ name: "&rCopper Cable"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+copper_dust:
+ material: DIAMOND_HOE
+ durability: 155
+ name: "&rCopper Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+copper_ingot:
+ material: DIAMOND_HOE
+ durability: 156
+ name: "&rCopper Ingot"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+copper_pipe:
+ material: DIAMOND_HOE
+ durability: 157
+ name: "&rCopper Pipe"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+diamond_dust:
+ material: DIAMOND_HOE
+ durability: 158
+ name: "&rDiamond Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+endereye:
+ material: ENDER_EYE
+ name: "&rEye of Ender"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+diamond_gear:
+ material: DIAMOND_HOE
+ durability: 159
+ name: "&rDiamond Gear"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+energy_crystal:
+ material: DIAMOND_HOE
+ durability: 160
+ name: "&rEnergy Crystal"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+energy_shard:
+ material: DIAMOND_HOE
+ durability: 161
+ name: "&rEnergy Shard"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+fine_blade:
+ material: DIAMOND_HOE
+ durability: 162
+ name: "&rFine Disc"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+fluid_tank:
+ material: DIAMOND_HOE
+ durability: 163
+ name: "&rFluid Tank"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+gold_gear:
+ material: DIAMOND_HOE
+ durability: 164
+ name: "&rGold Gear"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+hydrated_coal_dust:
+ material: DIAMOND_HOE
+ durability: 165
+ name: "&rHydrated Coal Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+iron_dust:
+ material: DIAMOND_HOE
+ durability: 166
+ name: "&rIron Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+polarized_crystal:
+ material: DIAMOND_HOE
+ durability: 167
+ name: "&rPolarized Energy Crystal"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+raw_carbon_fibre:
+ material: DIAMOND_HOE
+ durability: 168
+ name: "&rRaw Carbon Firbre"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+raw_tri-metal:
+ material: DIAMOND_HOE
+ durability: 169
+ name: "&rRaw Tri-Metal"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+redmond:
+ material: DIAMOND_HOE
+ durability: 170
+ name: "&rRedmond Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+rough_blade:
+ material: DIAMOND_HOE
+ durability: 171
+ name: "&rRough Disc"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+rubber:
+ material: DIAMOND_HOE
+ durability: 172
+ name: "&rRubber"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+rubber_ball:
+ material: DIAMOND_HOE
+ durability: 173
+ name: "&rRubber ball"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+silver_dust:
+ material: DIAMOND_HOE
+ durability: 174
+ name: "&rSilver Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+silver_ingot:
+ material: DIAMOND_HOE
+ durability: 175
+ name: "&rSilver Ingot"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+silver_mesh:
+ material: DIAMOND_HOE
+ durability: 176
+ name: "&rSilver Mesh"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+silver_thread:
+ material: DIAMOND_HOE
+ durability: 177
+ name: "&rSilver Thread"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+spiked_cylinder_head:
+ material: DIAMOND_HOE
+ durability: 178
+ name: "&rSpiked Cylinder Head"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+steel_gear:
+ material: DIAMOND_HOE
+ durability: 179
+ name: "&rSteel Gear"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+steel_ingot:
+ material: DIAMOND_HOE
+ durability: 180
+ name: "&rSteel Ingot"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+rubber_pad:
+ material: DIAMOND_HOE
+ durability: 181
+ name: "&rRubber Pad"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+machine_frame:
+ material: DIAMOND_HOE
+ durability: 182
+ name: "&rMachine Frame"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+advanced_machine_frame:
+ material: DIAMOND_HOE
+ durability: 183
+ name: "&rAdvanced Machine Frame"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+forge:
+ material: DIAMOND_HOE
+ durability: 194
+ name: "&rForge"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 4
+  instrument: BELL
+vaporizer:
+ material: DIAMOND_HOE
+ durability: 195
+ name: "Vaporizer"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 5
+  instrument: BELL
+cutter:
+ material: DIAMOND_HOE
+ durability: 196
+ name: "&rCutter"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 6
+  instrument: BELL
+generator:
+ material: DIAMOND_HOE
+ durability: 197
+ name: "&rCoal Generator"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 3
+extractor:
+ material: DIAMOND_HOE
+ durability: 198
+ name: "&rExtractor"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 2
+  instrument: BELL
+macerator:
+ material: DIAMOND_HOE
+ durability: 199
+ name: "&rMacerator"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 1
+  instrument: BELL
+compressor:
+ material: DIAMOND_HOE
+ durability: 200
+ name: "&rCompressor"
+ unbreakable: true
+ sound: "block.anvil.place"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  note: 0
+  instrument: BELL
+nano_helmet:
+ material: CHAINMAIL_HELMET
+ name: "&rNanosuit Helmet"
+ lore:
+  - "Power: 0/1000"
+nano_chestplate:
+ material: CHAINMAIL_CHESTPLATE
+ name: "&rNanosuit Chestplate"
+ lore:
+  - "Power: 0/1000"
+nano_leggings:
+ material: CHAINMAIL_LEGGINGS
+ name: "&rNanosuit Leggings"
+ lore:
+  - "Power: 0/1000"
+nano_boots:
+ material: CHAINMAIL_BOOTS
+ name: "&rNanosuit Boots"
+ lore:
+  - "Power: 0/1000"
+armor_charger:
+ material: DIAMOND_HOE
+ durability: 221
+ name: "&rArmor Charger"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 7
+nuclear_reactor:
+ material: DIAMOND_HOE
+ durability: 248
+ name: "&rNuclear Reactor"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 10
+reactor_chamber: 
+ material: DIAMOND_HOE
+ durability: 249
+ name: "&rReactor Chamber"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 11
+industrial_battery:
+ material: DIAMOND_HOE
+ durability: 250
+ name: "&rPower Monitor"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ block:
+  instrument: BELL
+  note: 12
+uranium_rod:
+ material: DIAMOND_HOE
+ durability: 262
+ name: "&rUranium Rod"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ lore: 
+  - "Usage: 1000/1000"
+coolant:
+ material: DIAMOND_HOE
+ durability: 264
+ name: "&rCoolant"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ lore: 
+  - "Usage: 1000/1000"
+heat_plate:
+ material: DIAMOND_HOE
+ durability: 265
+ name: "&rHeat Plate"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ lore: 
+  - "Usage: 1000/1000"
+coolant_gel:
+ material: DIAMOND_HOE
+ durability: 266
+ name: "&rCoolant Gel"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+chunky_coolant_gel:
+ material: DIAMOND_HOE
+ durability: 267
+ name: "&rChunky Coolant Gel"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_tube_casing:
+ material: DIAMOND_HOE
+ durability: 268
+ name: "&rTitanium Tube Casing"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+uranium_yellow_cake:
+ material: DIAMOND_HOE
+ durability: 269
+ name: "&rUranium Yellow Cake"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+vapor_chamber:
+ material: DIAMOND_HOE
+ durability: 270
+ name: "&rVapor Chamber"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+heat_transfer_element:
+ material: DIAMOND_HOE
+ durability: 271
+ name: "&rHeat Transfer Element"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+uranium_pellets:
+ material: DIAMOND_HOE
+ durability: 272
+ name: "&rUranium Pellets"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+decontaminated_uranium_dust:
+ material: DIAMOND_HOE
+ durability: 273
+ name: "&rDecontaminated Uranium Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+contaminated_uranium_dust:
+ material: DIAMOND_HOE
+ durability: 274
+ name: "&rContaminated Uranium Dust"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+thermal_paste:
+ material: DIAMOND_HOE
+ durability: 275
+ name: "&rThermal Paste"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+uranium_oxide:
+ material: DIAMOND_HOE
+ durability: 276
+ name: "&rUranium Oxide"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+enriched_uranium_pellets:
+ material: DIAMOND_HOE
+ durability: 277
+ name: "&rEnriched Uranium Pellets"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+uranium_hexafloride:
+ material: DIAMOND_HOE
+ durability: 278
+ name: "&rUranium Hexafloride"
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+lava_shotgun:
+ material: DIAMOND_HOE
+ name: "&rLava Shotgun"
+ durability: 284
+ unbreakable: true
+ lore:
+  - "Ammo 10/10"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+lava_bullet:
+ material: DIAMOND_HOE
+ name: "&rLava Bullet"
+ lore:
+  - "Bullet for"
+  - "Lava Shotgun"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+portable_railgun:
+ material: DIAMOND_HOE
+ name: "&rPortable Railgun"
+ durability: 282
+ unbreakable: true
+ lore: 
+  - "Ammo 10/10"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+railgun_bullet: 
+ material: DIAMOND_HOE
+ name: "&rRailgun Bullet"
+ lore: 
+  - "Bullet for"
+  - "Railgun"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+lightning_gauntlet:
+ material: DIAMOND_HOE
+ name: "&rLightning Gauntlet"
+ lore:
+  - "Zap zap"
+ durability: 281
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+chainsword:
+ material: DIAMOND_HOE
+ name: "&rChainsword"
+ durability: 280
+ unbreakable: true
+ lore:
+  - "Rip up your enemies"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+quantum_vaporizer:
+ material: DIAMOND_HOE
+ name: "&rQuantum Vaporizer"
+ durability: 288
+ unbreakable: true
+ lore: 
+  - "Power: 10/10"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+particle_cannon:
+ material: DIAMOND_HOE
+ name: "&rParticle Cannon"
+ durability: 290
+ unbreakable: true
+ lore: 
+  - "Power: 100/100"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+grenade_launcher:
+ material: DIAMOND_HOE
+ name: "&rGrenade Launcher"
+ durability: 286
+ unbreakable: true
+ lore: 
+  - "Ammo 10/10"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+grenade:
+ material: DIAMOND_HOE
+ name: "&rGrenade"
+ lore:
+  - "Ammo for"
+  - "Grenade Launcher"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+little_gustav:
+ material: DIAMOND_HOE
+ name: "&rLittle Gustav"
+ durability: 292
+ unbreakable: true
+ lore: 
+  - "Ammo 10/10"
+  - "Kablamo"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+lil_gus:
+ material: DIAMOND_HOE
+ name: "&rLil Gus"
+ lore:
+  - "Ammo for"
+  - "Little Gustav"
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_fibre_barrel:
+ material: DIAMOND_HOE
+ name: "&rCarbon Fibre Barrel"
+ durability: 294
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+carbon_reaction_chamber:
+ material: DIAMOND_HOE
+ name: "&rCarbon Reaction Chamber"
+ durability: 295
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+current_control_unit:
+ material: DIAMOND_HOE
+ name: "&rCurrent Control Unit"
+ durability: 296
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+drum_magazine:
+ material: DIAMOND_HOE
+ name: "&rDrum Magazine"
+ durability: 297
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+energy_cell:
+ material: DIAMOND_HOE
+ name: "&rEnergy Cell"
+ durability: 298
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+glass_reflector:
+ material: DIAMOND_HOE
+ name: "&rGlass Reflector"
+ durability: 299
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+golden_grenade_chamber:
+ material: DIAMOND_HOE
+ name: "&rGolden Grenade Chamber"
+ durability: 300
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+graphene_absorption_plate:
+ material: DIAMOND_HOE
+ name: "&rGraphene Absorption Plate"
+ durability: 301
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+graphene_barrel:
+ material: DIAMOND_HOE
+ name: "&rGraphene Barrel"
+ durability: 302
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+graphene_plate:
+ material: DIAMOND_HOE
+ name: "&rGraphene Plate"
+ durability: 303
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+grenade_launcher_lower_receiver:
+ material: DIAMOND_HOE
+ name: "&rGrenade Launcher Lower Receiver"
+ durability: 304
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+induction_motor:
+ material: DIAMOND_HOE
+ name: "&rInduction Motor"
+ durability: 305
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+focusing_lens:
+ material: DIAMOND_HOE
+ name: "&rFocusing Lens"
+ durability: 306
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+lightning_jar:
+ material: DIAMOND_HOE
+ name: "&rJarred Lightning"
+ durability: 307
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+little_gustav_barrel:
+ material: DIAMOND_HOE
+ name: "&rLittle Gustav Barrel"
+ durability: 308
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+maglev_rail:
+ material: DIAMOND_HOE
+ name: "&rMaglev Rail"
+ durability: 309
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+micro-fusion_reactor:
+ material: DIAMOND_HOE
+ name: "&rMicro Fusion Reactor"
+ durability: 310
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+plasma_coil:
+ material: DIAMOND_HOE
+ name: "&rPlasma Coil"
+ durability: 311
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+polymer_sights:
+ material: DIAMOND_HOE
+ name: "&rPolymer Sights"
+ durability: 312
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+railgun_lower_receiver:
+ material: DIAMOND_HOE
+ name: "&rRailgun Lower Receiver"
+ durability: 313
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ribbed_grip:
+ material: DIAMOND_HOE
+ name: "&rRibbed Grip"
+ durability: 314
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+spruce_handle:
+ material: DIAMOND_HOE
+ name: "&rSpruce Handle"
+ durability: 315
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+stacked_uranium_cartridge:
+ material: DIAMOND_HOE
+ name: "&rStacked Uranium Cartridge"
+ durability: 316
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_chain:
+ material: DIAMOND_HOE
+ name: "&rTitanium Chain"
+ durability: 317
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_fistguard:
+ material: DIAMOND_HOE
+ name: "&rTitanium Fistguard"
+ durability: 318
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_handle:
+ material: DIAMOND_HOE
+ name: "&rTitanium Handle"
+ durability: 319
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_shielding:
+ material: DIAMOND_HOE
+ name: "&rTitanium Shielding"
+ durability: 320
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_spike_plate:
+ material: DIAMOND_HOE
+ name: "&rTitanium Spike Plate"
+ durability: 321
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+12mm_barrel:
+ material: DIAMOND_HOE
+ name: "&r12mm Barrel"
+ durability: 322
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+12mm_lower_receiver:
+ material: DIAMOND_HOE
+ name: "&r12mm Lower Receiver"
+ durability: 323
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ultracapacitor_array:
+ material: DIAMOND_HOE
+ name: "&rUltra-Capacitor Array"
+ durability: 324
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ultra-high_voltage_transformer:
+ material: DIAMOND_HOE
+ name: "&rUltra-High Voltage Transformer"
+ durability: 325
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+vaporizer_lower_receiver:
+ material: DIAMOND_HOE
+ name: "&rVaporizer Lower Receiver"
+ durability: 326
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+clear_plastic_pad:
+ material: DIAMOND_HOE
+ name: "&rClear Plastic Pad"
+ durability: 327
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+copper_coil_winding:
+ material: DIAMOND_HOE
+ name: "&rCopper Coil Winding"
+ durability: 328
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+electrolyte:
+ material: DIAMOND_HOE
+ name: "&rElectrolyte"
+ durability: 329
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+golden_barrel_shielding:
+ material: DIAMOND_HOE
+ name: "&rGolden Barrel Shielding"
+ durability: 330
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+gold_plate:
+ material: DIAMOND_HOE
+ name: "&rGold Plate"
+ durability: 331
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+graphene:
+ material: DIAMOND_HOE
+ name: "&rGraphene"
+ durability: 332
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+graphene_mesh:
+ material: DIAMOND_HOE
+ name: "&rGraphene Mesh"
+ durability: 333
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+plastic_pad:
+ material: DIAMOND_HOE
+ name: "&rPlastic Pad"
+ durability: 334
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+titanium_spike:
+ material: DIAMOND_HOE
+ name: "&rTitanium Spike"
+ durability: 335
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+stacked_titanium_plate:
+ material: DIAMOND_HOE
+ name: "&rStacked Titanium Plate"
+ durability: 336
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+static_jar:
+ material: DIAMOND_HOE
+ name: "&rStatic Jar"
+ durability: 337
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES
+ultra_capacitor:
+ material: DIAMOND_HOE
+ name: "&rUltra-Capacitor"
+ durability: 338
+ unbreakable: true
+ flags:
+  - HIDE_UNBREAKABLE
+  - HIDE_ATTRIBUTES

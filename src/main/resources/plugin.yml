@@ -1,0 +1,9 @@
+name: StoneRecipes
+main: shadows.stonerecipes.StoneRecipes
+version: 1.0.0
+author: Shadows_of_Fire
+api-version: 1.14
+commands:
+  giveitem:
+    usage: /giveitem <player> <item id> <amount>
+    permission: stone.give

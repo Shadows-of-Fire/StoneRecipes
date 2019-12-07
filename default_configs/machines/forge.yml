@@ -1,0 +1,17 @@
+tri-metal_dust: raw_tri-metal
+titanium_dust: titanium_sponge
+hydrated_coal_dust: coal_dust
+SLIME_BALL: rubber
+tin: tin_ingot
+tin_dust: tin_ingot
+copper: copper_ingot
+copper_dust: copper_ingot
+silver: silver_ingot
+silver_dust: silver_ingot
+quartz: QUARTZ
+IRON_ORE: IRON_INGOT
+iron_dust: IRON_INGOT
+GOLD_ORE: GOLD_INGOT
+IRON_INGOT: steel_ingot
+decontaminated_uranium_dust: uranium_oxide
+SAND: GLASS

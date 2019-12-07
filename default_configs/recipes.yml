@@ -1,0 +1,451 @@
+tri-metal_dust:
+ - "iron_dust,iron_dust,iron_dust"
+ - "copper_dust,copper_dust,copper_dust"
+ - "tin_dust,tin_dust,tin_dust"
+SHAPELESS_raw_carbon_fibre:
+ - "coal_dust"
+ - "coal_dust"
+ - "coal_dust"
+ - "coal_dust"
+SHAPELESS_carbon_mesh:
+ - "raw_carbon_fibre"
+ - "raw_carbon_fibre"
+ - "raw_carbon_fibre"
+ - "raw_carbon_fibre"
+SHAPELESS_carbon_plate:
+ - "carbon_mesh"
+ - "carbon_mesh"
+ - "carbon_mesh"
+ - "carbon_mesh"
+SHAPELESS_redmond:
+ - "diamond_dust"
+ - "REDSTONE"
+SHAPELESS_tetrachloride:
+ - "titanium_gas"
+ - "GUNPOWDER"
+SHAPELESS_titanium_dust:
+ - "tetrachloride"
+ - "tin_dust"
+SHAPELESS_rubber_ball:
+ - "rubber"
+ - "rubber"
+ - "rubber"
+ - "rubber"
+steel_gear:
+ - "X,steel_ingot,X"
+ - "steel_ingot,X,steel_ingot"
+ - "X,steel_ingot,X"
+gold_gear:
+ - "X,GOLD_INGOT,X"
+ - "GOLD_INGOT,steel_gear,GOLD_INGOT"
+ - "X,GOLD_INGOT,X"
+diamond_gear:
+ - "X,DIAMOND,X"
+ - "DIAMOND,gold_gear,DIAMOND"
+ - "X,DIAMOND,X"
+copper_cable:
+ - "rubber,rubber,rubber"
+ - "copper_ingot,copper_ingot,copper_ingot"
+ - "rubber,rubber,rubber"
+electronic_circuit:
+ - "copper_cable,copper_cable,copper_cable"
+ - "REDSTONE,IRON_INGOT,REDSTONE"
+ - "copper_cable,copper_cable,copper_cable"
+advanced_circuit:
+ - "REDSTONE,GLOWSTONE_DUST,REDSTONE"
+ - "LAPIS_LAZULI,electronic_circuit,LAPIS_LAZULI"
+ - "REDSTONE,GLOWSTONE_DUST,REDSTONE"
+SHAPELESS_CLAY_BALL:
+ - "GRAVEL"
+ - "DIRT"
+ - "WATER_BUCKET"
+visor:
+ - "X,tri-metal_plate,X"
+ - "tri-metal_plate,GLASS_PANE,tri-metal_plate"
+ - "X,tri-metal_plate,X"
+carbon_chest_frame:
+ - "carbon_plate,X,carbon_plate"
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "carbon_plate,carbon_plate,carbon_plate"
+carbon_head_frame:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "carbon_plate,X,carbon_plate"
+ - "X,X,X"
+carbon_boot_frame:
+ - "carbon_plate,X,carbon_plate"
+ - "carbon_plate,X,carbon_plate"
+ - "X,X,X"
+carbon_leg_frame:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "carbon_plate,X,carbon_plate"
+ - "carbon_plate,X,carbon_plate"
+nano_chestplate:
+ - "titanium_plate,polarized_crystal,titanium_plate"
+ - "tri-metal_plate,carbon_chest_frame,tri-metal_plate"
+ - "titanium_plate,titanium_plate,titanium_plate"
+nano_helmet:
+ - "advanced_circuit,visor,advanced_circuit"
+ - "titanium_plate,carbon_head_frame,titanium_plate"
+ - "titanium_plate,polarized_crystal,titanium_plate"
+nano_leggings:
+ - "diamond_gear,advanced_circuit,diamond_gear"
+ - "titanium_plate,carbon_leg_frame,titanium_plate"
+ - "titanium_plate,polarized_crystal,titanium_plate"
+nano_boots:
+ - "titanium_plate,polarized_crystal,titanium_plate"
+ - "titanium_plate,carbon_boot_frame,titanium_plate"
+ - "rubber_pad,X,rubber_pad"
+copper_coil:
+ - "copper_cable,copper_cable,copper_cable"
+ - "copper_cable,copper_cable,copper_cable"
+ - "copper_cable,copper_cable,copper_cable"
+SHAPELESS_silver_mesh:
+ - "silver_thread"
+ - "silver_thread"
+ - "silver_thread"
+ - "silver_thread"
+SHAPELESS_endereye:
+ - "diamond_dust"
+ - "ENDER_PEARL"
+machine_frame:
+ - "steel_ingot,silver_ingot,steel_ingot"
+ - "silver_ingot,X,silver_ingot"
+ - "steel_ingot,silver_ingot,steel_ingot"
+generator:
+ - "IRON_INGOT,battery,IRON_INGOT"
+ - "IRON_INGOT,EMERALD,IRON_INGOT"
+ - "IRON_INGOT,FURNACE,IRON_INGOT"
+battery:
+ - "X,copper_ingot,X"
+ - "IRON_INGOT,REDSTONE,IRON_INGOT"
+ - "IRON_INGOT,REDSTONE,IRON_INGOT"
+advanced_machine_frame:
+ - "carbon_plate,tri-metal_plate,carbon_plate"
+ - "tri-metal_plate,machine_frame,tri-metal_plate"
+ - "carbon_plate,tri-metal_plate,carbon_plate"
+forge:
+ - "copper_pipe,LAVA_BUCKET,copper_pipe"
+ - "IRON_INGOT,FURNACE,IRON_INGOT"
+ - "IRON_INGOT,IRON_INGOT,IRON_INGOT"
+vaporizer:
+ - "advanced_circuit,copper_coil,advanced_circuit"
+ - "tri-metal_plate,advanced_machine_frame,tri-metal_plate"
+ - "tri-metal_plate,silver_mesh,tri-metal_plate"
+cylinder_head:
+ - "X,steel_ingot,X"
+ - "X,steel_ingot,X"
+ - "steel_ingot,steel_ingot,steel_ingot"
+conveyor_belt:
+ - "rubber,rubber,rubber"
+ - "steel_gear,steel_gear,steel_gear"
+ - "rubber,rubber,rubber"
+compressor:
+ - "tin_ingot,advanced_circuit,tin_ingot"
+ - "steel_ingot,cylinder_head,steel_ingot"
+ - "steel_ingot,conveyor_belt,steel_ingot"
+steel_spike:
+ - "steel_ingot,steel_ingot,steel_ingot"
+ - "X,steel_ingot,X"
+ - "X,X,X"
+spiked_cylinder_head:
+ - "X,X,X"
+ - "X,cylinder_head,X"
+ - "steel_spike,steel_spike,steel_spike"
+macerator:
+ - "steel_plate,advanced_circuit,steel_plate"
+ - "steel_plate,spiked_cylinder_head,steel_plate"
+ - "steel_plate,conveyor_belt,steel_plate"
+copper_pipe:
+ - "copper_ingot,copper_ingot,copper_ingot"
+ - "X,X,X"
+ - "copper_ingot,copper_ingot,copper_ingot"
+fluid_tank:
+ - "copper_ingot,copper_pipe,copper_ingot"
+ - "copper_ingot,X,copper_ingot"
+ - "copper_ingot,copper_pipe,copper_ingot"
+valve:
+ - "X,diamond_gear,X"
+ - "steel_ingot,steel_ingot,steel_ingot"
+ - "steel_ingot,steel_ingot,steel_ingot"
+extractor:
+ - "copper_pipe,valve,copper_pipe"
+ - "steel_ingot,fluid_tank,steel_ingot"
+ - "steel_ingot,steel_ingot,steel_ingot"
+armor_charger:
+ - "tri-metal_plate,polarized_crystal,tri-metal_plate"
+ - "tri-metal_plate,advanced_machine_frame,tri-metal_plate"
+ - "copper_cable,advanced_circuit,copper_cable"
+energy_crystal:
+ - "energy_shard,energy_shard,energy_shard"
+ - "energy_shard,energy_shard,energy_shard"
+ - "energy_shard,energy_shard,energy_shard"
+rough_blade:
+ - "steel_plate,steel_plate,steel_plate"
+ - "X,steel_plate,steel_plate"
+ - "X,X,steel_plate"
+fine_blade:
+ - "X,FLINT,X"
+ - "FLINT,rough_blade,FLINT"
+ - "X,FLINT,X"
+cutter:
+ - "diamond_gear,rubber_ball,diamond_gear"
+ - "carbon_plate,fine_blade,carbon_plate"
+ - "tri-metal_ingot,advanced_circuit,tri-metal_ingot"
+vapor_chamber:
+ - "copper_ingot,copper_ingot,copper_ingot"
+ - "copper_ingot,coolant_gel,copper_ingot"
+ - "copper_ingot,copper_ingot,copper_ingot"
+SHAPELESS_heat_transfer_element:
+ - "vapor_chamber"
+ - "vapor_chamber"
+ - "vapor_chamber"
+ - "vapor_chamber"
+SHAPELESS_heat_plate:
+ - "heat_transfer_element"
+ - "heat_transfer_element"
+ - "heat_transfer_element"
+ - "heat_transfer_element"
+uranium_yellow_cake:
+ - "uranium_oxide,uranium_oxide,uranium_oxide"
+ - "uranium_oxide,uranium_oxide,uranium_oxide"
+ - "uranium_oxide,uranium_oxide,uranium_oxide"
+uranium_pellets:
+ - "decontaminated_uranium_dust,decontaminated_uranium_dust,decontaminated_uranium_dust"
+ - "decontaminated_uranium_dust,decontaminated_uranium_dust,decontaminated_uranium_dust"
+ - "decontaminated_uranium_dust,decontaminated_uranium_dust,decontaminated_uranium_dust"
+enriched_uranium_pellets:
+ - "X,polarized_crystal,X"
+ - "X,uranium_pellets,X"
+ - "X,polarized_crystal,X"
+uranium_rod:
+ - "X,enriched_uranium_pellets,X"
+ - "X,uranium_hexafloride,X"
+ - "X,enriched_uranium_pellets,X"
+thermal_paste:
+ - "BONE_MEAL,copper_dust,BONE_MEAL"
+ - "BONE_MEAL,silver_dust,BONE_MEAL"
+ - "BONE_MEAL,tetrachloride,BONE_MEAL"
+chunky_coolant_gel:
+ - "thermal_paste,WATER_BUCKET,thermal_paste"
+ - "diamond_dust,diamond_dust,diamond_dust"
+ - "thermal_paste,WATER_BUCKET,thermal_paste"
+titanium_tube_casing:
+ - "X,titanium_plate,X"
+ - "titanium_plate,X,titanium_plate"
+ - "X,titanium_plate,X"
+coolant:
+ - "coolant_gel,coolant_gel,coolant_gel"
+ - "X,titanium_tube_casing,X"
+ - "X,X,X"
+player_teleporter:
+ - "advanced_circuit,copper_coil,advanced_circuit"
+ - "titanium_plate,polarized_crystal,titanium_plate"
+ - "titanium_plate,advanced_machine_frame,titanium_plate"
+item_teleporter:
+ - "advanced_circuit,CHEST,advanced_circuit"
+ - "titanium_plate,polarized_crystal,titanium_plate"
+ - "titanium_plate,advanced_machine_frame,titanium_plate"
+nuclear_reactor:
+ - "titanium_plate,polarized_crystal,titanium_plate"
+ - "advanced_circuit,reactor_chamber,advanced_circuit"
+ - "titanium_plate,polarized_crystal,titanium_plate"
+reactor_chamber:
+ - "steel_plate,heat_plate,steel_plate"
+ - "heat_plate,advanced_machine_frame,heat_plate"
+ - "steel_plate,heat_plate,steel_plate"
+industrial_battery:
+ - "copper_cable,advanced_circuit,copper_cable"
+ - "copper_cable,machine_frame,copper_cable"
+ - "copper_cable,advanced_circuit,copper_cable"
+glass_reflector:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "GLASS_PANE,GLASS_PANE,GLASS_PANE"
+ - "carbon_plate,carbon_plate,carbon_plate"
+plasma_coil:
+ - "graphene_plate,copper_cable,graphene_plate"
+ - "graphene_plate,lightning_jar,graphene_plate"
+ - "graphene_plate,copper_cable,graphene_plate"
+graphene_barrel:
+ - "graphene_plate,graphene_plate,graphene_plate"
+ - "X,X,X"
+ - "graphene_plate,graphene_plate,graphene_plate"
+12mm_barrel:
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "X,X,X"
+ - "titanium_plate,titanium_plate,titanium_plate"
+12mm_lower_receiver:
+ - "steel_plate,steel_plate,steel_plate"
+ - "steel_plate,LEVER,rubber_pad"
+ - "X,X,steel_plate"
+titanium_fistguard:
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "titanium_plate,titanium_plate,X"
+ - "titanium_plate,titanium_plate,X"
+induction_motor:
+ - "copper_cable,copper_coil,copper_cable"
+ - "steel_plate,polarized_crystal,steel_plate"
+ - "steel_plate,copper_coil,steel_plate"
+titanium_shielding:
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "X,titanium_plate,titanium_plate"
+titanium_handle:
+ - "titanium_ingot,X,X"
+ - "X,titanium_ingot,X"
+ - "X,X,titanium_ingot"
+spruce_handle:
+ - "SPRUCE_LOG,steel_plate,SPRUCE_LOG"
+ - "SPRUCE_LOG,steel_plate,SPRUCE_LOG"
+ - "SPRUCE_LOG,steel_plate,SPRUCE_LOG"
+drum_magazine:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "carbon_plate,BUCKET,carbon_plate"
+ - "carbon_plate,carbon_plate,carbon_plate"
+micro-fusion_reactor:
+ - "steel_plate,titanium_plate,steel_plate"
+ - "titanium_plate,uranium_rod,titanium_plate"
+ - "steel_plate,titanium_plate,steel_plate"
+railgun_lower_receiver:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "carbon_plate,LEVER,carbon_plate"
+ - "X,carbon_plate,carbon_plate"
+energy_cell:
+ - "X,energy_crystal,X"
+ - "energy_crystal,uranium_hexafloride,energy_crystal"
+ - "X,energy_crystal,X"
+vaporizer_lower_receiver:
+ - "carbon_plate,steel_plate,steel_plate"
+ - "carbon_plate,LEVER,carbon_plate"
+ - "X,carbon_plate,carbon_plate"
+focusing_lens:
+ - "tri-metal_plate,tri-metal_plate,tri-metal_plate"
+ - "GLASS_PANE,GLASS_PANE,GLASS_PANE"
+ - "tri-metal_plate,tri-metal_plate,tri-metal_plate"
+maglev_rail:
+ - "X,titanium_ingot,X"
+ - "tri-metal_plate,tri-metal_plate,tri-metal_plate"
+ - "copper_coil,copper_coil,copper_coil"
+graphene_absorption_plate:
+ - "graphene_plate,titanium_sponge,graphene_plate"
+ - "titanium_sponge,graphene_plate,titanium_sponge"
+ - "graphene_plate,titanium_sponge,graphene_plate"
+stacked_uranium_cartridge:
+ - "heat_plate,heat_plate,heat_plate"
+ - "tri-metal_plate,uranium_rod,tri-metal_plate"
+ - "tri-metal_plate,uranium_rod,tri-metal_plate"
+carbon_reaction_chamber:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "heat_plate,coolant,heat_plate"
+ - "carbon_plate,carbon_plate,carbon_plate"
+carbon_fibre_barrel:
+ - "carbon_plate,carbon_plate,carbon_plate"
+ - "X,X,X"
+ - "carbon_plate,carbon_plate,carbon_plate"
+grenade_launcher_lower_receiver:
+ - "steel_plate,tri-metal_plate,tri-metal_plate"
+ - "steel_plate,LEVER,rubber_pad"
+ - "X,steel_plate,tri-metal_plate"
+ribbed_grip:
+ - "X,X,X"
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "plastic_pad,plastic_pad,plastic_pad"
+static_jar:
+ - "X,polarized_crystal,X"
+ - "polarized_crystal,GLASS_BOTTLE,polarized_crystal"
+ - "X,polarized_crystal,X"
+graphene_plate:
+ - "graphene_mesh,graphene_mesh,graphene_mesh"
+ - "graphene_mesh,graphene_mesh,graphene_mesh"
+ - "graphene_mesh,graphene_mesh,graphene_mesh"
+graphene_mesh:
+ - "graphene,graphene,graphene"
+ - "graphene,graphene,graphene"
+ - "graphene,graphene,graphene"
+graphene:
+ - "charcoal_dust,redmond,charcoal_dust"
+ - "redmond,DIAMOND,redmond"
+ - "charcoal_dust,redmond,charcoal_dust"
+titanium_spike_plate:
+ - "titanium_spike,titanium_spike,titanium_spike"
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "X,X,X"
+titanium_chain:
+ - "titanium_spike,titanium_spike,titanium_spike"
+ - "X,conveyor_belt,X"
+ - "titanium_spike,titanium_spike,titanium_spike"
+golden_grenade_chamber:
+ - "gold_plate,X,gold_plate"
+ - "gold_plate,X,gold_plate"
+ - "gold_plate,X,gold_plate"
+golden_barrel_shielding:
+ - "gold_plate,gold_plate,gold_plate"
+ - "X,X,X"
+ - "gold_plate,gold_plate,gold_plate"
+polymer_sights:
+ - "clear_plastic_pad,GLOWSTONE_DUST,clear_plastic_pad"
+ - "clear_plastic_pad,GLOWSTONE_DUST,clear_plastic_pad"
+ - "clear_plastic_pad,GLOWSTONE_DUST,clear_plastic_pad"
+ultracapacitor_array:
+ - "ultra_capacitor,ultra_capacitor,ultra_capacitor"
+ - "X,X,X"
+ - "X,X,X"
+ultra-high_voltage_transformer:
+ - "copper_coil_winding,copper_coil_winding,copper_coil_winding"
+ - "copper_coil_winding,copper_coil_winding,copper_coil_winding"
+ - "copper_coil_winding,copper_coil_winding,copper_coil_winding"
+current_control_unit:
+ - "tin_ingot,copper_ingot,plastic_pad"
+ - "plastic_pad,tin_ingot,copper_ingot"
+ - "plastic_pad,copper_ingot,tin_ingot"
+little_gustav_barrel:
+ - "stacked_titanium_plate,stacked_titanium_plate,stacked_titanium_plate"
+ - "X,X,X"
+ - "stacked_titanium_plate,stacked_titanium_plate,stacked_titanium_plate"
+ultra_capacitor:
+ - "plastic_pad,electrolyte,plastic_pad"
+ - "plastic_pad,electrolyte,plastic_pad"
+ - "plastic_pad,electrolyte,plastic_pad"
+titanium_spike:
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "X,titanium_plate,X"
+ - "X,X,X"
+copper_coil_winding:
+ - "copper_coil,copper_coil,copper_coil"
+ - "copper_coil,STICK,copper_coil"
+ - "copper_coil,copper_coil,copper_coil"
+stacked_titanium_plate:
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "titanium_plate,titanium_plate,titanium_plate"
+ - "X,X,X"
+lava_shotgun:
+ - "X,X,X"
+ - "ribbed_grip,12mm_barrel,X"
+ - "X,drum_magazine,12mm_lower_receiver"
+portable_railgun:
+ - "X,glass_reflector,X"
+ - "plasma_coil,graphene_barrel,X"
+ - "X,railgun_lower_receiver,micro-fusion_reactor"
+lightning_gauntlet:
+ - "graphene_plate,graphene_plate,graphene_plate"
+ - "lightning_jar,titanium_fistguard,lightning_jar"
+ - "ultracapacitor_array,X,ultracapacitor_array"
+chainsword:
+ - "X,X,X"
+ - "titanium_chain,titanium_shielding,induction_motor"
+ - "titanium_spike_plate,titanium_handle,X"
+quantum_vaporizer:
+ - "X,X,X"
+ - "focusing_lens,graphene_barrel,energy_cell"
+ - "X,vaporizer_lower_receiver,spruce_handle"
+particle_cannon:
+ - "X,plasma_coil,plasma_coil"
+ - "maglev_rail,maglev_rail,graphene_absorption_plate"
+ - "carbon_reaction_chamber,stacked_uranium_cartridge,X"
+grenade_launcher:
+ - "X,polymer_sights,X"
+ - "golden_barrel_shielding,carbon_fibre_barrel,X"
+ - "golden_grenade_chamber,grenade_launcher_lower_receiver,X"
+little_gustav:
+ - "maglev_rail,X,ultracapacitor_array"
+ - "little_gustav_barrel,little_gustav_barrel,ultra-high_voltage_transformer"
+ - "X,current_control_unit,micro-fusion_reactor"
