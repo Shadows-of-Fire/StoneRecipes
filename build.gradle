@@ -1,71 +1,42 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
-}
-
 plugins {
-  id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'java'
+    id 'maven'
+
+    id 'idea'
+    id 'eclipse'
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+defaultTasks 'clean', 'build'
 
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
-version = "1.12.2-1.0.0"
-group= "shadows.ivsuite"
-archivesBaseName = "IVDigitalSuite"
+group = 'shadows.hat'
+version = '1.0.0'
 
-sourceCompatibility = targetCompatibility = "1.8"
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
-}
-
-minecraft {
-    version = "1.12.2-14.23.5.2836"
-    runDir = "run"
-    mappings = "stable_39"
-	makeObfSourceJar = false
-}
+ext.projectName = 'StoneRecipes'
+ext.inceptionYear = '2019'
+ext.packaging = 'jar'
 
 repositories {
-    maven {
-        url "https://dvs1.progwml6.com/files/maven"
-    }
-	maven {
-		url "http://tehnut.info/maven"
-	}
+    mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-	deobfCompile "mezz.jei:jei_1.12.2:+"
-	deobfCompile "mcp.mobius.waila:Hwyla:1.8.+"
+    compile 'org.bukkit:bukkit:1.14.4-R0.1-SNAPSHOT'
+	compile fileTree(dir: 'libs', include: '*.jar')
 }
 
-shadowJar {
-    dependencies {
-        include(dependency(files('libs/mappedbus-0.5.1.jar')))
-    }
-
-    classifier ''
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
-reobf {
-    shadowJar {} // Reobfuscate the shadowed JAR
-}
+jar.manifest.mainAttributes(
+        'Implementation-Title': name,
+        'Implementation-Version': version
+)
 
-processResources
-{
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+artifacts {
+    archives jar
 }
