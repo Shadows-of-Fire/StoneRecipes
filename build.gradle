@@ -20,7 +20,10 @@ ext.packaging = 'jar'
 
 repositories {
     mavenCentral()
-    mavenLocal()
+	maven {
+        name 'spigot'
+        url 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
 }
 
 dependencies {
