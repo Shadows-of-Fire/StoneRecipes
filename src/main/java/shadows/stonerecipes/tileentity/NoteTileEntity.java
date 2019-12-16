@@ -95,7 +95,7 @@ public abstract class NoteTileEntity implements ITickable {
 	 * Ticks this tile.  This method is called every game tick.
 	 */
 	protected void tickInternal() {
-		if (ticks % timer == 0) timerTick();
+		if (++ticks % timer == 0) timerTick();
 	}
 
 	/**
