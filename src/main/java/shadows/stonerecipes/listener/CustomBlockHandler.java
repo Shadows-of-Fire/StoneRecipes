@@ -307,6 +307,8 @@ public class CustomBlockHandler implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	@EventHandler
 	public void anvilRepairBlock(PrepareAnvilEvent e) {
 		AnvilInventory inv = e.getInventory();
 		ItemStack input = inv.getItem(0);
@@ -315,7 +317,8 @@ public class CustomBlockHandler implements Listener {
 			if (nms.hasTag() && nms.getTag().hasKey("CustomModelData")) {
 				if (inv.getItem(1) == null && inv.getRenameText().equals("")) {
 					e.setResult(input.clone());
-				} else e.setResult(new ItemStack(Material.AIR));
+				} else if (inv.getItem(1) != null && inv.getItem(1).getAmount() > 0) e.setResult(null);
+				e.getViewers().forEach(p -> ((Player) p).updateInventory());
 			}
 		}
 	}
