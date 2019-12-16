@@ -104,9 +104,9 @@ public class TypedMachine extends PoweredMachine {
 		ItemStack output = inventory.getItem(Slots.OUTPUT);
 		ItemStack recipeOut = StoneRecipes.INSTANCE.getMachines().getOutput(type, input);
 		if (output != null && output.getType() != Material.AIR && output.getAmount() > 0) {
-			if (ItemData.isSimilar(recipeOut, output)) {
+			if (ItemData.isSimilar(recipeOut, output) && output.getAmount() + recipeOut.getAmount() <= output.getMaxStackSize()) {
 				this.usePower(powerCost);
-				output.setAmount(output.getAmount() + 1);
+				output.setAmount(output.getAmount() + recipeOut.getAmount());
 			} else return;
 		} else {
 			this.usePower(powerCost);

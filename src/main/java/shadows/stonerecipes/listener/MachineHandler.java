@@ -64,7 +64,15 @@ public class MachineHandler implements Listener {
 			Map<ItemStack, ItemStack> outputs = new HashMap<>();
 			for (String input : machineOutput.getKeys(false)) {
 				ItemStack stackIn = plugin.getItems().getItemForRecipe(input);
-				ItemStack stackOut = plugin.getItems().getItemForRecipe(machineOutput.getString(input));
+				String output = machineOutput.getString(input);
+				int outcount = 1;
+				if (output.contains(",")) {
+					String[] split = output.split(",");
+					output = split[0];
+					outcount = Integer.parseInt(split[1]);
+				}
+				ItemStack stackOut = plugin.getItems().getItemForRecipe(output);
+				stackOut.setAmount(outcount);
 				if (stackIn != null && stackOut != null) outputs.put(stackIn, stackOut);
 				else StoneRecipes.debug("Invalid machine recipe for %s.  Recipe %s -> %s was translated into %s -> %s.", type, input, machineOutput.getString(input), stackIn, stackOut);
 			}
