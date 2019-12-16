@@ -79,6 +79,7 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private boolean processBlock(PlayerInteractEvent e) {
+		if (e.useInteractedBlock() == Result.DENY) return false;
 		if (e.getClickedBlock().getType() == Material.NOTE_BLOCK) {
 			NoteBlockClickedEvent ev = new NoteBlockClickedEvent(e.getClickedBlock(), e.getPlayer());
 			StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
@@ -89,6 +90,7 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private void processItem(PlayerInteractEvent e) {
+		if (e.useItemInHand() == Result.DENY) return;
 		if (e.getItem() == null || !e.getItem().hasItemMeta() || e.getItem().getType() != Material.DIAMOND_HOE) return;
 		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
 		String id = ItemData.getItemId(e.getItem());
@@ -127,6 +129,7 @@ public class CustomBlockHandler implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerDestroyMachine(BlockBreakEvent e) {
+		if (e.isCancelled()) return;
 		if (e.getBlock().getType() == Material.NOTE_BLOCK) {
 			e.setDropItems(false);
 			e.getBlock().getDrops().clear();
