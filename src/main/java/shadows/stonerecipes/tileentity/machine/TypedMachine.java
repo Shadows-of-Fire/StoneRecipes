@@ -143,6 +143,7 @@ public class TypedMachine extends PoweredMachine {
 	public void onSlotClick(InventoryClickEvent e) {
 		if (e.getSlot() == Slots.INFO) {
 			Bukkit.getServer().dispatchCommand(e.getWhoClicked(), infoCmd);
+			updateAndCancel(e);
 		}
 	}
 

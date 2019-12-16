@@ -16,6 +16,7 @@ import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Result;
@@ -35,7 +36,9 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
@@ -301,6 +304,19 @@ public class CustomBlockHandler implements Listener {
 			if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
 				machine.handleShiftClick(e);
 			} else if (e.getClickedInventory() == e.getInventory()) machine.onSlotClick(e);
+		}
+	}
+
+	public void anvilRepairBlock(PrepareAnvilEvent e) {
+		AnvilInventory inv = e.getInventory();
+		ItemStack input = inv.getItem(0);
+		if (input != null) {
+			net.minecraft.server.v1_14_R1.ItemStack nms = CraftItemStack.asNMSCopy(input);
+			if (nms.hasTag() && nms.getTag().hasKey("CustomModelData")) {
+				if (inv.getItem(1) == null && inv.getRenameText().equals("")) {
+					e.setResult(input.clone());
+				} else e.setResult(new ItemStack(Material.AIR));
+			}
 		}
 	}
 
