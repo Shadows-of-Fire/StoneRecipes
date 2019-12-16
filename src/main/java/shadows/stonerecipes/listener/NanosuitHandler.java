@@ -30,6 +30,7 @@ public class NanosuitHandler implements Listener {
 	public int jumpCost = 1;
 	public double fallDmgCost = 0.5;
 	public double damageCost = 0.5;
+	public double fullSetProt = 0.001;
 
 	public NanosuitHandler() {
 		FileConfiguration file = StoneRecipes.INSTANCE.getConfig();
@@ -39,6 +40,7 @@ public class NanosuitHandler implements Listener {
 		fallDmgCost = file.getDouble("nanosuit.fall_damage_cost", 0.5);
 		damageCost = file.getDouble("nanosuit.damage_cost", 0.5);
 		jumpCost = file.getInt("nanosuit.jump_boost_cost", 1);
+		fullSetProt = file.getDouble("nanosuit.full_set_prot", 0.001);
 	}
 
 	@EventHandler
@@ -69,7 +71,7 @@ public class NanosuitHandler implements Listener {
 			Charger.usePower(player.getInventory().getChestplate(), 1);
 			Charger.usePower(player.getInventory().getLeggings(), 1);
 			Charger.usePower(player.getInventory().getBoots(), 1);
-			e.setDamage(0.001F);
+			e.setDamage(e.getDamage() * fullSetProt);
 		}
 	}
 
