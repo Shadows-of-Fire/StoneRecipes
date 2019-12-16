@@ -315,9 +315,7 @@ public class CustomBlockHandler implements Listener {
 		if (input != null) {
 			net.minecraft.server.v1_14_R1.ItemStack nms = CraftItemStack.asNMSCopy(input);
 			if (nms.hasTag() && nms.getTag().hasKey("CustomModelData")) {
-				if (inv.getItem(1) == null && inv.getRenameText().equals("")) {
-					e.setResult(input.clone());
-				} else if (inv.getItem(1) != null && inv.getItem(1).getAmount() > 0) e.setResult(null);
+				e.setResult(null);
 				e.getViewers().forEach(p -> ((Player) p).updateInventory());
 			}
 		}
