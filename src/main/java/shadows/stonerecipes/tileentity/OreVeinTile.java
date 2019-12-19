@@ -56,8 +56,12 @@ public class OreVeinTile extends NoteTileEntity {
 	}
 
 	@Override
+	protected void tickInternal() {
+		if (++this.ticks % timer == 0) finish();
+	}
+
+	@Override
 	protected void timerTick() {
-		if (++this.progress % timer == 0) finish();
 	}
 
 	protected boolean canGenOreIn(Block block) {

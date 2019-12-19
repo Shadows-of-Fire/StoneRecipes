@@ -11,8 +11,8 @@ defaultTasks 'clean', 'build'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
-group = 'shadows.hat'
-version = '1.0.0'
+group = 'shadows.stonerecipes'
+version = '1.0.2'
 
 ext.projectName = 'StoneRecipes'
 ext.inceptionYear = '2019'

@@ -45,6 +45,7 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.ImmutableSet;
 
 import joptsimple.internal.Strings;
+import me.ghg.listeners.IslandProtection;
 import net.minecraft.server.v1_14_R1.AxisAlignedBB;
 import net.minecraft.server.v1_14_R1.BlockPosition;
 import net.minecraft.server.v1_14_R1.Blocks;
@@ -67,10 +68,11 @@ public class CustomBlockHandler implements Listener {
 
 	static final Set<Material> HOEABLE = ImmutableSet.of(Material.GRASS_BLOCK, Material.GRASS_PATH, Material.DIRT, Material.COARSE_DIRT);
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent e) {
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() != EquipmentSlot.HAND || e.getClickedBlock() == null) return;
 		if (HOEABLE.contains(e.getClickedBlock().getType()) && e.getItem() != null && e.getItem().getType() == Material.DIAMOND_HOE) e.setUseItemInHand(Result.DENY);
+		if (!IslandProtection.canAccess(e.getPlayer(), e.getClickedBlock().getLocation())) return;
 		if (e.getPlayer().isSneaking() && e.getItem() != null) {
 			processItem(e);
 		} else {
@@ -79,7 +81,6 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private boolean processBlock(PlayerInteractEvent e) {
-		if (e.useInteractedBlock() == Result.DENY) return false;
 		if (e.getClickedBlock().getType() == Material.NOTE_BLOCK) {
 			NoteBlockClickedEvent ev = new NoteBlockClickedEvent(e.getClickedBlock(), e.getPlayer());
 			StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
@@ -90,7 +91,6 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private void processItem(PlayerInteractEvent e) {
-		if (e.useItemInHand() == Result.DENY) return;
 		if (e.getItem() == null || !e.getItem().hasItemMeta() || e.getItem().getType() != Material.DIAMOND_HOE) return;
 		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
 		String id = ItemData.getItemId(e.getItem());
@@ -147,6 +147,7 @@ public class CustomBlockHandler implements Listener {
 		if (e.getBlock().getRelative(BlockFace.UP).getType() == Material.NOTE_BLOCK) {
 			refreshChunk(e.getBlock().getLocation());
 		}
+		if (e.getBlock().getType() == Material.BLUE_ICE && e.getPlayer().getGameMode() != GameMode.CREATIVE) e.setCancelled(true);
 	}
 
 	@EventHandler
@@ -170,6 +171,7 @@ public class CustomBlockHandler implements Listener {
 				b.setType(Material.AIR);
 			}
 		}
+		e.blockList().removeIf(b -> b.getType() == Material.BLUE_ICE);
 	}
 
 	@EventHandler
@@ -186,6 +188,7 @@ public class CustomBlockHandler implements Listener {
 				b.setType(Material.AIR);
 			}
 		}
+		e.blockList().removeIf(b -> b.getType() == Material.BLUE_ICE);
 	}
 
 	static net.minecraft.server.v1_14_R1.ItemStack invisHoe = new net.minecraft.server.v1_14_R1.ItemStack(Items.DIAMOND_HOE);

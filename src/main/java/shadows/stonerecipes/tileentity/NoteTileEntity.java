@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.StringUtils;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryCustom;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -57,8 +57,12 @@ public abstract class NoteTileEntity implements ITickable {
 		this.itemName = itemName;
 		this.pos = pos;
 		this.location = pos.toLocation();
-		this.inventory = new NoteBlockInventory(null, 54, StringUtils.capitalize(this.name));
+		this.inventory = new NoteBlockInventory(null, 54, localize(this.name));
 		this.file = file;
+	}
+
+	private String localize(String name) {
+		return WordUtils.capitalize(name.replace("_", " "));
 	}
 
 	public NoteBlockInventory getInv() {

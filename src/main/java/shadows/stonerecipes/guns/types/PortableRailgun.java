@@ -15,6 +15,8 @@ import shadows.stonerecipes.util.MachineUtils;
 
 public class PortableRailgun extends BasicGun {
 
+	static Color color = Color.fromRGB(0x00E6FF);
+
 	public PortableRailgun(StoneRecipes plugin) {
 		super(plugin, "portable_railgun");
 		this.range = 35;
@@ -51,7 +53,7 @@ public class PortableRailgun extends BasicGun {
 
 			dir = dir.normalize();
 			for (float j = 1; j < range; j += 0.5) {
-				player.getWorld().spawnParticle(Particle.REDSTONE, player.getEyeLocation().clone().add(dir.clone().multiply(j)), 0, new Particle.DustOptions(Color.RED, 1));
+				player.getWorld().spawnParticle(Particle.REDSTONE, player.getEyeLocation().clone().add(dir.clone().multiply(j)), 0, new Particle.DustOptions(color, 1));
 				RayTraceResult res = player.getWorld().rayTrace(player.getEyeLocation().clone().add(dir.clone().multiply(j)), dir, 0.5, FluidCollisionMode.NEVER, true, 1, null);
 				if (res != null) {
 					if (res.getHitBlock() != null) {
