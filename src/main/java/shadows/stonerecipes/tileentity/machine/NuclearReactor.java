@@ -51,6 +51,7 @@ public class NuclearReactor extends PowerGenerator {
 		lock.setDurability((short) 371);
 		this.updateChambers();
 		this.onPowerChanged();
+		this.receivesPower = false;
 	}
 
 	public void updateChambers() {

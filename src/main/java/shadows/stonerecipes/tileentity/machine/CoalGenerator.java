@@ -27,6 +27,7 @@ public class CoalGenerator extends PowerGenerator {
 
 	public CoalGenerator(WorldPos pos) {
 		super("generator", "Power Generator", pos);
+		this.receivesPower = false;
 	}
 
 	@SuppressWarnings("deprecation")
