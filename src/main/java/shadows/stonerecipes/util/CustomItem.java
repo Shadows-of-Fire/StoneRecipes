@@ -12,10 +12,10 @@ public class CustomItem {
 
 	private final String name;
 	private final ItemStack stack;
-	private final InstrumentalNote block;
+	private final CustomBlock block;
 	private final NamespacedKey sound;
 
-	public CustomItem(String name, ItemStack stack, InstrumentalNote block, NamespacedKey sound) {
+	public CustomItem(String name, ItemStack stack, CustomBlock block, NamespacedKey sound) {
 		this.name = name;
 		this.stack = stack;
 		this.block = block;
@@ -40,7 +40,7 @@ public class CustomItem {
 	 * @return The block form of this item, or null, if it cannot be placed.
 	 */
 	@Nullable
-	public InstrumentalNote getBlock() {
+	public CustomBlock getBlock() {
 		return block;
 	}
 

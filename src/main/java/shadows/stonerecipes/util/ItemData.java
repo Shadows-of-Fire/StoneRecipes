@@ -12,7 +12,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -41,7 +43,7 @@ public class ItemData {
 	public static final NamespacedKey POWER = new NamespacedKey(StoneRecipes.INSTANCE, "power");
 
 	protected final Map<String, CustomItem> items = new HashMap<>();
-	protected final Map<InstrumentalNote, CustomItem> blockToItem = new HashMap<>();
+	protected final Map<CustomBlock, CustomItem> blockToItem = new HashMap<>();
 	protected final PluginFile itemFile;
 
 	public ItemData(StoneRecipes plugin) {
@@ -97,11 +99,17 @@ public class ItemData {
 					meta.addItemFlags(ItemFlag.valueOf(flag));
 				}
 			}
-			InstrumentalNote block = null;
+			CustomBlock block = null;
 			if (itemFile.contains(key + ".block")) {
 				Instrument instr = Instrument.valueOf(itemFile.getString(key + ".block.instrument"));
 				int note = itemFile.getInt(key + ".block.note");
-				block = new InstrumentalNote(instr, note);
+				block = new CustomBlock(Material.NOTE_BLOCK, new InstrumentalNote(instr, note).asBlockData());
+			}
+			if (itemFile.contains(key + ".ore")) {
+				Material mat = Material.valueOf(itemFile.getString(key + ".ore.type"));
+				Directional data = (Directional) mat.createBlockData();
+				data.setFacing(BlockFace.valueOf(itemFile.getString(key + ".ore.face")));
+				block = new CustomBlock(mat, data);
 			}
 			NamespacedKey sound = new NamespacedKey("minecraft", "block.stone.place");
 			if (itemFile.contains(key + ".sound")) {
@@ -194,20 +202,20 @@ public class ItemData {
 	}
 
 	@Nullable
-	public InstrumentalNote getBlock(String itemId) {
+	public CustomBlock getBlock(String itemId) {
 		return items.containsKey(itemId) ? items.get(itemId).getBlock() : null;
 	}
 
-	public ItemStack getItem(NoteBlock block) {
-		InstrumentalNote note = new InstrumentalNote(block.getInstrument(), block.getNote());
+	public ItemStack getItem(Block block) {
+		CustomBlock note = new CustomBlock(block.getType(), block.getBlockData());
 		if (!blockToItem.containsKey(note)) {
-			StoneRecipes.debug("Attempted to access item form for a note block without an item form, Instr: %s, Note: %s", block.getInstrument(), block.getNote());
+			StoneRecipes.debug("Attempted to access item form for a block without an item form, " + block.getType());
 			return new ItemStack(Material.AIR);
 		}
 		return blockToItem.get(note).getStack().clone();
 	}
 
-	public NamespacedKey getSound(InstrumentalNote block) {
+	public NamespacedKey getSound(CustomBlock block) {
 		return blockToItem.get(block).getSound();
 	}
 

@@ -1,17 +1,16 @@
 package shadows.stonerecipes.tileentity;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
 public class OreVeinTile extends NoteTileEntity {
 
-	protected BlockData ore;
+	protected CustomBlock ore;
 
 	public OreVeinTile(String name, WorldPos pos) {
 		super(name, name, "ore_veins.yml", pos);
@@ -39,9 +38,9 @@ public class OreVeinTile extends NoteTileEntity {
 	public void loadConfigData(PluginFile file) {
 		String ore = file.getString(name + ".ore");
 		if (StoneRecipes.INSTANCE.getItems().getBlock(ore) != null) {
-			this.ore = StoneRecipes.INSTANCE.getItems().getBlock(ore).asBlockData();
+			this.ore = StoneRecipes.INSTANCE.getItems().getBlock(ore);
 		} else {
-			this.ore = Bukkit.createBlockData(Material.valueOf(ore));
+			this.ore = new CustomBlock(Material.valueOf(ore), null);
 		}
 		this.timer = file.getInt(name + ".interval");
 	}
@@ -69,8 +68,7 @@ public class OreVeinTile extends NoteTileEntity {
 	}
 
 	protected void genOre(Block block) {
-		block.setType(this.ore.getMaterial());
-		block.setBlockData(this.ore.clone());
+		this.ore.place(block);
 	}
 
 }

@@ -4,14 +4,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Instrument;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Note;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -90,27 +86,16 @@ public class MachineUtils {
 	/**
 	 * Creates a note block at the given location with the provided Instrument and Note.
 	 */
-	public static void placeNoteBlock(Block block, Instrument instr, Note note) {
-		block.setType(Material.NOTE_BLOCK, false);
-		NoteBlock noteData = (NoteBlock) block.getBlockData();
-		noteData.setInstrument(instr);
-		noteData.setNote(note);
-		block.setBlockData(noteData);
-		playSound(block, instr, note);
-	}
-
-	/**
-	 * Creates a note block at the given location with the provided Instrument and Note.
-	 */
-	public static void placeNoteBlock(Block block, InstrumentalNote id) {
-		placeNoteBlock(block, id.getInstrument(), id.getNote());
+	public static void placeNoteBlock(Block block, CustomBlock cBlock) {
+		cBlock.place(block);
+		playSound(block, cBlock);
 	}
 
 	/**
 	 * Plays the sound associated with this custom note block.
 	 */
-	public static void playSound(Block block, Instrument instr, Note note) {
-		NamespacedKey sound = StoneRecipes.INSTANCE.getItems().getSound(new InstrumentalNote(instr, note));
+	public static void playSound(Block block, CustomBlock cBlock) {
+		NamespacedKey sound = StoneRecipes.INSTANCE.getItems().getSound(cBlock);
 		block.getWorld().playSound(block.getLocation(), sound.toString(), 1, 1);
 	}
 

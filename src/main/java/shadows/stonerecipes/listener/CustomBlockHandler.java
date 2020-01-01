@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
@@ -59,7 +58,7 @@ import net.minecraft.server.v1_14_R1.WorldServer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.BukkitLambda;
-import shadows.stonerecipes.util.InstrumentalNote;
+import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.ReflectionHelper;
@@ -112,10 +111,10 @@ public class CustomBlockHandler implements Listener {
 		if (!((CraftWorld) block.getWorld()).getHandle().getEntities(null, new AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1, loc.getZ() + 1)).isEmpty()) return;
 
 		if (Strings.isNullOrEmpty(id)) return;
-		InstrumentalNote note = StoneRecipes.INSTANCE.getItems().getBlock(id);
-		if (note != null) {
-			MachineUtils.placeNoteBlock(block, note);
-			StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(id, block, e.getItem()));
+		CustomBlock cBlock = StoneRecipes.INSTANCE.getItems().getBlock(id);
+		if (cBlock != null) {
+			MachineUtils.placeNoteBlock(block, cBlock);
+			if (block.getType() == Material.NOTE_BLOCK) StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(id, block, e.getItem()));
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getItem().setAmount(e.getItem().getAmount() - 1);
 		}
 
@@ -130,18 +129,22 @@ public class CustomBlockHandler implements Listener {
 	@EventHandler
 	public void onPlayerDestroyMachine(BlockBreakEvent e) {
 		if (e.isCancelled()) return;
-		if (e.getBlock().getType() == Material.NOTE_BLOCK) {
+		CustomBlock cBlock = new CustomBlock(e.getBlock().getType(), e.getBlock().getBlockData());
+		ItemStack stack = StoneRecipes.INSTANCE.getItems().getItem(e.getBlock());
+		if (stack.getType() != Material.AIR) {
 			e.setDropItems(false);
 			e.getBlock().getDrops().clear();
 			BlockState state = e.getBlock().getState();
 			e.getBlock().setType(Material.AIR);
-			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getBlock().getWorld().dropItem(state.getLocation().clone().add(0.5, 0.5, 0.5), StoneRecipes.INSTANCE.getItems().getItem((NoteBlock) state.getBlockData()));
-			NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(state, e.getPlayer());
-			StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
-			MachineUtils.playSound(e.getBlock(), ((NoteBlock) state.getBlockData()).getInstrument(), ((NoteBlock) state.getBlockData()).getNote());
-			ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
-			if (tool != null && tool.getType().getKey().getKey().contains("pickaxe")) {
-				tool.setDurability((short) (tool.getDurability() + 1));
+			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getBlock().getWorld().dropItem(state.getLocation().clone().add(0.5, 0.5, 0.5), stack);
+			MachineUtils.playSound(e.getBlock(), cBlock);
+			if (state.getType() == Material.NOTE_BLOCK) {
+				NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(state, e.getPlayer());
+				StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
+				ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
+				if (tool != null && tool.getType().getKey().getKey().contains("pickaxe")) {
+					tool.setDurability((short) (tool.getDurability() + 1));
+				}
 			}
 		}
 		if (e.getBlock().getRelative(BlockFace.UP).getType() == Material.NOTE_BLOCK) {
@@ -164,7 +167,7 @@ public class CustomBlockHandler implements Listener {
 			StoneRecipes.debug("(%s,%s,%s)", b.getLocation().getBlockX(), b.getLocation().getBlockY(), b.getLocation().getBlockZ());
 			if (b.getType() == Material.NOTE_BLOCK) {
 				if (ThreadLocalRandom.current().nextFloat() <= e.getYield()) {
-					b.getWorld().dropItem(b.getLocation(), StoneRecipes.INSTANCE.getItems().getItem((NoteBlock) b.getBlockData()));
+					b.getWorld().dropItem(b.getLocation(), StoneRecipes.INSTANCE.getItems().getItem(b));
 				}
 				NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(b.getState(), null);
 				StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
@@ -181,7 +184,7 @@ public class CustomBlockHandler implements Listener {
 			StoneRecipes.debug("(%s,%s,%s)", b.getLocation().getBlockX(), b.getLocation().getBlockY(), b.getLocation().getBlockZ());
 			if (b.getType() == Material.NOTE_BLOCK) {
 				if (ThreadLocalRandom.current().nextFloat() <= e.getYield()) {
-					b.getWorld().dropItem(b.getLocation(), StoneRecipes.INSTANCE.getItems().getItem((NoteBlock) b.getBlockData()));
+					b.getWorld().dropItem(b.getLocation(), StoneRecipes.INSTANCE.getItems().getItem(b));
 				}
 				NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(b.getState(), null);
 				StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);

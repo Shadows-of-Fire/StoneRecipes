@@ -22,7 +22,7 @@ import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
-import shadows.stonerecipes.util.InstrumentalNote;
+import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.Laser;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
@@ -43,9 +43,9 @@ public class ReactorHandler implements Listener {
 	public ReactorHandler(StoneRecipes plugin) {
 		this.plugin = plugin;
 		reactorData = new PluginFile(this.plugin, "data/reactors.yml");
-		InstrumentalNote note = plugin.getItems().getBlock("reactor_chamber");
+		CustomBlock note = plugin.getItems().getBlock("reactor_chamber");
 		this.chamber = n -> note.match(n);
-		InstrumentalNote note2 = plugin.getItems().getBlock("industrial_battery");
+		CustomBlock note2 = plugin.getItems().getBlock("industrial_battery");
 		this.battery = n -> note2.match(n);
 	}
 
