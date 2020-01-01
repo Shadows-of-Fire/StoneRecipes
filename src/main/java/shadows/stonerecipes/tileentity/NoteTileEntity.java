@@ -196,6 +196,7 @@ public abstract class NoteTileEntity implements ITickable {
 
 		public NoteBlockInventory(InventoryHolder owner, int size, String title) {
 			super(owner, size, title);
+			this.getInventory().setMaxStackSize(NoteTileEntity.this.getMaxStackSize());
 		}
 
 		@Override
@@ -218,6 +219,15 @@ public abstract class NoteTileEntity implements ITickable {
 			return NoteTileEntity.this;
 		}
 
+		@Override
+		public int getMaxStackSize() {
+			return NoteTileEntity.this.getMaxStackSize();
+		}
+
+	}
+
+	protected int getMaxStackSize() {
+		return 64;
 	}
 
 	/**

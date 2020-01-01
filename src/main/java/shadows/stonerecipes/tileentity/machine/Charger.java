@@ -149,4 +149,9 @@ public class Charger extends PoweredMachine implements Listener {
 		setPower(stack, getPower(stack) - power);
 	}
 
+	@Override
+	protected int getMaxStackSize() {
+		return 1;
+	}
+
 }
