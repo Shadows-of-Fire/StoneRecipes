@@ -31,7 +31,7 @@ import shadows.stonerecipes.util.WorldPos;
 public class ReactorHandler implements Listener {
 
 	public static final BlockFace[] CHAMBER_FACES = { BlockFace.NORTH, BlockFace.WEST, BlockFace.EAST, BlockFace.SOUTH, BlockFace.DOWN, BlockFace.UP };
-	public static final BlockFace[] BATTERY_FACES = { BlockFace.NORTH_EAST, BlockFace.NORTH_WEST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST };
+	public static final BlockFace[] BATTERY_FACES = { BlockFace.NORTH, BlockFace.WEST, BlockFace.EAST, BlockFace.SOUTH, BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH_EAST, BlockFace.NORTH_WEST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST };
 
 	protected final StoneRecipes plugin;
 	protected final PluginFile reactorData;

@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.util.ItemData;
@@ -87,7 +88,6 @@ public class TypedMachine extends PoweredMachine {
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void timerTick() {
-		//TODO: Implement upgrades
 		ItemStack input = inventory.getItem(Slots.INPUT);
 		ItemStack output = StoneRecipes.INSTANCE.getMachines().getOutput(type, input);
 		if (input == null || output == null || (inventory.getItem(Slots.OUTPUT) != null && !ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output))) {
@@ -96,6 +96,19 @@ public class TypedMachine extends PoweredMachine {
 			return;
 		}
 		super.timerTick();
+	}
+
+	@Override
+	protected void tickInternal() {
+		super.tickInternal();
+		for (int i : Slots.UPGRADES) {
+			ItemStack s = this.inventory.getItem(i);
+			if (s != null && s.hasItemMeta()) {
+				if (ticks % s.getItemMeta().getPersistentDataContainer().getOrDefault(ItemData.SPEED, PersistentDataType.SHORT, Short.MAX_VALUE) == 0) {
+					if (++ticks % timer == 0) timerTick();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -130,6 +143,10 @@ public class TypedMachine extends PoweredMachine {
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				if (StoneRecipes.INSTANCE.getMachines().getOutput(type, clicked) != null) attemptMerge(inventory, clicked, Slots.INPUT, Slots.INPUT + 1);
+				if (clicked.hasItemMeta() && clicked.getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT)) {
+					attemptMerge(inventory, clicked, Slots.UPGRADE_0, Slots.UPGRADE_1 + 1);
+					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.UPGRADE_2, Slots.UPGRADE_3 + 1);
+				}
 				if (!isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
@@ -144,6 +161,11 @@ public class TypedMachine extends PoweredMachine {
 		if (e.getSlot() == Slots.INFO) {
 			Bukkit.getServer().dispatchCommand(e.getWhoClicked(), infoCmd);
 			updateAndCancel(e);
+		}
+		if (e.getSlot() == Slots.UPGRADE_0 || e.getSlot() == Slots.UPGRADE_1 || e.getSlot() == Slots.UPGRADE_2 || e.getSlot() == Slots.UPGRADE_3) {
+			if (e.getCursor() != null && e.getCursor().getType() != Material.AIR && (!e.getCursor().hasItemMeta() || !e.getCursor().getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT))) {
+				updateAndCancel(e);
+			}
 		}
 	}
 

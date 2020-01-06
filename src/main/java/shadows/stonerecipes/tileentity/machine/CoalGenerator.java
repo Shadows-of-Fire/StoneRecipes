@@ -27,7 +27,6 @@ public class CoalGenerator extends PowerGenerator {
 
 	public CoalGenerator(WorldPos pos) {
 		super("generator", "Power Generator", pos);
-		this.receivesPower = false;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -146,6 +145,13 @@ public class CoalGenerator extends PowerGenerator {
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}
 			}
+			updateAndCancel(e);
+		}
+	}
+
+	@Override
+	public void onSlotClick(InventoryClickEvent e) {
+		if (e.getSlot() == Slots.COAL_GEN_INPUT && e.getCursor() != null && e.getCursor().getType() != Material.AIR && e.getCursor().getType() != Material.COAL) {
 			updateAndCancel(e);
 		}
 	}

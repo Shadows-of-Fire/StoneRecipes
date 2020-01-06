@@ -331,7 +331,6 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private static void refreshChunk(Location loc) {
-		//loc.getWorld().refreshChunk(loc.getChunk().getX(), loc.getChunk().getZ());
 		WorldServer world = ((CraftWorld) loc.getWorld()).getHandle();
 		BlockPosition pos = new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 		for (int i = 0; i < 5; i++)

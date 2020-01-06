@@ -1,6 +1,6 @@
 name: StoneRecipes
 main: shadows.stonerecipes.StoneRecipes
-version: 1.0.4
+version: 1.0.5
 author: Shadows_of_Fire
 api-version: 1.14
 commands:

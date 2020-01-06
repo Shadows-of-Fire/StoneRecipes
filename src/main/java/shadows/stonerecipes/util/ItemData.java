@@ -41,6 +41,7 @@ public class ItemData {
 	public static final NamespacedKey ITEM_ID = new NamespacedKey(StoneRecipes.INSTANCE, "item_id");
 	public static final NamespacedKey MAX_POWER = new NamespacedKey(StoneRecipes.INSTANCE, "max_power");
 	public static final NamespacedKey POWER = new NamespacedKey(StoneRecipes.INSTANCE, "power");
+	public static final NamespacedKey SPEED = new NamespacedKey(StoneRecipes.INSTANCE, "speed");
 
 	protected final Map<String, CustomItem> items = new HashMap<>();
 	protected final Map<CustomBlock, CustomItem> blockToItem = new HashMap<>();
@@ -98,6 +99,9 @@ public class ItemData {
 				for (String flag : itemFile.getStringList(key + ".flags")) {
 					meta.addItemFlags(ItemFlag.valueOf(flag));
 				}
+			}
+			if (itemFile.contains(key + ".speed")) {
+				meta.getPersistentDataContainer().set(SPEED, PersistentDataType.SHORT, (short) Math.max(1, itemFile.getInt(key + ".speed")));
 			}
 			CustomBlock block = null;
 			if (itemFile.contains(key + ".block")) {

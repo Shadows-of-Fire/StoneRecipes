@@ -13,7 +13,8 @@ public final class Slots {
 	public static final int UPGRADE_0 = 43;
 	public static final int UPGRADE_1 = UPGRADE_0 + 1;
 	public static final int UPGRADE_2 = UPGRADE_0 + 9;
-	public static final int UPGRADE_3 = UPGRADE_1 + 9;
+	public static final int UPGRADE_3 = UPGRADE_2 + 1;
+	public static final int[] UPGRADES = { UPGRADE_0, UPGRADE_1, UPGRADE_2, UPGRADE_3 };
 	public static final int OUTPUT = 24;
 	public static final int INFO = OUTPUT + 9 + 2;
 
