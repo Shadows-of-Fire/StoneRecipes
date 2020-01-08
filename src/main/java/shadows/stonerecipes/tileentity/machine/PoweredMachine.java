@@ -92,7 +92,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 	 * Consumes power from this machine.  Returns amount consumed.
 	 */
 	protected int usePower(int power) {
-		power = Math.min(this.power, power);
+		power = Math.min(this.power, power < 0 ? 0 : power);
 		this.power -= power;
 		onPowerChanged();
 		return power;
@@ -109,7 +109,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 				power += gen.usePower(amount);
 				amount -= power;
 				if (power > 0) new Laser(gen.getPos(), machine.getPos()).connect();
-				if (amount == 0) break;
+				if (amount <= 0) break;
 			}
 		}
 		if (amount != 0) for (PowerGenerator gen : StoneRecipes.INSTANCE.getReactors().getReactors()) {
@@ -117,7 +117,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 				power += gen.usePower(amount);
 				amount -= power;
 				if (power > 0) new Laser(gen.getPos(), machine.getPos()).connect();
-				if (amount == 0) break;
+				if (amount <= 0) break;
 			}
 		}
 		return power;

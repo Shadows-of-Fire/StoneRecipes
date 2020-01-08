@@ -28,6 +28,7 @@ public class TypedMachine extends PoweredMachine {
 	protected final String type;
 	protected final ItemStack infoHoe = new ItemStack(Material.DIAMOND_HOE);
 	protected String infoCmd;
+	protected int upgradeTicks = 0;
 
 	public TypedMachine(String type, WorldPos pos) {
 		super(type, type, "machines.yml", pos);
@@ -42,7 +43,6 @@ public class TypedMachine extends PoweredMachine {
 		this.powerCost = file.getInt(itemName + ".powerCost");
 		this.maxPower = Math.max(maxPower, powerCost);
 		this.infoCmd = file.getString(itemName + ".infocmd", "");
-
 		infoHoe.setDurability((short) 77);
 		ItemMeta meta = infoHoe.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "Information");
@@ -101,14 +101,18 @@ public class TypedMachine extends PoweredMachine {
 	@Override
 	protected void tickInternal() {
 		super.tickInternal();
+		upgradeTicks++;
+		int bonus = 0;
 		for (int i : Slots.UPGRADES) {
 			ItemStack s = this.inventory.getItem(i);
 			if (s != null && s.hasItemMeta()) {
-				if (ticks % s.getItemMeta().getPersistentDataContainer().getOrDefault(ItemData.SPEED, PersistentDataType.SHORT, Short.MAX_VALUE) == 0) {
-					if (++ticks % timer == 0) timerTick();
+				if (upgradeTicks % s.getItemMeta().getPersistentDataContainer().getOrDefault(ItemData.SPEED, PersistentDataType.SHORT, Short.MAX_VALUE) == 0) {
+					bonus++;
 				}
 			}
 		}
+		for (int i = 0; i < bonus; i++)
+			super.tickInternal();
 	}
 
 	@Override
