@@ -130,7 +130,7 @@ public class CustomBlockHandler implements Listener {
 	public void onPlayerDestroyMachine(BlockBreakEvent e) {
 		if (e.isCancelled()) return;
 		CustomBlock cBlock = new CustomBlock(e.getBlock().getType(), e.getBlock().getBlockData());
-		ItemStack stack = StoneRecipes.INSTANCE.getItems().getItem(e.getBlock());
+		ItemStack stack = StoneRecipes.INSTANCE.getItems().getItem(cBlock);
 		if (stack.getType() != Material.AIR) {
 			e.setDropItems(false);
 			e.getBlock().getDrops().clear();
@@ -164,13 +164,16 @@ public class CustomBlockHandler implements Listener {
 	public void onPlayerDestroyMachine(BlockExplodeEvent e) {
 		StoneRecipes.debug("Detected block explode event, blocks following:");
 		for (Block b : e.blockList()) {
-			StoneRecipes.debug("(%s,%s,%s)", b.getLocation().getBlockX(), b.getLocation().getBlockY(), b.getLocation().getBlockZ());
-			if (b.getType() == Material.NOTE_BLOCK) {
+			CustomBlock cBlock = new CustomBlock(b.getType(), b.getBlockData());
+			ItemStack stack = StoneRecipes.INSTANCE.getItems().getItem(cBlock);
+			if (stack.getType() != Material.AIR) {
 				if (ThreadLocalRandom.current().nextFloat() <= e.getYield()) {
 					b.getWorld().dropItem(b.getLocation(), StoneRecipes.INSTANCE.getItems().getItem(b));
 				}
-				NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(b.getState(), null);
-				StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
+				if (cBlock.getBlock() == Material.NOTE_BLOCK) {
+					NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(b.getState(), null);
+					StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
+				}
 				b.setType(Material.AIR);
 			}
 		}
@@ -181,13 +184,16 @@ public class CustomBlockHandler implements Listener {
 	public void onPlayerDestroyMachine(EntityExplodeEvent e) {
 		StoneRecipes.debug("Detected entity explode event, blocks following:");
 		for (Block b : e.blockList()) {
-			StoneRecipes.debug("(%s,%s,%s)", b.getLocation().getBlockX(), b.getLocation().getBlockY(), b.getLocation().getBlockZ());
-			if (b.getType() == Material.NOTE_BLOCK) {
+			CustomBlock cBlock = new CustomBlock(b.getType(), b.getBlockData());
+			ItemStack stack = StoneRecipes.INSTANCE.getItems().getItem(cBlock);
+			if (stack.getType() != Material.AIR) {
 				if (ThreadLocalRandom.current().nextFloat() <= e.getYield()) {
 					b.getWorld().dropItem(b.getLocation(), StoneRecipes.INSTANCE.getItems().getItem(b));
 				}
-				NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(b.getState(), null);
-				StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
+				if (cBlock.getBlock() == Material.NOTE_BLOCK) {
+					NoteBlockRemovedEvent ev = new NoteBlockRemovedEvent(b.getState(), null);
+					StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
+				}
 				b.setType(Material.AIR);
 			}
 		}

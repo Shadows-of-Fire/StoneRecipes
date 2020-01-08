@@ -15,6 +15,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -211,12 +212,16 @@ public class ItemData {
 	}
 
 	public ItemStack getItem(Block block) {
-		CustomBlock note = new CustomBlock(block.getType(), block.getBlockData());
-		if (!blockToItem.containsKey(note)) {
-			StoneRecipes.debug("Attempted to access item form for a block without an item form, " + block.getType());
+		return getItem(new CustomBlock(block.getType(), block.getBlockData()));
+	}
+
+	public ItemStack getItem(CustomBlock block) {
+		if (block.getBlock() == Material.NOTE_BLOCK) ((Powerable) block.getData()).setPowered(false);
+		if (!blockToItem.containsKey(block)) {
+			StoneRecipes.debug("Attempted to access item form for a block without an item form, " + block.getBlock());
 			return new ItemStack(Material.AIR);
 		}
-		return blockToItem.get(note).getStack().clone();
+		return blockToItem.get(block).getStack().clone();
 	}
 
 	public NamespacedKey getSound(CustomBlock block) {

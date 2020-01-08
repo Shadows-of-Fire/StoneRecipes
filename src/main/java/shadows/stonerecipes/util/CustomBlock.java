@@ -38,4 +38,12 @@ public class CustomBlock {
 		return block == Material.NOTE_BLOCK && note.equals(data);
 	}
 
+	public Material getBlock() {
+		return block;
+	}
+
+	public BlockData getData() {
+		return data;
+	}
+
 }
