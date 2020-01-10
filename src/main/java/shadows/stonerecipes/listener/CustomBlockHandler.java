@@ -44,7 +44,6 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.ImmutableSet;
 
 import joptsimple.internal.Strings;
-import me.ghg.listeners.IslandProtection;
 import net.minecraft.server.v1_14_R1.AxisAlignedBB;
 import net.minecraft.server.v1_14_R1.BlockPosition;
 import net.minecraft.server.v1_14_R1.Blocks;
@@ -55,6 +54,7 @@ import net.minecraft.server.v1_14_R1.Items;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
 import net.minecraft.server.v1_14_R1.PacketPlayOutSetSlot;
 import net.minecraft.server.v1_14_R1.WorldServer;
+import shadows.stoneblock.listeners.IslandProtection;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.BukkitLambda;
