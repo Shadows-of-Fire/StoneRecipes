@@ -62,6 +62,7 @@ import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.CustomBlock;
+import shadows.stonerecipes.util.FlameParticleTask;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.ReflectionHelper;
@@ -113,6 +114,7 @@ public class CustomBlockHandler implements Listener {
 				if (e.getPlayer().getPotionEffect(PotionEffectType.LEVITATION) == null) {
 					Charger.usePower(helm, StoneRecipes.jetCost);
 					e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, StoneRecipes.jetTime, StoneRecipes.jetLevel - 1));
+					new FlameParticleTask(e.getPlayer()).start();
 					return;
 				}
 			}
