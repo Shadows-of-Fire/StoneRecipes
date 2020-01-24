@@ -40,6 +40,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -57,6 +59,7 @@ import net.minecraft.server.v1_14_R1.WorldServer;
 import shadows.stoneblock.listeners.IslandProtection;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
+import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.ItemData;
@@ -90,7 +93,7 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private void processItem(PlayerInteractEvent e) {
-		if (e.getItem() == null || !e.getItem().hasItemMeta() || e.getItem().getType() != Material.DIAMOND_HOE) return;
+		if (e.getItem() == null || !e.getItem().hasItemMeta()) return;
 		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
 		String id = ItemData.getItemId(e.getItem());
 
@@ -104,7 +107,18 @@ public class CustomBlockHandler implements Listener {
 			}
 		}
 
-		if (!block.getType().equals(Material.AIR)) return;
+		if ("jetpack_controller".equals(id)) {
+			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
+			if ("jetpack".equals(ItemData.getItemId(helm)) && Charger.getPower(helm) >= StoneRecipes.jetCost) {
+				if (e.getPlayer().getPotionEffect(PotionEffectType.LEVITATION) == null) {
+					Charger.usePower(helm, StoneRecipes.jetCost);
+					e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, StoneRecipes.jetTime, StoneRecipes.jetLevel - 1));
+					return;
+				}
+			}
+		}
+
+		if (e.getItem().getType() != Material.DIAMOND_HOE || !block.getType().equals(Material.AIR)) return;
 
 		Location loc = block.getLocation();
 
@@ -264,6 +278,22 @@ public class CustomBlockHandler implements Listener {
 			BukkitLambda.runLater(() -> {
 				truePlayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(-1, -1, truePlayer.inventory.getCarried()));
 			}, 0);
+		}
+
+		if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.IRON_HOE) {
+			if (e.getInventory().getType() == InventoryType.PLAYER && e.getSlot() == 5) {
+				ItemStack hoe = e.getCursor();
+				if (ItemData.getItemId(hoe).equals("jetpack")) {
+					ItemStack helm = e.getCurrentItem().clone();
+					e.setCurrentItem(hoe);
+					e.setCursor(helm);
+					EntityPlayer truePlayer = ((CraftPlayer) e.getWhoClicked()).getHandle();
+					BukkitLambda.runLater(() -> {
+						truePlayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(-1, -1, truePlayer.inventory.getCarried()));
+					}, 0);
+					e.setCancelled(true);
+				}
+			}
 		}
 	}
 

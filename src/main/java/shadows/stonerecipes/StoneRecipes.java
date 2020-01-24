@@ -51,7 +51,7 @@ public class StoneRecipes extends JavaPlugin {
 	 * The relevant class, BlockNote.class, is within the plugin jar.  It must go inside the spigot jar's net/minecraft/server/v1_14_R1 folder
 	 */
 	static {
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, Material.ORE, "material");
+		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, Material.BANNER, "material");
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, SoundEffectType.d, "stepSound");
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 3F, "strength");
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 3F, "durability");
@@ -59,6 +59,7 @@ public class StoneRecipes extends JavaPlugin {
 		Set<Block> blocks = new HashSet<>(ReflectionHelper.getPrivateValue(ItemPickaxe.class, null, "a"));
 		blocks.add(Blocks.NOTE_BLOCK);
 		ReflectionHelper.setPrivateValue(ItemPickaxe.class, null, blocks, "a");
+		ReflectionHelper.setPrivateValue(Block.class, Blocks.BLUE_ICE, Material.BANNER, "material");
 	}
 
 	private ItemData itemData;
@@ -72,6 +73,8 @@ public class StoneRecipes extends JavaPlugin {
 	private DataHandler dataHandler;
 	private OreVeinHandler oreHandler;
 	private BukkitTask tickTask;
+
+	public static int jetLevel, jetTime, jetCost;
 
 	@Override
 	public void onEnable() {
@@ -110,6 +113,9 @@ public class StoneRecipes extends JavaPlugin {
 			}
 		}
 		tickTask = BukkitLambda.runTimer(TickHandler::tick, 1);
+		jetLevel = getConfig().getInt("jetpack.level");
+		jetCost = getConfig().getInt("jetpack.cost");
+		jetTime = getConfig().getInt("jetpack.time");
 	}
 
 	@Override
