@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitTask;
 import net.minecraft.server.v1_14_R1.Block;
 import net.minecraft.server.v1_14_R1.Blocks;
 import net.minecraft.server.v1_14_R1.Item;
-import net.minecraft.server.v1_14_R1.ItemPickaxe;
+import net.minecraft.server.v1_14_R1.ItemTool;
 import net.minecraft.server.v1_14_R1.Items;
 import net.minecraft.server.v1_14_R1.Material;
 import net.minecraft.server.v1_14_R1.SoundEffectType;
@@ -56,9 +56,11 @@ public class StoneRecipes extends JavaPlugin {
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 3F, "strength");
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 3F, "durability");
 		ReflectionHelper.setPrivateValue(Item.class, Items.DIAMOND_HOE, 64, "maxStackSize");
-		Set<Block> blocks = new HashSet<>(ReflectionHelper.getPrivateValue(ItemPickaxe.class, null, "a"));
-		blocks.add(Blocks.NOTE_BLOCK);
-		ReflectionHelper.setPrivateValue(ItemPickaxe.class, null, blocks, "a");
+		for (Item i : new Item[] { Items.DIAMOND_PICKAXE, Items.STONE_PICKAXE, Items.WOODEN_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE }) {
+			Set<Block> blocks = new HashSet<>(ReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) i, "a"));
+			blocks.add(Blocks.NOTE_BLOCK);
+			ReflectionHelper.setPrivateValue(ItemTool.class, (ItemTool) i, blocks, "a");
+		}
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.BLUE_ICE, Material.BANNER, "material");
 	}
 
