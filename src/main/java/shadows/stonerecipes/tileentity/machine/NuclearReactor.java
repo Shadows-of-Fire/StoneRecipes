@@ -306,4 +306,13 @@ public class NuclearReactor extends PowerGenerator {
 		if (e.getClickedInventory() == powerInv) e.setCancelled(true);
 	}
 
+	@Override
+	public void handleShiftClick(InventoryClickEvent e) {
+		if (e.getClickedInventory() == powerInv) {
+			e.setCancelled(true);
+			return;
+		}
+		super.handleShiftClick(e);
+	}
+
 }

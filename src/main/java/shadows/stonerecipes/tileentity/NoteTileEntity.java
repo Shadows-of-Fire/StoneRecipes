@@ -2,6 +2,7 @@ package shadows.stonerecipes.tileentity;
 
 import java.util.Objects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
@@ -175,6 +176,9 @@ public abstract class NoteTileEntity implements ITickable {
 	public final void destroy() {
 		dropItems();
 		unload();
+		Bukkit.getServer().getOnlinePlayers().forEach(p -> {
+			if (p.getOpenInventory().getTopInventory() == this.inventory) p.closeInventory();
+		});
 	}
 
 	/**
