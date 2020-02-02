@@ -20,14 +20,14 @@ public class FlameParticleTask extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		if (this.player.isOnline() || this.player.getPotionEffect(PotionEffectType.LEVITATION) != null) {
-			Location center = this.player.getLocation().add(0.5, 0, 0.5);
-			this.player.getWorld().spawnParticle(Particle.FLAME, center.getX(), center.getY(), center.getZ(), 8, 0.05, 0, 0.05, 0, null);
+		if (this.player.isOnline() && this.player.getPotionEffect(PotionEffectType.LEVITATION) != null) {
+			Location center = this.player.getLocation();
+			this.player.getWorld().spawnParticle(Particle.FLAME, center.getX(), center.getY(), center.getZ(), 4, 0.07, 0, 0.07, 0, null);
 		} else this.task.cancel();
 	}
 
 	public void start() {
-		this.task = this.runTaskTimer(StoneRecipes.INSTANCE, 0, 5);
+		this.task = this.runTaskTimer(StoneRecipes.INSTANCE, 0, 3);
 	}
 
 }

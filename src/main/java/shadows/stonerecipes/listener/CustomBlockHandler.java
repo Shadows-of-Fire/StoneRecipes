@@ -73,6 +73,7 @@ public class CustomBlockHandler implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent e) {
+		if (handleJetpackClicks(e)) return;
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() != EquipmentSlot.HAND || e.getClickedBlock() == null) return;
 		if (HOEABLE.contains(e.getClickedBlock().getType()) && e.getItem() != null && e.getItem().getType() == Material.DIAMOND_HOE) e.setUseItemInHand(Result.DENY);
 		if (!IslandProtection.canAccess(e.getPlayer(), e.getClickedBlock().getLocation())) return;
@@ -104,18 +105,6 @@ public class CustomBlockHandler implements Listener {
 			for (int x = -2; x <= 2; x++) {
 				for (int z = -2; z <= 2; z++) {
 					e.getClickedBlock().getRelative(x, 0, z).setType(Material.AIR);
-				}
-			}
-		}
-
-		if ("jetpack_controller".equals(id)) {
-			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
-			if ("jetpack".equals(ItemData.getItemId(helm)) && Charger.getPower(helm) >= StoneRecipes.jetCost) {
-				if (e.getPlayer().getPotionEffect(PotionEffectType.LEVITATION) == null) {
-					Charger.usePower(helm, StoneRecipes.jetCost);
-					e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, StoneRecipes.jetTime, StoneRecipes.jetLevel - 1));
-					new FlameParticleTask(e.getPlayer()).start();
-					return;
 				}
 			}
 		}
@@ -281,22 +270,6 @@ public class CustomBlockHandler implements Listener {
 				truePlayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(-1, -1, truePlayer.inventory.getCarried()));
 			}, 0);
 		}
-
-		if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.IRON_HOE) {
-			if (e.getInventory().getType() == InventoryType.PLAYER && e.getSlot() == 5) {
-				ItemStack hoe = e.getCursor();
-				if (ItemData.getItemId(hoe).equals("jetpack")) {
-					ItemStack helm = e.getCurrentItem().clone();
-					e.setCurrentItem(hoe);
-					e.setCursor(helm);
-					EntityPlayer truePlayer = ((CraftPlayer) e.getWhoClicked()).getHandle();
-					BukkitLambda.runLater(() -> {
-						truePlayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(-1, -1, truePlayer.inventory.getCarried()));
-					}, 0);
-					e.setCancelled(true);
-				}
-			}
-		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -373,6 +346,33 @@ public class CustomBlockHandler implements Listener {
 		BlockPosition pos = new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 		for (int i = 0; i < 5; i++)
 			world.notify(pos.up(i), Blocks.AIR.getBlockData(), Blocks.ZOMBIE_HEAD.getBlockData(), 3);
+	}
+
+	public static boolean handleJetpackClicks(PlayerInteractEvent e) {
+		String id = ItemData.getItemId(e.getItem());
+		if ("jetpack_controller".equals(id)) {
+			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
+			if ("jetpack".equals(ItemData.getItemId(helm)) && Charger.getPower(helm) >= StoneRecipes.jetCost) {
+				if (e.getPlayer().getPotionEffect(PotionEffectType.LEVITATION) == null) {
+					Charger.usePower(helm, StoneRecipes.jetCost);
+					e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, StoneRecipes.jetTime, StoneRecipes.jetLevel - 1));
+					new FlameParticleTask(e.getPlayer()).start();
+					return true;
+				}
+			}
+		}
+
+		if ("jetpack".equals(id)) {
+			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
+			EquipmentSlot slot = e.getHand();
+			e.getPlayer().getEquipment().setHelmet(e.getItem());
+			if (slot == EquipmentSlot.HAND) {
+				e.getPlayer().getEquipment().setItemInMainHand(helm);
+			} else e.getPlayer().getEquipment().setItemInOffHand(helm);
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

@@ -23,6 +23,7 @@ public class NanosuitHandler implements Listener {
 	public static final String CHEST = "nano_chestplate";
 	public static final String LEGS = "nano_leggings";
 	public static final String BOOTS = "nano_boots";
+	public static final int DURATION = 20 * 30; //30 seconds in ticks
 
 	public int nightVisCost = 1;
 	public int speedCost = 1;
@@ -103,25 +104,25 @@ public class NanosuitHandler implements Listener {
 			ItemStack helm = p.getInventory().getHelmet();
 			PotionEffect nightVis = p.getPotionEffect(PotionEffectType.NIGHT_VISION);
 			if ((nightVis == null || nightVis.getDuration() <= 240) && Charger.getPower(helm) > nightVisCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 360, 0), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, DURATION, 0), true);
 				Charger.usePower(helm, nightVisCost);
 			}
 			ItemStack legs = p.getInventory().getLeggings();
 			PotionEffect speed = p.getPotionEffect(PotionEffectType.SPEED);
 			if ((speed == null || speed.getDuration() <= 40) && Charger.getPower(legs) > nightVisCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 160, 1), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, DURATION, 1), true);
 				Charger.usePower(legs, speedCost);
 			}
 			ItemStack chest = p.getInventory().getChestplate();
 			PotionEffect res = p.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
 			if ((res == null || res.getDuration() <= 40) && Charger.getPower(chest) > resCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 160, 1), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DURATION, 1), true);
 				Charger.usePower(chest, resCost);
 			}
 			ItemStack boots = p.getInventory().getBoots();
 			PotionEffect jump = p.getPotionEffect(PotionEffectType.JUMP);
 			if ((jump == null || jump.getDuration() <= 40) && Charger.getPower(boots) > jumpCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 160, 1), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, DURATION, 1), true);
 				Charger.usePower(boots, jumpCost);
 			}
 		}

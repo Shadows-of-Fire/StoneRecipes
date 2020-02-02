@@ -53,8 +53,8 @@ public class StoneRecipes extends JavaPlugin {
 	static {
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, Material.BANNER, "material");
 		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, SoundEffectType.d, "stepSound");
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 3F, "strength");
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 3F, "durability");
+		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 2F, "strength");
+		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 2F, "durability");
 		ReflectionHelper.setPrivateValue(Item.class, Items.DIAMOND_HOE, 64, "maxStackSize");
 		for (Item i : new Item[] { Items.DIAMOND_PICKAXE, Items.STONE_PICKAXE, Items.WOODEN_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE }) {
 			Set<Block> blocks = new HashSet<>(ReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) i, "a"));
