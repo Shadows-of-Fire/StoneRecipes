@@ -26,7 +26,7 @@ public class ParticleCannon extends BasicGun {
 
 	public ParticleCannon(StoneRecipes plugin) {
 		super(plugin, "particle_cannon");
-		this.range = 10;
+		this.range = 13;
 		this.spreadDefault = 0;
 		this.pellets = 1;
 		this.par = Particle.CRIT_MAGIC;
