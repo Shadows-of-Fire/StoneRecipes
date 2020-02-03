@@ -366,14 +366,12 @@ public class CustomBlockHandler implements Listener {
 			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
 			EquipmentSlot slot = e.getHand();
 			e.getPlayer().getEquipment().setHelmet(e.getItem());
-			if (helm != null) {
-				if (slot == EquipmentSlot.HAND) {
-					e.getPlayer().getEquipment().setItemInMainHand(helm);
-				} else e.getPlayer().getEquipment().setItemInOffHand(helm);
-			}
+			if (helm == null) helm = new ItemStack(Material.AIR);
+			if (slot == EquipmentSlot.HAND) {
+				e.getPlayer().getEquipment().setItemInMainHand(helm);
+			} else e.getPlayer().getEquipment().setItemInOffHand(helm);
 			return true;
 		}
-
 		return false;
 	}
 
