@@ -9,9 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntArrayList;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntList;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -123,68 +120,75 @@ public class NuclearReactor extends PowerGenerator {
 
 	public void explode() {
 		exploded = true;
-		if (inventory.getViewers() != null && !inventory.getViewers().isEmpty()) {
-			for (HumanEntity viewer : inventory.getViewers()) {
-				viewer.closeInventory();
-			}
-		}
 		location.getBlock().setType(Material.AIR, false);
 		location.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 50, true, true);
 		StoneRecipes.INSTANCE.getReactors().removeReactor(pos);
 	}
 
-	public int getHeat(int slot) {
+	/**
+	 * Ticks a uranium fuel rod.  Will use coolant if available.
+	 * @param slot
+	 * @return How much heat this rod generated, after cooling.
+	 */
+	public int spendUranium(int slot) {
 		int heat = uraniumHeat;
-		slots = new IntArrayList();
-		int reduction = 0;
-		slots.add(slot);
-		if (slot > 8 && !slots.contains(slot - 9)) {
-			reduction = cool(reduction, slot - 9);
-		}
-		if (slot % 8 != 0 && !slots.contains(slot + 1)) {
-			reduction = cool(reduction, slot + 1);
-		}
-		if (slot % 9 != 0 && !slots.contains(slot - 1)) {
-			reduction = cool(reduction, slot - 1);
-		}
-		if (slot < inventory.getSize() - 10 && !slots.contains(slot + 9)) {
-			reduction = cool(reduction, slot + 9);
-		}
-		depleteItem(inventory.getItem(slot), slot);
-		return heat;
+		if (heat > 0 && offsetSlot(slot, BlockFace.NORTH) != -1) heat -= spendCoolant(true, heat, offsetSlot(slot, BlockFace.NORTH));
+		if (heat > 0 && offsetSlot(slot, BlockFace.EAST) != -1) heat -= spendCoolant(true, heat, offsetSlot(slot, BlockFace.EAST));
+		if (heat > 0 && offsetSlot(slot, BlockFace.SOUTH) != -1) heat -= spendCoolant(true, heat, offsetSlot(slot, BlockFace.SOUTH));
+		if (heat > 0 && offsetSlot(slot, BlockFace.WEST) != -1) heat -= spendCoolant(true, heat, offsetSlot(slot, BlockFace.WEST));
+		depleteItem(inventory.getItem(slot));
+		addPower(uraniumPower);
+		return Math.max(0, heat);
 	}
 
-	IntList slots;
-
-	public int cool(int total, int slot) {
-		slots.add(slot);
+	/**
+	 * Attempts to use a coolant piece.
+	 * @param slot The slot where the coolant is.
+	 * @return How much heat this coolant prevented.
+	 */
+	public int spendCoolant(boolean plates, int heat, int slot) {
 		if (slot < inventory.getSize() && inventory.getItem(slot) != null && !inventory.getItem(slot).getType().equals(Material.AIR)) {
-			if (ItemData.isSimilar(inventory.getItem(slot), StoneRecipes.INSTANCE.getItems().getItem("coolant"))) {
-				total += coolantHeat;
-				depleteItem(inventory.getItem(slot), slot);
+			if (ItemData.getItemId(inventory.getItem(slot)).equals("coolant")) {
+				depleteItem(inventory.getItem(slot));
+				return coolantHeat;
 			} else if (inventory.getItem(slot).getType().equals(Material.ICE)) {
-				total += iceHeat;
-				depleteItem(inventory.getItem(slot), slot);
+				depleteItem(inventory.getItem(slot));
+				return iceHeat;
 			} else if (inventory.getItem(slot).getType().equals(Material.PACKED_ICE)) {
-				total += packedIceHeat;
-				depleteItem(inventory.getItem(slot), slot);
-			} else if (ItemData.isSimilar(inventory.getItem(slot), StoneRecipes.INSTANCE.getItems().getItem("heat_plate"))) {
-				if (slot > 8 && !slots.contains(slot - 9)) {
-					total = cool(total, slot - 9);
-				}
-				if (slot % 8 != 0 && !slots.contains(slot + 1)) {
-					total = cool(total, slot + 1);
-				}
-				if (slot % 9 != 0 && !slots.contains(slot - 1)) {
-					total = cool(total, slot - 1);
-				}
-				if (slot < inventory.getSize() - 10 && !slots.contains(slot + 9)) {
-					total = cool(total, slot + 9);
-				}
-				depleteItem(inventory.getItem(slot), slot);
+				depleteItem(inventory.getItem(slot));
+				return packedIceHeat;
+			} else if (plates && ItemData.getItemId(inventory.getItem(slot)).equals("heat_plate")) {
+				int cooled = heat;
+				if (cooled < heat && offsetSlot(slot, BlockFace.NORTH) != -1) cooled += spendCoolant(true, 0, offsetSlot(slot, BlockFace.NORTH));
+				if (cooled < heat && offsetSlot(slot, BlockFace.EAST) != -1) cooled += spendCoolant(true, 0, offsetSlot(slot, BlockFace.EAST));
+				if (cooled < heat && offsetSlot(slot, BlockFace.SOUTH) != -1) cooled += spendCoolant(true, 0, offsetSlot(slot, BlockFace.SOUTH));
+				if (cooled < heat && offsetSlot(slot, BlockFace.WEST) != -1) cooled += spendCoolant(true, 0, offsetSlot(slot, BlockFace.WEST));
+				depleteItem(inventory.getItem(slot));
+				return Math.min(cooled, heat);
 			}
 		}
-		return total;
+		return 0;
+	}
+
+	/**
+	 * Offsets a slot in the given direction.
+	 * @param slot The slot to offset.
+	 * @param dir The direction to offset in.  This is treated as if north is to the top of the container in 2D space.
+	 * @return The offset slot, or -1 if that offset would go out of bounds.
+	 */
+	private int offsetSlot(int slot, BlockFace dir) {
+		switch (dir) {
+		case NORTH:
+			return slot > 8 ? slot - 9 : -1;
+		case EAST:
+			return slot % 8 != 0 ? slot + 1 : -1;
+		case SOUTH:
+			return slot + 9 < inventory.getSize() ? slot + 9 : -1;
+		case WEST:
+			return slot % 9 != 0 ? slot - 1 : -1;
+		default:
+			return -1;
+		}
 	}
 
 	public void openPowerGUI(Player player) {
@@ -205,16 +209,15 @@ public class NuclearReactor extends PowerGenerator {
 		start_progress = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.start_progress");
 	}
 
-	public void depleteItem(ItemStack item, int slot) {
+	/**
+	 * Spends an item.  Uses up a charge on coolant, uranium or a heat plate, uses up an item on ice or packed ice.
+	 */
+	public void depleteItem(ItemStack item) {
 		if (item.getType().equals(Material.ICE) || item.getType().equals(Material.PACKED_ICE)) {
-			if (item.getAmount() > 2) {
-				item.setAmount(item.getAmount() - 2);
-			} else {
-				item.setType(Material.AIR);
-			}
+			item.setAmount(item.getAmount() - 1);
 			return;
 		}
-		if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) { return; }
+		if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) return;
 		ItemMeta meta = item.getItemMeta();
 		ArrayList<String> lore = new ArrayList<>();
 		for (String line : meta.getLore()) {
@@ -222,7 +225,7 @@ public class NuclearReactor extends PowerGenerator {
 				int current = Integer.parseInt(line.split(" ")[1].split("/")[0]);
 				if (current == 1) {
 					if (item.getAmount() == 1) {
-						inventory.setItemInternal(slot, new ItemStack(Material.AIR));
+						item.setAmount(0);
 						return;
 					} else {
 						item.setAmount(item.getAmount() - 1);
@@ -254,6 +257,9 @@ public class NuclearReactor extends PowerGenerator {
 	public void setupContainer() {
 	}
 
+	/**
+	 * Called every 5 ticks, this is the actual reactor update function.
+	 */
 	@Override
 	public void finish() {
 		if (getPower() >= maxPower) return;
@@ -261,40 +267,33 @@ public class NuclearReactor extends PowerGenerator {
 		int heat = 0;
 		boolean fueled = false;
 		for (int i = 0; i < inventory.getContents().length; i++) {
-			if (inventory.getItem(i) != null) {
+			if (inventory.getItem(i) != null && getPower() + uraniumPower <= maxPower) {
 				ItemStack item = inventory.getItem(i);
 				String id = ItemData.getItemId(item);
-				if ("uranium_rod".equals(id) || "coolant".equals(id) || "heat_plate".equals(id)) {
-					if ("uranium_rod".equals(id)) {
-						heat += getHeat(i);
-						addPower(uraniumPower);
-						fueled = true;
-					}
-				} else {
-					if (item.getType().equals(Material.ICE) || item.getType().equals(Material.PACKED_ICE)) {
-
-					} else {
-						return;
-					}
+				if ("uranium_rod".equals(id)) {
+					fueled = true;
+					heat += spendUranium(i);
 				}
 			}
 		}
-		if (getPower() > maxPower) return;
+
 		if (heat > maxHeat) {
 			explode();
 			return;
 		}
+
 		if (!fueled) return;
+
+		//Make the reactor feel "alive"
 		location.getWorld().playSound(location, "nuclear", 0.3f, 1f);
 		float y = 1.5f;
-		if (location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.NOTE_BLOCK)) {
-			y++;
-		}
-		if ((float) heat / (float) maxHeat < 0.5) {
+		if (location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.NOTE_BLOCK)) y++;
+		float ratio = (float) heat / maxHeat;
+		if (ratio < 0.5) {
 			location.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, location.clone().add(0.5, y, 0.5), 2);
-		} else if ((float) heat / (float) maxHeat < 0.9) {
+		} else if (ratio < 0.9) {
 			location.getWorld().spawnParticle(Particle.SMOKE_LARGE, location.clone().add(0.5, y, 0.5), 0, null);
-		} else if ((float) heat / (float) maxHeat >= 0.9) {
+		} else if (ratio >= 0.9) {
 			location.getWorld().spawnParticle(Particle.FLAME, location.clone().add(0.5, y + 0.1f, 0.5), 0, null);
 			location.getWorld().spawnParticle(Particle.FLAME, location.clone().add(0.5, y, 0.5), 0, null);
 			location.getWorld().spawnParticle(Particle.FLAME, location.clone().add(0.5, y - 0.1f, 0.5), 0, null);
