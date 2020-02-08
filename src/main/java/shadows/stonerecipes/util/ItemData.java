@@ -43,6 +43,7 @@ public class ItemData {
 	public static final NamespacedKey MAX_POWER = new NamespacedKey(StoneRecipes.INSTANCE, "max_power");
 	public static final NamespacedKey POWER = new NamespacedKey(StoneRecipes.INSTANCE, "power");
 	public static final NamespacedKey SPEED = new NamespacedKey(StoneRecipes.INSTANCE, "speed");
+	public static final ItemStack EMPTY = new ItemStack(Material.AIR);
 
 	protected final Map<String, CustomItem> items = new HashMap<>();
 	protected final Map<CustomBlock, CustomItem> blockToItem = new HashMap<>();

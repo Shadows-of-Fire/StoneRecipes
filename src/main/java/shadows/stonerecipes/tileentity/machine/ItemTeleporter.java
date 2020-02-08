@@ -19,6 +19,11 @@ import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;
 
+/**
+ * The item teleporter is a sort of "hopper" between machines.
+ * When unlinked, it will attempt to transfer items from above itself into itself, and then below itself.
+ * When linked, it will attempt to transfer items from above itself to below the linked
+ */
 public class ItemTeleporter extends PoweredMachine implements ITeleporter {
 
 	protected WorldPos link = WorldPos.INVALID;
@@ -28,6 +33,7 @@ public class ItemTeleporter extends PoweredMachine implements ITeleporter {
 	public ItemTeleporter(WorldPos pos) {
 		super("item_teleporter", "Item Teleporter", "config.yml", pos);
 		this.updater = false;
+		this.timer = 10;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -166,6 +172,22 @@ public class ItemTeleporter extends PoweredMachine implements ITeleporter {
 			}
 			updateAndCancel(e);
 		}
+	}
+
+	@Override
+	protected void tickInternal() {
+		if (++ticks % timer == 0) timerTick();
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	protected void timerTick() {
+		if (getPower() < powerCost) {
+			progress = 0;
+			guiTex.setDurability((short) (start_progress + progress));
+			return;
+		}
+		super.timerTick();
 	}
 
 }

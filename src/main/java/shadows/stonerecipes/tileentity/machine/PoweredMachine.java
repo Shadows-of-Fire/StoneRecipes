@@ -102,7 +102,6 @@ public abstract class PoweredMachine extends NoteTileEntity {
 	}
 
 	public static int receivePower(PoweredMachine machine, int amount) {
-		//StoneRecipes.debug("%s attempted to receive %d energy", machine, amount);
 		int power = 0;
 		for (PowerGenerator gen : StoneRecipes.INSTANCE.getMachines().getGenerators()) {
 			if (gen.getLocation().getWorld() == machine.getLocation().getWorld() && gen.getLocation().distanceSquared(machine.getLocation()) < 16 * 16) {

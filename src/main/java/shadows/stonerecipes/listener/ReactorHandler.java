@@ -2,9 +2,7 @@ package shadows.stonerecipes.listener;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 import org.bukkit.Chunk;
@@ -21,6 +19,7 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
+import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.Laser;
@@ -35,7 +34,6 @@ public class ReactorHandler implements Listener {
 
 	protected final StoneRecipes plugin;
 	protected final PluginFile reactorData;
-	protected final Map<WorldPos, NuclearReactor> reactors = new HashMap<>();
 	protected final List<Laser> lasers = new ArrayList<>();
 	protected final Predicate<NoteBlock> chamber;
 	protected final Predicate<NoteBlock> battery;
@@ -55,8 +53,8 @@ public class ReactorHandler implements Listener {
 			for (BlockFace face : CHAMBER_FACES) {
 				if (e.getBlock().getRelative(face).getType().equals(Material.NOTE_BLOCK)) {
 					WorldPos pos2 = new WorldPos(e.getBlock().getRelative(face).getLocation());
-					if (reactors.containsKey(pos2)) {
-						reactors.get(pos2).openInventory(e.getClicker());
+					if (Maps.REACTORS.contains(pos2)) {
+						Maps.REACTORS.get(pos2).openInventory(e.getClicker());
 						e.setSuccess();
 						break;
 					}
@@ -68,8 +66,8 @@ public class ReactorHandler implements Listener {
 			for (BlockFace face : BATTERY_FACES) {
 				if (e.getBlock().getRelative(face).getType().equals(Material.NOTE_BLOCK)) {
 					WorldPos pos2 = new WorldPos(e.getBlock().getRelative(face).getLocation());
-					if (reactors.containsKey(pos2)) {
-						reactors.get(pos2).openPowerGUI(e.getClicker());
+					if (Maps.REACTORS.contains(pos2)) {
+						Maps.REACTORS.get(pos2).openPowerGUI(e.getClicker());
 						e.setSuccess();
 						break;
 					}
@@ -78,7 +76,7 @@ public class ReactorHandler implements Listener {
 			return;
 		}
 		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		if (reactors.containsKey(pos)) {
+		if (Maps.REACTORS.contains(pos)) {
 			openReactor(pos, e.getClicker());
 			e.setSuccess();
 			return;
@@ -88,7 +86,7 @@ public class ReactorHandler implements Listener {
 	@EventHandler
 	public void onPlayerDestroyReactor(NoteBlockRemovedEvent e) {
 		WorldPos pos = new WorldPos(e.getState().getLocation());
-		if (reactors.containsKey(pos)) {
+		if (Maps.REACTORS.contains(pos)) {
 			removeReactor(pos);
 		} else if (chamber.test((NoteBlock) e.getState().getBlockData())) {
 			updateChambers(e.getState().getLocation());
@@ -120,8 +118,8 @@ public class ReactorHandler implements Listener {
 		for (BlockFace face : CHAMBER_FACES) {
 			if (block.getRelative(face).getType().equals(Material.NOTE_BLOCK)) {
 				WorldPos pos = new WorldPos(block.getRelative(face).getLocation());
-				if (reactors.containsKey(pos)) {
-					reactors.get(pos).updateChambers();
+				if (Maps.REACTORS.contains(pos)) {
+					Maps.REACTORS.get(pos).updateChambers();
 				}
 			}
 		}
@@ -130,17 +128,17 @@ public class ReactorHandler implements Listener {
 	public void placeReactor(WorldPos pos) {
 		NuclearReactor reactor = new NuclearReactor(pos);
 		reactor.start();
-		reactors.put(pos, reactor);
+		Maps.REACTORS.put(pos, reactor);
 	}
 
 	public void openReactor(WorldPos pos, Player player) {
-		if (reactors.containsKey(pos)) {
-			reactors.get(pos).openInventory(player);
+		if (Maps.REACTORS.contains(pos)) {
+			Maps.REACTORS.get(pos).openInventory(player);
 		} else StoneRecipes.debug("Attempted to open a reactor where one was not present at %s", pos);
 	}
 
 	public void removeReactor(WorldPos pos) {
-		NuclearReactor removing = reactors.remove(pos);
+		NuclearReactor removing = Maps.REACTORS.remove(pos);
 		if (removing == null) {
 			StoneRecipes.debug("Attempted to remove a reactor where one was not present at %s", pos);
 			return;
@@ -164,7 +162,7 @@ public class ReactorHandler implements Listener {
 				}
 				NuclearReactor charger = new NuclearReactor(pos);
 				MachineUtils.loadMachine(charger, reactorData);
-				reactors.put(pos, charger);
+				Maps.REACTORS.put(pos, charger);
 			}
 		}
 	}
@@ -174,16 +172,16 @@ public class ReactorHandler implements Listener {
 	 * @param chunk The chunk to save things for.
 	 */
 	public void save(Chunk chunk) {
-		for (WorldPos pos : reactors.keySet()) {
+		for (WorldPos pos : Maps.REACTORS.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(reactors.get(pos), reactorData);
+				MachineUtils.saveMachine(Maps.REACTORS.get(pos), reactorData);
 			}
 		}
-		reactors.keySet().removeIf(pos -> pos.isInside(chunk));
+		Maps.REACTORS.removeIf(pos -> pos.isInside(chunk));
 		reactorData.save();
 	}
 
 	public Collection<NuclearReactor> getReactors() {
-		return reactors.values();
+		return Maps.REACTORS.values();
 	}
 }

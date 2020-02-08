@@ -354,4 +354,21 @@ public abstract class NoteTileEntity implements ITickable {
 	public String toString() {
 		return String.format("Machine: %s, Location: %s", this.getClass().getSimpleName(), this.pos.translated());
 	}
+
+	/**
+	 * Attempts to extract an item from this tile.
+	 * @return The successfully extracted itemstack, or {@link ItemData#EMPTY} if nothing is available.
+	 */
+	public ItemStack extractItem() {
+		return ItemData.EMPTY;
+	}
+
+	/**
+	 * Attempts to insert an item into this tile.
+	 * @param stack The stack to be inserted.
+	 * @return The remaining stack, or {@link ItemData#EMPTY} if the entire stack was inserted.
+	 */
+	public ItemStack insertItem(ItemStack stack) {
+		return stack;
+	}
 }

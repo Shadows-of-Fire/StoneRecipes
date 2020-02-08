@@ -1,7 +1,5 @@
 package shadows.stonerecipes.listener;
 
-import java.util.HashMap;
-
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,6 +10,7 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
+import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
@@ -21,7 +20,6 @@ public class ChargerHandler implements Listener {
 
 	protected final StoneRecipes plugin;
 	protected final PluginFile data;
-	protected final HashMap<WorldPos, Charger> chargers = new HashMap<>();
 
 	public ChargerHandler(StoneRecipes plugin) {
 		this.plugin = plugin;
@@ -31,7 +29,7 @@ public class ChargerHandler implements Listener {
 	@EventHandler
 	public void clicked(NoteBlockClickedEvent e) {
 		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		if (chargers.containsKey(pos)) {
+		if (Maps.CHARGERS.contains(pos)) {
 			openCharger(pos, e.getClicker());
 			e.setSuccess();
 		}
@@ -47,13 +45,13 @@ public class ChargerHandler implements Listener {
 	@EventHandler
 	public void onPlayerDestroyMachine(NoteBlockRemovedEvent e) {
 		WorldPos pos = new WorldPos(e.getState().getLocation());
-		if (chargers.containsKey(pos)) {
+		if (Maps.CHARGERS.contains(pos)) {
 			removeCharger(pos);
 		}
 	}
 
 	public void removeCharger(WorldPos pos) {
-		Charger removing = chargers.remove(pos);
+		Charger removing = Maps.CHARGERS.remove(pos);
 		if (removing == null) {
 			StoneRecipes.debug("Attempted to remove an armor charger where one did not exist at %s", pos);
 			return;
@@ -66,12 +64,12 @@ public class ChargerHandler implements Listener {
 	public void placeCharger(WorldPos pos) {
 		Charger charger = new Charger(pos);
 		charger.start();
-		chargers.put(pos, charger);
+		Maps.CHARGERS.put(pos, charger);
 	}
 
 	public void openCharger(WorldPos pos, Player player) {
-		if (chargers.containsKey(pos)) {
-			chargers.get(pos).openInventory(player);
+		if (Maps.CHARGERS.contains(pos)) {
+			Maps.CHARGERS.get(pos).openInventory(player);
 		} else StoneRecipes.debug("Attempted to open an armor charger where one did not exist at %s", pos);
 	}
 
@@ -89,7 +87,7 @@ public class ChargerHandler implements Listener {
 				}
 				Charger charger = new Charger(pos);
 				MachineUtils.loadMachine(charger, data);
-				chargers.put(pos, charger);
+				Maps.CHARGERS.put(pos, charger);
 			}
 		}
 	}
@@ -99,12 +97,12 @@ public class ChargerHandler implements Listener {
 	 * @param chunk The chunk to save things for.
 	 */
 	public void save(Chunk chunk) {
-		for (WorldPos pos : chargers.keySet()) {
+		for (WorldPos pos : Maps.CHARGERS.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(chargers.get(pos), data);
+				MachineUtils.saveMachine(Maps.CHARGERS.get(pos), data);
 			}
 		}
-		chargers.keySet().removeIf(pos -> pos.isInside(chunk));
+		Maps.CHARGERS.removeIf(pos -> pos.isInside(chunk));
 		data.save();
 	}
 

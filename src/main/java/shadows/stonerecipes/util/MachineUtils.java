@@ -1,7 +1,5 @@
 package shadows.stonerecipes.util;
 
-import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -18,6 +16,7 @@ import net.minecraft.server.v1_14_R1.MinecraftKey;
 import net.minecraft.server.v1_14_R1.PacketPlayOutCustomSoundEffect;
 import net.minecraft.server.v1_14_R1.Vec3D;
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.NoteTileEntity.NoteBlockInventory;
 
@@ -33,8 +32,8 @@ public class MachineUtils {
 	 * @param machines A map of worldpos -> machine that will be checked for machines to open.
 	 * @return true if a machine was found at that location and a was opened, false otherwise.
 	 */
-	public static boolean openGui(Player player, WorldPos pos, Map<WorldPos, ? extends NoteTileEntity> machines) {
-		if (machines.containsKey(pos)) {
+	public static boolean openGui(Player player, WorldPos pos, MapWrapper<?> machines) {
+		if (machines.contains(pos)) {
 			machines.get(pos).openInventory(player);
 			return true;
 		}

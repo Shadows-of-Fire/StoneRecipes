@@ -1,10 +1,6 @@
 package shadows.stonerecipes.listener;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 import javax.annotation.Nullable;
@@ -22,9 +18,9 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
+import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
-import shadows.stonerecipes.tileentity.machine.PoweredMachine;
 import shadows.stonerecipes.util.ITeleporter;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
@@ -38,16 +34,6 @@ public class TeleportHandler implements Listener {
 	protected final StoneRecipes plugin;
 	protected final PluginFile playerData;
 	protected final PluginFile itemData;
-
-	/**
-	 * All loaded player teleporters.
-	 */
-	protected final Map<WorldPos, PlayerTeleporter> playerTeleporters = new HashMap<>();
-
-	/**
-	 * All loaded item teleporters.
-	 */
-	protected final Map<WorldPos, ItemTeleporter> itemTeleporters = new HashMap<>();
 
 	/**
 	 * Map of actively linking player teleporters.  This is a map of linking players -> source teleporter.
@@ -73,8 +59,8 @@ public class TeleportHandler implements Listener {
 		if (e.isSneaking()) {
 			Location loc = e.getPlayer().getLocation().subtract(0, 1, 0);
 			WorldPos pos = new WorldPos(loc);
-			if (playerTeleporters.containsKey(pos)) {
-				playerTeleporters.get(pos).teleport(e.getPlayer());
+			if (Maps.PLAYER_TELEPORTERS.contains(pos)) {
+				Maps.PLAYER_TELEPORTERS.get(pos).teleport(e.getPlayer());
 			}
 		}
 	}
@@ -126,8 +112,8 @@ public class TeleportHandler implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onNoteClick(NoteBlockClickedEvent e) {
 		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		if (playerTeleporters.containsKey(pos)) {
-			PlayerTeleporter teleporter = playerTeleporters.get(pos);
+		if (Maps.PLAYER_TELEPORTERS.contains(pos)) {
+			PlayerTeleporter teleporter = Maps.PLAYER_TELEPORTERS.get(pos);
 			if (e.getClicker().isSneaking()) {
 				if (playerLinks.containsKey(e.getClicker())) {
 					attemptLink(teleporter, e.getClicker(), pos);
@@ -142,8 +128,8 @@ public class TeleportHandler implements Listener {
 				}
 			} else teleporter.openInventory(e.getClicker());
 			e.setSuccess();
-		} else if (itemTeleporters.containsKey(pos)) {
-			ItemTeleporter teleporter = itemTeleporters.get(pos);
+		} else if (Maps.ITEM_TELEPORTERS.contains(pos)) {
+			ItemTeleporter teleporter = Maps.ITEM_TELEPORTERS.get(pos);
 			if (e.getClicker().isSneaking()) {
 				if (itemLinks.containsKey(e.getClicker())) {
 					attemptLink(teleporter, e.getClicker(), pos);
@@ -164,9 +150,9 @@ public class TeleportHandler implements Listener {
 	@EventHandler
 	public void onPlayerDestroyTeleporter(NoteBlockRemovedEvent e) {
 		WorldPos pos = new WorldPos(e.getState().getLocation());
-		if (playerTeleporters.containsKey(pos)) {
+		if (Maps.PLAYER_TELEPORTERS.contains(pos)) {
 			removePlayerT(pos);
-		} else if (itemTeleporters.containsKey(pos)) {
+		} else if (Maps.ITEM_TELEPORTERS.contains(pos)) {
 			removeItemT(pos);
 		}
 	}
@@ -177,7 +163,7 @@ public class TeleportHandler implements Listener {
 	public void placePlayerT(WorldPos pos) {
 		PlayerTeleporter tele = new PlayerTeleporter(pos);
 		tele.start();
-		playerTeleporters.put(pos, tele);
+		Maps.PLAYER_TELEPORTERS.put(pos, tele);
 	}
 
 	/**
@@ -186,7 +172,7 @@ public class TeleportHandler implements Listener {
 	public void placeItemT(WorldPos pos) {
 		ItemTeleporter tele = new ItemTeleporter(pos);
 		tele.start();
-		itemTeleporters.put(pos, tele);
+		Maps.ITEM_TELEPORTERS.put(pos, tele);
 	}
 
 	/**
@@ -194,10 +180,10 @@ public class TeleportHandler implements Listener {
 	 * Does nothing if already loaded.
 	 */
 	private void loadPlayerT(WorldPos pos) {
-		if (playerTeleporters.containsKey(pos)) return;
+		if (Maps.PLAYER_TELEPORTERS.contains(pos)) return;
 		PlayerTeleporter tele = new PlayerTeleporter(pos);
 		MachineUtils.loadMachine(tele, playerData);
-		playerTeleporters.put(pos, tele);
+		Maps.PLAYER_TELEPORTERS.put(pos, tele);
 	}
 
 	/**
@@ -205,10 +191,10 @@ public class TeleportHandler implements Listener {
 	 * Does nothing if already loaded.
 	 */
 	private void loadItemT(WorldPos pos) {
-		if (itemTeleporters.containsKey(pos)) return;
+		if (Maps.ITEM_TELEPORTERS.contains(pos)) return;
 		ItemTeleporter tele = new ItemTeleporter(pos);
 		MachineUtils.loadMachine(tele, itemData);
-		itemTeleporters.put(pos, tele);
+		Maps.ITEM_TELEPORTERS.put(pos, tele);
 	}
 
 	/**
@@ -217,11 +203,11 @@ public class TeleportHandler implements Listener {
 	 */
 	@Nullable
 	public PlayerTeleporter hotloadPlayerT(WorldPos pos) {
-		if (playerTeleporters.containsKey(pos)) return playerTeleporters.get(pos);
+		if (Maps.PLAYER_TELEPORTERS.contains(pos)) return Maps.PLAYER_TELEPORTERS.get(pos);
 		if (!playerData.contains(pos.toString())) return null;
 		PlayerTeleporter tele = new PlayerTeleporter(pos);
 		MachineUtils.loadMachine(tele, playerData);
-		playerTeleporters.put(pos, tele);
+		Maps.PLAYER_TELEPORTERS.put(pos, tele);
 		return tele;
 	}
 
@@ -231,20 +217,20 @@ public class TeleportHandler implements Listener {
 	 */
 	@Nullable
 	public ItemTeleporter hotloadItemT(WorldPos pos) {
-		if (itemTeleporters.containsKey(pos)) return itemTeleporters.get(pos);
+		if (Maps.ITEM_TELEPORTERS.contains(pos)) return Maps.ITEM_TELEPORTERS.get(pos);
 		if (!itemData.contains(pos.toString())) return null;
 		ItemTeleporter tele = new ItemTeleporter(pos);
 		MachineUtils.loadMachine(tele, itemData);
-		itemTeleporters.put(pos, tele);
+		Maps.ITEM_TELEPORTERS.put(pos, tele);
 		return tele;
 	}
 
 	public void removePlayerT(WorldPos pos) {
-		PlayerTeleporter removed = playerTeleporters.remove(pos);
+		PlayerTeleporter removed = Maps.PLAYER_TELEPORTERS.remove(pos);
 		if (removed != null) {
 			if (!removed.getLink().equals(WorldPos.INVALID)) {
-				if (playerTeleporters.containsKey(removed.getLink())) {
-					playerTeleporters.get(removed.getLink()).setLink(WorldPos.INVALID);
+				if (Maps.PLAYER_TELEPORTERS.contains(removed.getLink())) {
+					Maps.PLAYER_TELEPORTERS.get(removed.getLink()).setLink(WorldPos.INVALID);
 				} else if (playerData.contains(removed.getLink().toString())) {
 					playerData.set(removed.getLink() + ".link", WorldPos.INVALID.toString());
 				}
@@ -257,11 +243,11 @@ public class TeleportHandler implements Listener {
 	}
 
 	public void removeItemT(WorldPos pos) {
-		ItemTeleporter removed = itemTeleporters.remove(pos);
+		ItemTeleporter removed = Maps.ITEM_TELEPORTERS.remove(pos);
 		if (removed != null) {
 			if (!removed.getLink().equals(WorldPos.INVALID)) {
-				if (itemTeleporters.containsKey(removed.getLink())) {
-					itemTeleporters.get(removed.getLink()).setLink(WorldPos.INVALID);
+				if (Maps.ITEM_TELEPORTERS.contains(removed.getLink())) {
+					Maps.ITEM_TELEPORTERS.get(removed.getLink()).setLink(WorldPos.INVALID);
 				} else {
 					itemData.set(removed.getLink() + ".link", WorldPos.INVALID.toString());
 				}
@@ -304,27 +290,20 @@ public class TeleportHandler implements Listener {
 	 * @param chunk The chunk to save things for.
 	 */
 	public void save(Chunk chunk) {
-		for (WorldPos pos : playerTeleporters.keySet()) {
+		for (WorldPos pos : Maps.PLAYER_TELEPORTERS.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(playerTeleporters.get(pos), playerData);
+				MachineUtils.saveMachine(Maps.PLAYER_TELEPORTERS.get(pos), playerData);
 			}
 		}
-		playerTeleporters.keySet().removeIf(pos -> pos.isInside(chunk));
+		Maps.PLAYER_TELEPORTERS.removeIf(pos -> pos.isInside(chunk));
 		playerData.save();
-		for (WorldPos pos : itemTeleporters.keySet()) {
+		for (WorldPos pos : Maps.ITEM_TELEPORTERS.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(itemTeleporters.get(pos), itemData);
+				MachineUtils.saveMachine(Maps.ITEM_TELEPORTERS.get(pos), itemData);
 			}
 		}
-		itemTeleporters.keySet().removeIf(pos -> pos.isInside(chunk));
+		Maps.ITEM_TELEPORTERS.removeIf(pos -> pos.isInside(chunk));
 		itemData.save();
-	}
-
-	public Collection<? extends PoweredMachine> getTeleporters() {
-		Set<PoweredMachine> set = new HashSet<>();
-		set.addAll(itemTeleporters.values());
-		set.addAll(playerTeleporters.values());
-		return set;
 	}
 
 }

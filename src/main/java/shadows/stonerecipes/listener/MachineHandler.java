@@ -17,9 +17,9 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
+import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.machine.CoalGenerator;
 import shadows.stonerecipes.tileentity.machine.PowerGenerator;
-import shadows.stonerecipes.tileentity.machine.PoweredMachine;
 import shadows.stonerecipes.tileentity.machine.TypedMachine;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.MachineUtils;
@@ -35,16 +35,6 @@ public class MachineHandler implements Listener {
 	private final PluginFile machineData;
 	private final PluginFile generatorData;
 	private final PluginFile machineTypes;
-
-	/**
-	 * All machines in the world.
-	 */
-	private final Map<WorldPos, TypedMachine> typedMachines = new HashMap<>();
-
-	/**
-	 * All generators in the world.
-	 */
-	private final Map<WorldPos, PowerGenerator> generators = new HashMap<>();
 
 	/**
 	 * Machine recipe map.  Map of machine types to input-output pairs.
@@ -81,7 +71,7 @@ public class MachineHandler implements Listener {
 	}
 
 	public Collection<PowerGenerator> getGenerators() {
-		return generators.values();
+		return Maps.GENERATORS.values();
 	}
 
 	/**
@@ -90,10 +80,10 @@ public class MachineHandler implements Listener {
 	@EventHandler
 	public void onInteract(NoteBlockClickedEvent e) {
 		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		if (MachineUtils.openGui(e.getClicker(), pos, typedMachines)) {
+		if (MachineUtils.openGui(e.getClicker(), pos, Maps.TYPED_MACHINES)) {
 			e.setSuccess();
 			return;
-		} else if (MachineUtils.openGui(e.getClicker(), pos, generators)) {
+		} else if (MachineUtils.openGui(e.getClicker(), pos, Maps.GENERATORS)) {
 			e.setSuccess();
 			return;
 		}
@@ -118,9 +108,9 @@ public class MachineHandler implements Listener {
 	@EventHandler
 	public void onPlayerDestroyMachine(NoteBlockRemovedEvent e) {
 		WorldPos pos = new WorldPos(e.getState().getLocation());
-		if (typedMachines.containsKey(pos)) {
+		if (Maps.TYPED_MACHINES.contains(pos)) {
 			removeMachine(pos);
-		} else if (generators.containsKey(pos)) {
+		} else if (Maps.GENERATORS.contains(pos)) {
 			removeGenerator(pos);
 		}
 	}
@@ -132,7 +122,7 @@ public class MachineHandler implements Listener {
 	public void placeGenerator(WorldPos pos) {
 		CoalGenerator gen = new CoalGenerator(pos);
 		gen.start();
-		generators.put(pos, gen);
+		Maps.GENERATORS.put(pos, gen);
 	}
 
 	/**
@@ -143,7 +133,7 @@ public class MachineHandler implements Listener {
 	public void placeMachine(String type, WorldPos pos) {
 		TypedMachine machine = new TypedMachine(type, pos);
 		machine.start();
-		typedMachines.put(pos, machine);
+		Maps.TYPED_MACHINES.put(pos, machine);
 	}
 
 	/**
@@ -151,7 +141,7 @@ public class MachineHandler implements Listener {
 	 * @param pos The location of the generator to wipe.
 	 */
 	public void removeGenerator(WorldPos pos) {
-		PowerGenerator removing = generators.remove(pos);
+		PowerGenerator removing = Maps.GENERATORS.remove(pos);
 		if (removing == null) {
 			StoneRecipes.debug("Attempted to remove a generator where one did not exist at %s.", pos);
 			return;
@@ -167,8 +157,8 @@ public class MachineHandler implements Listener {
 	 * @param player The opening player.
 	 */
 	public void openGenerator(WorldPos pos, Player player) {
-		if (generators.containsKey(pos)) {
-			generators.get(pos).openInventory(player);
+		if (Maps.GENERATORS.contains(pos)) {
+			Maps.GENERATORS.get(pos).openInventory(player);
 		} else StoneRecipes.debug("Attempted to open a generator when one was not present at %s", pos);
 	}
 
@@ -177,7 +167,7 @@ public class MachineHandler implements Listener {
 	 * @param pos The location of the machine to wipe.
 	 */
 	public void removeMachine(WorldPos pos) {
-		TypedMachine removing = typedMachines.remove(pos);
+		TypedMachine removing = Maps.TYPED_MACHINES.remove(pos);
 		if (removing == null) {
 			StoneRecipes.debug("Attempted to remove a machine where one did not exist at %s.", pos);
 			return;
@@ -185,17 +175,6 @@ public class MachineHandler implements Listener {
 		removing.destroy();
 		machineData.set(pos.toString(), null);
 		machineData.save();
-	}
-
-	/**
-	 * Opens a machine for a player.  A machine must be active at a location for this to work.
-	 * @param pos The machine pos.
-	 * @param player The opening player.
-	 */
-	public void openMachine(WorldPos pos, Player player) {
-		if (typedMachines.containsKey(pos)) {
-			typedMachines.get(pos).openInventory(player);
-		} else StoneRecipes.debug("Attempted to open a machine when one was not present at %s", pos);
 	}
 
 	/**
@@ -213,7 +192,7 @@ public class MachineHandler implements Listener {
 				String type = machineData.getString(pos + ".type");
 				TypedMachine machine = new TypedMachine(type, pos);
 				MachineUtils.loadMachine(machine, machineData);
-				typedMachines.put(pos, machine);
+				Maps.TYPED_MACHINES.put(pos, machine);
 			}
 		}
 
@@ -226,7 +205,7 @@ public class MachineHandler implements Listener {
 				}
 				CoalGenerator gen = new CoalGenerator(pos);
 				MachineUtils.loadMachine(gen, generatorData);
-				generators.put(pos, gen);
+				Maps.GENERATORS.put(pos, gen);
 			}
 		}
 	}
@@ -236,20 +215,20 @@ public class MachineHandler implements Listener {
 	 * @param chunk The chunk to save things for.
 	 */
 	public void save(Chunk chunk) {
-		for (WorldPos pos : typedMachines.keySet()) {
+		for (WorldPos pos : Maps.TYPED_MACHINES.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(typedMachines.get(pos), machineData);
+				MachineUtils.saveMachine(Maps.TYPED_MACHINES.get(pos), machineData);
 			}
 		}
-		typedMachines.keySet().removeIf(pos -> pos.isInside(chunk));
+		Maps.TYPED_MACHINES.removeIf(pos -> pos.isInside(chunk));
 		machineData.save();
 
-		for (WorldPos pos : generators.keySet()) {
+		for (WorldPos pos : Maps.GENERATORS.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(generators.get(pos), generatorData);
+				MachineUtils.saveMachine(Maps.GENERATORS.get(pos), generatorData);
 			}
 		}
-		generators.keySet().removeIf(pos -> pos.isInside(chunk));
+		Maps.GENERATORS.removeIf(pos -> pos.isInside(chunk));
 		generatorData.save();
 	}
 
@@ -270,7 +249,4 @@ public class MachineHandler implements Listener {
 		return getRecipes(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey(), input)).map(e -> e.getValue()).findFirst().orElse(null);
 	}
 
-	public Collection<? extends PoweredMachine> getMachines() {
-		return typedMachines.values();
-	}
 }

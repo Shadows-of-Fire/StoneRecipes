@@ -1,9 +1,6 @@
 package shadows.stonerecipes;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -30,7 +27,6 @@ import shadows.stonerecipes.listener.NanosuitHandler;
 import shadows.stonerecipes.listener.OreVeinHandler;
 import shadows.stonerecipes.listener.ReactorHandler;
 import shadows.stonerecipes.listener.TeleportHandler;
-import shadows.stonerecipes.tileentity.machine.PoweredMachine;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.RecipeLoader;
@@ -163,13 +159,6 @@ public class StoneRecipes extends JavaPlugin {
 
 	public OreVeinHandler getOres() {
 		return oreHandler;
-	}
-
-	public Collection<PoweredMachine> getAllPoweredMachines() {
-		List<PoweredMachine> machines = new ArrayList<>();
-		machines.addAll(machineHandler.getMachines());
-		machines.addAll(teleportHandler.getTeleporters());
-		return machines;
 	}
 
 }

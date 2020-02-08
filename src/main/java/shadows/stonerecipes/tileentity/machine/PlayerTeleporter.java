@@ -29,6 +29,7 @@ public class PlayerTeleporter extends PoweredMachine implements ITeleporter {
 
 	public PlayerTeleporter(WorldPos pos) {
 		super("player_teleporter", "Player Teleporter", "config.yml", pos);
+		this.updater = false;
 	}
 
 	@Override
@@ -38,7 +39,6 @@ public class PlayerTeleporter extends PoweredMachine implements ITeleporter {
 		this.powerCost = StoneRecipes.INSTANCE.getConfig().getInt("playerTP.powerCost");
 		this.start_progress = StoneRecipes.INSTANCE.getConfig().getInt("playerTP.start_progress");
 		this.maxPower = StoneRecipes.INSTANCE.getConfig().getInt("playerTP.maxPower");
-		this.updater = false;
 	}
 
 	@Override
