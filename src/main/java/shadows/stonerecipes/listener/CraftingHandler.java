@@ -2,13 +2,13 @@ package shadows.stonerecipes.listener;
 
 import java.util.stream.Collectors;
 
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 
 public class CraftingHandler implements Listener {

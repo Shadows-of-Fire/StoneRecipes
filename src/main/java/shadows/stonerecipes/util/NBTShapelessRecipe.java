@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Predicate;
 
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftShapelessRecipe;
-import org.bukkit.craftbukkit.v1_14_R1.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftShapelessRecipe;
+import org.bukkit.craftbukkit.v1_15_R1.util.CraftNamespacedKey;
 import org.bukkit.inventory.RecipeChoice;
 
-import net.minecraft.server.v1_14_R1.InventoryCrafting;
-import net.minecraft.server.v1_14_R1.ItemStack;
-import net.minecraft.server.v1_14_R1.MinecraftKey;
-import net.minecraft.server.v1_14_R1.MinecraftServer;
-import net.minecraft.server.v1_14_R1.NonNullList;
-import net.minecraft.server.v1_14_R1.RecipeItemStack;
-import net.minecraft.server.v1_14_R1.ShapelessRecipes;
-import net.minecraft.server.v1_14_R1.World;
+import net.minecraft.server.v1_15_R1.InventoryCrafting;
+import net.minecraft.server.v1_15_R1.ItemStack;
+import net.minecraft.server.v1_15_R1.MinecraftKey;
+import net.minecraft.server.v1_15_R1.MinecraftServer;
+import net.minecraft.server.v1_15_R1.NonNullList;
+import net.minecraft.server.v1_15_R1.RecipeItemStack;
+import net.minecraft.server.v1_15_R1.ShapelessRecipes;
+import net.minecraft.server.v1_15_R1.World;
 
 public class NBTShapelessRecipe extends ShapelessRecipes {
 

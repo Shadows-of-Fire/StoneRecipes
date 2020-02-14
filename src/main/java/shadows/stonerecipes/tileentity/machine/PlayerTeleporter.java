@@ -16,11 +16,10 @@ import org.bukkit.util.Vector;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.util.BukkitLambda;
-import shadows.stonerecipes.util.ITeleporter;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
-public class PlayerTeleporter extends PoweredMachine implements ITeleporter {
+public class PlayerTeleporter extends PoweredMachine {
 
 	protected int cooldown;
 	protected boolean isCoolingDown = false;
@@ -114,12 +113,10 @@ public class PlayerTeleporter extends PoweredMachine implements ITeleporter {
 		}
 	}
 
-	@Override
 	public void setLink(WorldPos link) {
 		this.link = link;
 	}
 
-	@Override
 	public WorldPos getLink() {
 		return link;
 	}

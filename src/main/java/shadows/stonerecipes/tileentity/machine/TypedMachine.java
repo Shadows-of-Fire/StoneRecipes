@@ -203,4 +203,16 @@ public class TypedMachine extends PoweredMachine {
 		}
 	}
 
+	static int[] in = { Slots.INPUT }, out = { Slots.OUTPUT };
+
+	@Override
+	protected int[] getInputSlots() {
+		return in;
+	}
+
+	@Override
+	protected int[] getOutputSlots() {
+		return out;
+	}
+
 }

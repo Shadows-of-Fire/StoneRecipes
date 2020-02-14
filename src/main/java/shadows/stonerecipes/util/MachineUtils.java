@@ -6,15 +6,15 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import net.minecraft.server.v1_14_R1.EntityHuman;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
-import net.minecraft.server.v1_14_R1.MinecraftKey;
-import net.minecraft.server.v1_14_R1.PacketPlayOutCustomSoundEffect;
-import net.minecraft.server.v1_14_R1.Vec3D;
+import net.minecraft.server.v1_15_R1.EntityHuman;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.MinecraftKey;
+import net.minecraft.server.v1_15_R1.PacketPlayOutCustomSoundEffect;
+import net.minecraft.server.v1_15_R1.Vec3D;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
@@ -107,12 +107,12 @@ public class MachineUtils {
 			double x = loc.getX();
 			double y = loc.getY();
 			double z = loc.getZ();
-			net.minecraft.server.v1_14_R1.World world = ((CraftWorld) loc.getWorld()).getHandle();
+			net.minecraft.server.v1_15_R1.World world = ((CraftWorld) loc.getWorld()).getHandle();
 			for (EntityHuman p : world.getPlayers()) {
 				double radsq = radius * radius;
-				if (p.e(loc.getX(), loc.getY(), loc.getZ()) < radsq) { //getDistanceSq
-					float realVol = 1F - (float) (p.e(loc.getX(), loc.getY(), loc.getZ()) / radsq);
-					PacketPlayOutCustomSoundEffect packet = new PacketPlayOutCustomSoundEffect(new MinecraftKey(sound), net.minecraft.server.v1_14_R1.SoundCategory.valueOf(category.name()), new Vec3D(x, y, z), realVol, pitch);
+				if (p.g(loc.getX(), loc.getY(), loc.getZ()) < radsq) { //getDistanceSq
+					float realVol = 1F - (float) (p.g(loc.getX(), loc.getY(), loc.getZ()) / radsq);
+					PacketPlayOutCustomSoundEffect packet = new PacketPlayOutCustomSoundEffect(new MinecraftKey(sound), net.minecraft.server.v1_15_R1.SoundCategory.valueOf(category.name()), new Vec3D(x, y, z), realVol, pitch);
 					((EntityPlayer) p).playerConnection.sendPacket(packet);
 				}
 			}

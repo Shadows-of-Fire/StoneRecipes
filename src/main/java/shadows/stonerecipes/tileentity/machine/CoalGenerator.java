@@ -156,4 +156,11 @@ public class CoalGenerator extends PowerGenerator {
 		}
 	}
 
+	static int[] slots = { Slots.COAL_GEN_INPUT };
+
+	@Override
+	protected int[] getInputSlots() {
+		return slots;
+	}
+
 }

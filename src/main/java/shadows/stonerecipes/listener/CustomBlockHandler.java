@@ -11,11 +11,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_14_R1.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Result;
@@ -46,16 +46,16 @@ import org.bukkit.potion.PotionEffectType;
 import com.google.common.collect.ImmutableSet;
 
 import joptsimple.internal.Strings;
-import net.minecraft.server.v1_14_R1.AxisAlignedBB;
-import net.minecraft.server.v1_14_R1.BlockPosition;
-import net.minecraft.server.v1_14_R1.Blocks;
-import net.minecraft.server.v1_14_R1.ChatComponentText;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
-import net.minecraft.server.v1_14_R1.IBlockData;
-import net.minecraft.server.v1_14_R1.Items;
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.PacketPlayOutSetSlot;
-import net.minecraft.server.v1_14_R1.WorldServer;
+import net.minecraft.server.v1_15_R1.AxisAlignedBB;
+import net.minecraft.server.v1_15_R1.BlockPosition;
+import net.minecraft.server.v1_15_R1.Blocks;
+import net.minecraft.server.v1_15_R1.ChatComponentText;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.IBlockData;
+import net.minecraft.server.v1_15_R1.Items;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
+import net.minecraft.server.v1_15_R1.PacketPlayOutSetSlot;
+import net.minecraft.server.v1_15_R1.WorldServer;
 import shadows.stoneblock.listeners.IslandProtection;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
@@ -205,7 +205,7 @@ public class CustomBlockHandler implements Listener {
 		e.blockList().removeIf(b -> b.getType() == Material.BLUE_ICE);
 	}
 
-	static net.minecraft.server.v1_14_R1.ItemStack invisHoe = new net.minecraft.server.v1_14_R1.ItemStack(Items.DIAMOND_HOE);
+	static net.minecraft.server.v1_15_R1.ItemStack invisHoe = new net.minecraft.server.v1_15_R1.ItemStack(Items.DIAMOND_HOE);
 	static {
 		invisHoe.setDamage(66);
 		invisHoe.getTag().setBoolean("Unbreakable", true);
@@ -278,7 +278,7 @@ public class CustomBlockHandler implements Listener {
 			e.setCancelled(true);
 			EntityPlayer player = (EntityPlayer) ReflectionHelper.getPrivateValue(CraftEntity.class, (CraftEntity) e.getPlayer(), "entity");
 			int idx = player.inventory.itemInHandIndex;
-			net.minecraft.server.v1_14_R1.ItemStack stack;
+			net.minecraft.server.v1_15_R1.ItemStack stack;
 			if (!player.getItemInMainHand().isEmpty()) stack = player.getItemInMainHand().cloneItemStack();
 			else stack = invisHoe;
 			if (!stack.hasTag()) stack.setTag(new NBTTagCompound());
@@ -288,7 +288,7 @@ public class CustomBlockHandler implements Listener {
 			e.setCancelled(true);
 			EntityPlayer player = (EntityPlayer) ReflectionHelper.getPrivateValue(CraftEntity.class, (CraftEntity) e.getPlayer(), "entity");
 			int idx = player.inventory.itemInHandIndex;
-			net.minecraft.server.v1_14_R1.ItemStack stack;
+			net.minecraft.server.v1_15_R1.ItemStack stack;
 			if (!player.getItemInMainHand().isEmpty()) stack = player.getItemInMainHand().cloneItemStack();
 			else stack = invisHoe;
 			if (!stack.hasTag()) stack.setTag(new NBTTagCompound());
@@ -333,7 +333,7 @@ public class CustomBlockHandler implements Listener {
 		AnvilInventory inv = e.getInventory();
 		ItemStack input = inv.getItem(0);
 		if (input != null) {
-			net.minecraft.server.v1_14_R1.ItemStack nms = CraftItemStack.asNMSCopy(input);
+			net.minecraft.server.v1_15_R1.ItemStack nms = CraftItemStack.asNMSCopy(input);
 			if (nms.hasTag() && nms.getTag().hasKey("CustomModelData")) {
 				e.setResult(null);
 				e.getViewers().forEach(p -> ((Player) p).updateInventory());

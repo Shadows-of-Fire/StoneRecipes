@@ -82,4 +82,16 @@ public class WorldPos {
 		return String.format("(%d, %d, %d)", x, y, z);
 	}
 
+	public WorldPos up() {
+		return new WorldPos(dim, x, y + 1, z);
+	}
+
+	public WorldPos down() {
+		return new WorldPos(dim, x, y - 1, z);
+	}
+
+	public WorldPos offset(int x, int y, int z) {
+		return new WorldPos(dim, this.x + x, this.y + y, this.z + z);
+	}
+
 }

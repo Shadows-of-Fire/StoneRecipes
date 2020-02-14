@@ -1,15 +1,15 @@
 package shadows.stonerecipes.guns.types;
 
 import org.bukkit.Color;
-import org.bukkit.craftbukkit.v1_14_R1.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_15_R1.event.CraftEventFactory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_14_R1.DamageSource;
-import net.minecraft.server.v1_14_R1.EntityLightning;
-import net.minecraft.server.v1_14_R1.EntityLiving;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.DamageSource;
+import net.minecraft.server.v1_15_R1.EntityLightning;
+import net.minecraft.server.v1_15_R1.EntityLiving;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.guns.BasicGun;
 import shadows.stonerecipes.util.Laser;
@@ -50,7 +50,7 @@ public class LightningGauntlet extends BasicGun {
 	@Override
 	protected void dealDamageInternal(EntityPlayer player, EntityLiving hit, float amount) {
 		CraftEventFactory.blockDamage = null;
-		CraftEventFactory.entityDamage = new EntityLightning(player.world, player.locX, player.locY, player.locZ, true);
+		CraftEventFactory.entityDamage = new EntityLightning(player.world, player.locX(), player.locY(), player.locZ(), true);
 		hit.damageEntity(DamageSource.LIGHTNING, amount);
 	}
 

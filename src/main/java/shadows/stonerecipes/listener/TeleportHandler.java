@@ -21,7 +21,6 @@ import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
 import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
-import shadows.stonerecipes.util.ITeleporter;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
@@ -71,15 +70,15 @@ public class TeleportHandler implements Listener {
 	 * @param linker The player doing the linking.
 	 * @param pos The position of the target teleporter.
 	 */
-	private void attemptLink(ITeleporter teleporter, Player linker, WorldPos pos) {
-		Map<Player, WorldPos> curLinkers = teleporter.isPlayerTeleporter() ? playerLinks : itemLinks;
+	private void attemptLink(PlayerTeleporter teleporter, Player linker, WorldPos pos) {
+		Map<Player, WorldPos> curLinkers = playerLinks;
 		WorldPos sourcePos = curLinkers.get(linker);
 		if (sourcePos.equals(pos)) {
 			linker.sendMessage(ChatColor.GREEN + "You cannot link a teleporter to itself.");
 			return;
 		}
 		teleporter.setLink(curLinkers.get(linker));
-		ITeleporter source = teleporter.isPlayerTeleporter() ? hotloadPlayerT(sourcePos) : hotloadItemT(sourcePos);
+		PlayerTeleporter source = hotloadPlayerT(sourcePos);
 		if (source != null) {
 			source.setLink(pos);
 			linker.sendMessage(ChatColor.GREEN + "The teleporters at " + pos.translated() + " and " + sourcePos.translated() + " are now linked!");
@@ -132,15 +131,20 @@ public class TeleportHandler implements Listener {
 			ItemTeleporter teleporter = Maps.ITEM_TELEPORTERS.get(pos);
 			if (e.getClicker().isSneaking()) {
 				if (itemLinks.containsKey(e.getClicker())) {
-					attemptLink(teleporter, e.getClicker(), pos);
+					WorldPos sourcePos = itemLinks.get(e.getClicker());
+					if (sourcePos.equals(pos)) {
+						e.getClicker().sendMessage(ChatColor.GREEN + "You cannot link a teleporter to itself.");
+						return;
+					}
+					ItemTeleporter source = hotloadItemT(sourcePos);
+					if (source != null) {
+						source.setDestination(pos);
+						e.getClicker().sendMessage(ChatColor.GREEN + "The teleporter at " + sourcePos.translated() + " is now targetting " + pos.translated() + ".");
+					} else e.getClicker().sendMessage(ChatColor.RED + "The teleporter at " + sourcePos.translated() + " no longer exists!");
+					itemLinks.remove(e.getClicker());
 				} else {
 					itemLinks.put(e.getClicker(), pos);
-					if (!teleporter.getLink().equals(WorldPos.INVALID)) {
-						ItemTeleporter target = hotloadItemT(teleporter.getLink());
-						if (target != null) target.setLink(WorldPos.INVALID);
-						teleporter.setLink(WorldPos.INVALID);
-					}
-					e.getClicker().sendMessage(ChatColor.GREEN + "Shift-right click another Item Teleporter to link!");
+					e.getClicker().sendMessage(ChatColor.GREEN + "Shift-right click another Item Teleporter to target!");
 				}
 			} else teleporter.openInventory(e.getClicker());
 			e.setSuccess();
@@ -245,13 +249,6 @@ public class TeleportHandler implements Listener {
 	public void removeItemT(WorldPos pos) {
 		ItemTeleporter removed = Maps.ITEM_TELEPORTERS.remove(pos);
 		if (removed != null) {
-			if (!removed.getLink().equals(WorldPos.INVALID)) {
-				if (Maps.ITEM_TELEPORTERS.contains(removed.getLink())) {
-					Maps.ITEM_TELEPORTERS.get(removed.getLink()).setLink(WorldPos.INVALID);
-				} else {
-					itemData.set(removed.getLink() + ".link", WorldPos.INVALID.toString());
-				}
-			}
 			removed.destroy();
 			itemData.set(pos.toString(), null);
 			itemData.save();

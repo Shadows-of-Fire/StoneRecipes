@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,9 +15,9 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import net.minecraft.server.v1_14_R1.DamageSource;
-import net.minecraft.server.v1_14_R1.EntityLiving;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.DamageSource;
+import net.minecraft.server.v1_15_R1.EntityLiving;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.BukkitLambda;

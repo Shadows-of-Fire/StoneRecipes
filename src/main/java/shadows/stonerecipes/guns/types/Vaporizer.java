@@ -15,9 +15,9 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import net.minecraft.server.v1_14_R1.DamageSource;
-import net.minecraft.server.v1_14_R1.EntityLiving;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.DamageSource;
+import net.minecraft.server.v1_15_R1.EntityLiving;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.guns.BasicGun;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;

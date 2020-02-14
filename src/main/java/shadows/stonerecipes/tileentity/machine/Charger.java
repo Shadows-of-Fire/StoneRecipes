@@ -149,4 +149,21 @@ public class Charger extends PoweredMachine implements Listener {
 		setPower(stack, getPower(stack) - power);
 	}
 
+	static int[] slots = { Slots.COAL_GEN_INPUT - 1, Slots.COAL_GEN_INPUT, Slots.COAL_GEN_INPUT + 1 };
+
+	@Override
+	protected int[] getInputSlots() {
+		return slots;
+	}
+
+	@Override
+	protected int[] getOutputSlots() {
+		return slots;
+	}
+
+	@Override
+	protected boolean canExtract(ItemStack stack) {
+		return getPower(stack) == getMaxPower(stack);
+	}
+
 }

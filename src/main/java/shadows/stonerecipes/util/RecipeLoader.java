@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftShapelessRecipe;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftShapelessRecipe;
 import org.bukkit.inventory.BlastingRecipe;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;

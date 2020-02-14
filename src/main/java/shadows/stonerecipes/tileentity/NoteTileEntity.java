@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftInventoryCustom;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -359,16 +359,59 @@ public abstract class NoteTileEntity implements ITickable {
 	 * Attempts to extract an item from this tile.
 	 * @return The successfully extracted itemstack, or {@link ItemData#EMPTY} if nothing is available.
 	 */
-	public ItemStack extractItem() {
+	public ItemStack extractItem(int maxCount, boolean simulate) {
+		for (int i : getOutputSlots()) {
+			ItemStack s = this.inventory.getItem(i);
+			if (!isEmpty(s) && canExtract(s)) {
+				ItemStack clone = s.clone();
+				clone.setAmount(Math.min(clone.getAmount(), maxCount));
+				if (!simulate) {
+					s.setAmount(s.getAmount() - clone.getAmount());
+				}
+				return clone;
+			}
+		}
 		return ItemData.EMPTY;
 	}
 
 	/**
-	 * Attempts to insert an item into this tile.
+	 * Attempts to insert an item into this tile. This may not modifiy the passed itemstack.
 	 * @param stack The stack to be inserted.
 	 * @return The remaining stack, or {@link ItemData#EMPTY} if the entire stack was inserted.
 	 */
-	public ItemStack insertItem(ItemStack stack) {
+	public ItemStack insertItem(ItemStack stack, boolean simulate) {
+		int max = Math.min(inventory.getMaxStackSize(), stack.getMaxStackSize());
+		for (int i : getInputSlots()) {
+			if (isEmpty(stack)) return ItemData.EMPTY;
+			ItemStack slot = this.inventory.getItem(i);
+			if (ItemData.isSimilar(slot, stack) && slot.getAmount() < max) {
+				ItemStack sClone = stack.clone();
+				if (simulate) {
+					//never actually called, NYI
+					throw new Error("Not Yet Implemented.");
+				} else {
+					int old = slot.getAmount();
+					slot.setAmount(Math.min(max, old + stack.getAmount()));
+					sClone.setAmount(sClone.getAmount() - (slot.getAmount() - old));
+				}
+				stack = sClone;
+			} else if (isEmpty(slot)) {
+				inventory.setItemInternal(i, stack.clone());
+				return ItemData.EMPTY;
+			}
+		}
 		return stack;
+	}
+
+	protected int[] getInputSlots() {
+		return new int[0];
+	}
+
+	protected int[] getOutputSlots() {
+		return new int[0];
+	}
+
+	protected boolean canExtract(ItemStack stack) {
+		return true;
 	}
 }
