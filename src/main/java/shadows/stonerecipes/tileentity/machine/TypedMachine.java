@@ -38,7 +38,7 @@ public class TypedMachine extends PoweredMachine {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = file.getInt(itemName + ".timer");
+		this.timer = file.getInt(itemName + ".timer", 1);
 		this.start_progress = file.getInt(itemName + ".start_progress");
 		this.powerCost = file.getInt(itemName + ".powerCost");
 		this.maxPower = Math.max(maxPower, powerCost);

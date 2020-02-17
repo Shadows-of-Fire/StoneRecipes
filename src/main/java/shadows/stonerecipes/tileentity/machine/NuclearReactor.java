@@ -199,7 +199,7 @@ public class NuclearReactor extends PowerGenerator {
 	@Override
 	public void loadConfigData(PluginFile file) {
 		maxPower = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.maxPower");
-		timer = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.timer");
+		timer = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.timer", 1);
 		uraniumPower = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.uraniumPower");
 		maxHeat = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.maxHeat");
 		uraniumHeat = StoneRecipes.INSTANCE.getConfig().getInt("nuclearReactor.uraniumHeat");

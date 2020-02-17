@@ -27,7 +27,7 @@ public class Charger extends PoweredMachine implements Listener {
 
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = StoneRecipes.INSTANCE.getConfig().getInt("armorCharger.timer");
+		this.timer = StoneRecipes.INSTANCE.getConfig().getInt("armorCharger.timer", 1);
 		this.start_progress = StoneRecipes.INSTANCE.getConfig().getInt("armorCharger.gui");
 	}
 

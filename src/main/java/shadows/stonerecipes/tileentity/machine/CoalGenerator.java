@@ -32,7 +32,7 @@ public class CoalGenerator extends PowerGenerator {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.timer");
+		this.timer = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.timer", 1);
 		this.start_progress = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.gui");
 		this.barStart = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.bar");
 		this.whiteStart = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.white");

@@ -18,7 +18,6 @@ public class CraftingHandler implements Listener {
 
 	@EventHandler
 	public void onPlayerCraft(PrepareItemCraftEvent e) {
-		//not allowed to repair
 		if (e.isRepair()) {
 			e.getInventory().setResult(null);
 			return;

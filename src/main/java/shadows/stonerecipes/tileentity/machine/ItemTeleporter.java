@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -89,7 +90,6 @@ public class ItemTeleporter extends PoweredMachine {
 
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = 5;
 		this.powerCost = StoneRecipes.INSTANCE.getConfig().getInt("itemTP.powerCost");
 		this.start_progress = StoneRecipes.INSTANCE.getConfig().getInt("itemTP.start_progress");
 		this.maxPower = StoneRecipes.INSTANCE.getConfig().getInt("itemTP.maxPower");
@@ -165,17 +165,26 @@ public class ItemTeleporter extends PoweredMachine {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected void timerTick() {
-		NoteTileEntity above = Maps.ALL_MACHINES.get(this.pos.up());
+		if (receivesPower && ticks % 40 == 0) {
+			int needed = this.maxPower - getPower();
+			if (needed == 0) return;
+			addPower(receivePower(this, needed));
+		}
+		extract();
+		insert();
+	}
 
+	private void extract() {
+		NoteTileEntity above = Maps.ALL_MACHINES.get(this.pos.up());
 		if (above != null) {
 			ItemStack ext = above.extractItem(64, true);
 			if (isEmpty(ext)) return;
 			ItemStack res = this.insertItem(ext, false);
 			above.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
 		} else {
-			BlockState state = this.location.getWorld().getBlockAt(location.clone().add(0, 1, 0)).getState();
+			Block b = this.location.getWorld().getBlockAt(location.clone().add(0, 1, 0));
+			BlockState state = b.getState();
 			if (state instanceof InventoryHolder) {
 				Inventory inv = state instanceof Chest ? ((Chest) state).getBlockInventory() : ((InventoryHolder) state).getInventory();
 				ItemStack ext = ItemData.EMPTY;
@@ -190,11 +199,13 @@ public class ItemTeleporter extends PoweredMachine {
 				}
 				if (isEmpty(ext)) return;
 				ItemStack res = this.insertItem(ext, false);
-				ext.setAmount(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()));
+				ext.setAmount((isEmpty(res) ? 0 : res.getAmount()));
 				inv.setItem(slot, ext);
 			}
 		}
+	}
 
+	private void insert() {
 		if (destination.equals(WorldPos.INVALID)) {
 			NoteTileEntity below = Maps.ALL_MACHINES.get(this.pos.down());
 			if (below != null) {
@@ -202,6 +213,16 @@ public class ItemTeleporter extends PoweredMachine {
 				if (isEmpty(ext)) return;
 				ItemStack res = below.insertItem(ext, false);
 				this.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
+			} else {
+				Block b = this.location.getWorld().getBlockAt(location.clone().add(0, -1, 0));
+				BlockState state = b.getState();
+				if (state instanceof InventoryHolder) {
+					Inventory inv = state instanceof Chest ? ((Chest) state).getBlockInventory() : ((InventoryHolder) state).getInventory();
+					ItemStack ext = this.extractItem(64, true);
+					if (isEmpty(ext)) return;
+					ItemStack res = insertItemVanilla(inv, ext, false);
+					this.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
+				}
 			}
 		} else {
 			NoteTileEntity link = Maps.ITEM_TELEPORTERS.get(this.destination);
@@ -212,9 +233,10 @@ public class ItemTeleporter extends PoweredMachine {
 			ItemStack ext = this.extractItem(64, true);
 			if (isEmpty(ext)) return;
 			ItemStack res = link.insertItem(ext, false);
-			if (res.getAmount() == ext.getAmount()) return;
+			if (!isEmpty(res) && ext.getAmount() == res.getAmount()) return;
 			this.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
 			new Laser(this.location.clone().add(0.5, 0.5, 0.5), this.destination.toLocation().add(0.5, 0.5, 0.5), Color.BLUE).connect();
+			this.usePower(this.powerCost);
 		}
 	}
 
@@ -235,6 +257,30 @@ public class ItemTeleporter extends PoweredMachine {
 	@Override
 	protected int[] getOutputSlots() {
 		return slots;
+	}
+
+	private static ItemStack insertItemVanilla(Inventory inv, ItemStack stack, boolean simulate) {
+		int max = Math.min(inv.getMaxStackSize(), stack.getMaxStackSize());
+		for (int i = 0; i < inv.getSize(); i++) {
+			if (isEmpty(stack)) return ItemData.EMPTY;
+			ItemStack slot = inv.getItem(i);
+			if (ItemData.isSimilar(slot, stack) && slot.getAmount() < max) {
+				ItemStack sClone = stack.clone();
+				if (simulate) {
+					//never actually called, NYI
+					throw new Error("Not Yet Implemented.");
+				} else {
+					int old = slot.getAmount();
+					slot.setAmount(Math.min(max, old + stack.getAmount()));
+					sClone.setAmount(sClone.getAmount() - (slot.getAmount() - old));
+				}
+				stack = sClone;
+			} else if (isEmpty(slot)) {
+				inv.setItem(i, stack.clone());
+				return ItemData.EMPTY;
+			}
+		}
+		return stack;
 	}
 
 }

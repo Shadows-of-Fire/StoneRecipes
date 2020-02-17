@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -118,6 +119,9 @@ public class CustomBlockHandler implements Listener {
 		if (Strings.isNullOrEmpty(id)) return;
 		CustomBlock cBlock = StoneRecipes.INSTANCE.getItems().getBlock(id);
 		if (cBlock != null) {
+			BlockPlaceEvent ev = new BlockPlaceEvent(block, block.getState(), block, e.getItem(), e.getPlayer(), true, e.getHand());
+			Bukkit.getServer().getPluginManager().callEvent(ev);
+			if (ev.isCancelled()) return;
 			MachineUtils.placeNoteBlock(block, cBlock);
 			if (block.getType() == Material.NOTE_BLOCK) StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(id, block, e.getItem()));
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getItem().setAmount(e.getItem().getAmount() - 1);

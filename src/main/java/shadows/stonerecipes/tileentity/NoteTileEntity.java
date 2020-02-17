@@ -74,6 +74,7 @@ public abstract class NoteTileEntity implements ITickable {
 	 * Starts the cycle of this machine.  This machine will then tick.
 	 */
 	public void start() {
+		this.timer = Math.max(1, this.timer);
 		TickHandler.registerTickable(this);
 		this.loadConfigData(new PluginFile(StoneRecipes.INSTANCE, file));
 		DataHandler.needsUnload(location.getChunk());

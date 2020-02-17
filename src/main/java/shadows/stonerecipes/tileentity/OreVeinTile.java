@@ -42,7 +42,7 @@ public class OreVeinTile extends NoteTileEntity {
 		} else {
 			this.ore = new CustomBlock(Material.valueOf(ore), null);
 		}
-		this.timer = file.getInt(name + ".interval");
+		this.timer = file.getInt(name + ".interval", 1);
 	}
 
 	@Override
