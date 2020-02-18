@@ -57,22 +57,14 @@ public class DataHandler implements Listener {
 
 	public void onChunkLoad(Chunk chunk) {
 		if (!needsLoad.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).contains(toLong(chunk))) return;
-		StoneRecipes.INSTANCE.getMachines().load(chunk);
-		StoneRecipes.INSTANCE.getTeleporters().load(chunk);
-		StoneRecipes.INSTANCE.getChargers().load(chunk);
-		StoneRecipes.INSTANCE.getReactors().load(chunk);
-		StoneRecipes.INSTANCE.getOres().load(chunk);
+		StoneRecipes.INSTANCE.getMachineHandler().load(chunk);
 		needsLoad.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).remove(toLong(chunk));
 		StoneRecipes.debug("Loaded chunk (%s,%s)", chunk.getX(), chunk.getZ());
 	}
 
 	public void onChunkUnload(Chunk chunk) {
 		if (!needsUnload.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).contains(toLong(chunk))) return;
-		StoneRecipes.INSTANCE.getMachines().save(chunk);
-		StoneRecipes.INSTANCE.getTeleporters().save(chunk);
-		StoneRecipes.INSTANCE.getChargers().save(chunk);
-		StoneRecipes.INSTANCE.getReactors().save(chunk);
-		StoneRecipes.INSTANCE.getOres().save(chunk);
+		StoneRecipes.INSTANCE.getMachineHandler().save(chunk);
 		needsUnload.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).remove(toLong(chunk));
 		needsLoad.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).add(toLong(chunk));
 		StoneRecipes.debug("Unloaded chunk (%s,%s)", chunk.getX(), chunk.getZ());

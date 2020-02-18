@@ -17,6 +17,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.ReactorHandler;
+import shadows.stonerecipes.registry.NoteTileType;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
@@ -122,7 +124,7 @@ public class NuclearReactor extends PowerGenerator {
 		exploded = true;
 		location.getBlock().setType(Material.AIR, false);
 		location.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 50, true, true);
-		StoneRecipes.INSTANCE.getReactors().removeReactor(pos);
+		getType().remove(pos);
 	}
 
 	/**
@@ -312,6 +314,11 @@ public class NuclearReactor extends PowerGenerator {
 			return;
 		}
 		super.handleShiftClick(e);
+	}
+
+	@Override
+	public NoteTileType<?> getType() {
+		return NoteTypes.REACTOR;
 	}
 
 }

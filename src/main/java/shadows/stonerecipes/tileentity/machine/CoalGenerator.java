@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.registry.NoteTileType;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;
@@ -161,6 +163,11 @@ public class CoalGenerator extends PowerGenerator {
 	@Override
 	protected int[] getInputSlots() {
 		return slots;
+	}
+
+	@Override
+	public NoteTileType<?> getType() {
+		return NoteTypes.GENERATOR;
 	}
 
 }

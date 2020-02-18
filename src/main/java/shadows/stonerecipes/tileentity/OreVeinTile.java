@@ -4,6 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
+import shadows.stonerecipes.registry.NoteTileType;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
@@ -69,6 +72,15 @@ public class OreVeinTile extends NoteTileEntity {
 
 	protected void genOre(Block block) {
 		this.ore.place(block);
+	}
+
+	@Override
+	public void onClicked(NoteBlockClickedEvent e) {
+	}
+
+	@Override
+	public NoteTileType<?> getType() {
+		return NoteTypes.ORE_VEIN;
 	}
 
 }

@@ -16,7 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.DataHandler;
+import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
@@ -415,4 +417,15 @@ public abstract class NoteTileEntity implements ITickable {
 	protected boolean canExtract(ItemStack stack) {
 		return true;
 	}
+
+	/**
+	 * Called when this tile is clicked on by a player.
+	 */
+	public void onClicked(NoteBlockClickedEvent e) {
+		this.openInventory(e.getClicker());
+		e.setSuccess();
+	}
+
+	public abstract NoteTileType<?> getType();
+
 }

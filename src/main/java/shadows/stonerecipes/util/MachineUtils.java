@@ -7,7 +7,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import net.minecraft.server.v1_15_R1.EntityHuman;
@@ -16,7 +15,6 @@ import net.minecraft.server.v1_15_R1.MinecraftKey;
 import net.minecraft.server.v1_15_R1.PacketPlayOutCustomSoundEffect;
 import net.minecraft.server.v1_15_R1.Vec3D;
 import shadows.stonerecipes.StoneRecipes;
-import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.NoteTileEntity.NoteBlockInventory;
 
@@ -24,21 +22,6 @@ import shadows.stonerecipes.tileentity.NoteTileEntity.NoteBlockInventory;
  * Utility code for various machine related activities.
  */
 public class MachineUtils {
-
-	/**
-	 * Attempts to open a machine gui based on a map of pos -> machine for a given position.
-	 * @param player Player to open the gui for.
-	 * @param pos Location of the block that was clicked.
-	 * @param machines A map of worldpos -> machine that will be checked for machines to open.
-	 * @return true if a machine was found at that location and a was opened, false otherwise.
-	 */
-	public static boolean openGui(Player player, WorldPos pos, MapWrapper<?> machines) {
-		if (machines.contains(pos)) {
-			machines.get(pos).openInventory(player);
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * Retrieves a machine instance from an inventory.

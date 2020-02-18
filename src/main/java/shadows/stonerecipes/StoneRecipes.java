@@ -1,6 +1,8 @@
 package shadows.stonerecipes;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -17,19 +19,17 @@ import net.minecraft.server.v1_15_R1.ItemTool;
 import net.minecraft.server.v1_15_R1.Items;
 import net.minecraft.server.v1_15_R1.Material;
 import net.minecraft.server.v1_15_R1.SoundEffectType;
-import shadows.stonerecipes.listener.ChargerHandler;
-import shadows.stonerecipes.listener.CraftingHandler;
 import shadows.stonerecipes.listener.CustomBlockHandler;
+import shadows.stonerecipes.listener.CustomMachineHandler;
 import shadows.stonerecipes.listener.DataHandler;
 import shadows.stonerecipes.listener.GunHandler;
-import shadows.stonerecipes.listener.MachineHandler;
 import shadows.stonerecipes.listener.NanosuitHandler;
-import shadows.stonerecipes.listener.OreVeinHandler;
 import shadows.stonerecipes.listener.ReactorHandler;
+import shadows.stonerecipes.listener.RecipeLoader;
 import shadows.stonerecipes.listener.TeleportHandler;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.ItemData;
-import shadows.stonerecipes.util.RecipeLoader;
+import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.ReflectionHelper;
 import shadows.stonerecipes.util.TickHandler;
 
@@ -61,16 +61,15 @@ public class StoneRecipes extends JavaPlugin {
 	}
 
 	private ItemData itemData;
-	private MachineHandler machineHandler;
-	private ChargerHandler armorHandler;
+	private CustomMachineHandler machines;
 	private TeleportHandler teleportHandler;
 	private NanosuitHandler powerArmorHandler;
 	private ReactorHandler reactorHandler;
 	private RecipeLoader recipeLoader;
 	private GunHandler gunHandler;
 	private DataHandler dataHandler;
-	private OreVeinHandler oreHandler;
 	private BukkitTask tickTask;
+	private List<String> oreVeins = new ArrayList<>();
 
 	public static int jetLevel, jetTime, jetCost;
 
@@ -78,27 +77,27 @@ public class StoneRecipes extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 		saveDefaultConfig();
-		dataHandler = new DataHandler();
-		itemData = new ItemData(this);
-		itemData.loadData();
-		machineHandler = new MachineHandler(this);
-		machineHandler.loadOutputs();
-		powerArmorHandler = new NanosuitHandler();
-		armorHandler = new ChargerHandler(this);
-		teleportHandler = new TeleportHandler(this);
-		reactorHandler = new ReactorHandler(this);
-		gunHandler = new GunHandler(this);
-		gunHandler.loadGuns();
+		PluginFile veins = new PluginFile(this, "ore_veins.yml");
+		for (String generator : veins.getKeys(false)) {
+			oreVeins.add(generator);
+		}
 		recipeLoader = new RecipeLoader(this);
 		recipeLoader.loadRecipes();
 		recipeLoader.loadFurnaceRecipes();
 		recipeLoader.loadBlastRecipes();
-		getServer().getPluginManager().registerEvents(new CraftingHandler(this), this);
-		getServer().getPluginManager().registerEvents(oreHandler = new OreVeinHandler(this), this);
+		recipeLoader.loadMachineRecipes();
+		dataHandler = new DataHandler();
+		itemData = new ItemData(this);
+		itemData.loadData();
+		machines = new CustomMachineHandler();
+		powerArmorHandler = new NanosuitHandler();
+		teleportHandler = new TeleportHandler();
+		reactorHandler = new ReactorHandler(this);
+		gunHandler = new GunHandler(this);
+		gunHandler.loadGuns();
+		getServer().getPluginManager().registerEvents(recipeLoader, this);
 		getServer().getPluginManager().registerEvents(gunHandler, this);
-		getServer().getPluginManager().registerEvents(armorHandler, this);
 		getServer().getPluginManager().registerEvents(powerArmorHandler, this);
-		getServer().getPluginManager().registerEvents(machineHandler, this);
 		getServer().getPluginManager().registerEvents(teleportHandler, this);
 		getServer().getPluginManager().registerEvents(reactorHandler, this);
 		getServer().getPluginManager().registerEvents(dataHandler, this);
@@ -129,24 +128,12 @@ public class StoneRecipes extends JavaPlugin {
 		tickTask.cancel();
 	}
 
-	public MachineHandler getMachines() {
-		return machineHandler;
-	}
-
 	public ItemData getItems() {
 		return itemData;
 	}
 
-	public TeleportHandler getTeleporters() {
-		return teleportHandler;
-	}
-
 	public static void debug(String msg, Object... args) {
 		if (DEBUG) System.out.println(String.format(msg, args));
-	}
-
-	public ChargerHandler getChargers() {
-		return armorHandler;
 	}
 
 	public ReactorHandler getReactors() {
@@ -157,8 +144,16 @@ public class StoneRecipes extends JavaPlugin {
 		return gunHandler;
 	}
 
-	public OreVeinHandler getOres() {
-		return oreHandler;
+	public CustomMachineHandler getMachineHandler() {
+		return machines;
+	}
+
+	public List<String> getOreVeins() {
+		return oreVeins;
+	}
+
+	public RecipeLoader getRecipes() {
+		return recipeLoader;
 	}
 
 }

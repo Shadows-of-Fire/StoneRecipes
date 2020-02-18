@@ -21,6 +21,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.DataHandler.Maps;
+import shadows.stonerecipes.registry.NoteTileType;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.Laser;
@@ -283,4 +285,8 @@ public class ItemTeleporter extends PoweredMachine {
 		return stack;
 	}
 
+	@Override
+	public NoteTileType<?> getType() {
+		return NoteTypes.ITEM_TELEPORTER;
+	}
 }

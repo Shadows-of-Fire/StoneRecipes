@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.Laser;
 import shadows.stonerecipes.util.PluginFile;
@@ -103,7 +103,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 
 	public static int receivePower(PoweredMachine machine, int amount) {
 		int power = 0;
-		for (PowerGenerator gen : StoneRecipes.INSTANCE.getMachines().getGenerators()) {
+		for (PowerGenerator gen : Maps.GENERATORS.values()) {
 			if (gen.getLocation().getWorld() == machine.getLocation().getWorld() && gen.getLocation().distanceSquared(machine.getLocation()) < 16 * 16) {
 				power += gen.usePower(amount);
 				amount -= power;
@@ -111,7 +111,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 				if (amount <= 0) break;
 			}
 		}
-		if (amount != 0) for (PowerGenerator gen : StoneRecipes.INSTANCE.getReactors().getReactors()) {
+		if (amount != 0) for (PowerGenerator gen : Maps.REACTORS.values()) {
 			if (gen.getLocation().getWorld() == machine.getLocation().getWorld() && gen.getLocation().distanceSquared(machine.getLocation()) < 16 * 16) {
 				power += gen.usePower(amount);
 				amount -= power;

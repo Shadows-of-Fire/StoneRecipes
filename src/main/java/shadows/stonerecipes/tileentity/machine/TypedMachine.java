@@ -15,6 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.registry.NoteTileType;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
@@ -51,8 +53,9 @@ public class TypedMachine extends PoweredMachine {
 		infoHoe.setItemMeta(meta);
 	}
 
-	public String getType() {
-		return type;
+	@Override
+	public NoteTileType<?> getType() {
+		return NoteTypes.TYPED_MACHINE;
 	}
 
 	@Override
@@ -89,7 +92,7 @@ public class TypedMachine extends PoweredMachine {
 	@Override
 	protected void timerTick() {
 		ItemStack input = inventory.getItem(Slots.INPUT);
-		ItemStack output = StoneRecipes.INSTANCE.getMachines().getOutput(type, input);
+		ItemStack output = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
 		if (input == null || output == null || (inventory.getItem(Slots.OUTPUT) != null && !ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output))) {
 			progress = 0;
 			guiTex.setDurability((short) (start_progress + progress));
@@ -119,7 +122,7 @@ public class TypedMachine extends PoweredMachine {
 	public void finish() {
 		ItemStack input = inventory.getItem(Slots.INPUT);
 		ItemStack output = inventory.getItem(Slots.OUTPUT);
-		ItemStack recipeOut = StoneRecipes.INSTANCE.getMachines().getOutput(type, input);
+		ItemStack recipeOut = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
 		if (output != null && output.getType() != Material.AIR && output.getAmount() > 0) {
 			if (ItemData.isSimilar(recipeOut, output) && output.getAmount() + recipeOut.getAmount() <= output.getMaxStackSize()) {
 				this.usePower(powerCost);
@@ -146,7 +149,7 @@ public class TypedMachine extends PoweredMachine {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
-				if (StoneRecipes.INSTANCE.getMachines().getOutput(type, clicked) != null) attemptMerge(inventory, clicked, Slots.INPUT, Slots.INPUT + 1);
+				if (StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, clicked) != null) attemptMerge(inventory, clicked, Slots.INPUT, Slots.INPUT + 1);
 				if (clicked.hasItemMeta() && clicked.getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT)) {
 					attemptMerge(inventory, clicked, Slots.UPGRADE_0, Slots.UPGRADE_1 + 1);
 					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.UPGRADE_2, Slots.UPGRADE_3 + 1);

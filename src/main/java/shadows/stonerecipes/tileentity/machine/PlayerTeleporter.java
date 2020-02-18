@@ -15,6 +15,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.registry.NoteTileType;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
@@ -123,6 +125,11 @@ public class PlayerTeleporter extends PoweredMachine {
 
 	@Override
 	protected void dropItems() {
+	}
+
+	@Override
+	public NoteTileType<?> getType() {
+		return NoteTypes.PLAYER_TELEPORTER;
 	}
 
 }
