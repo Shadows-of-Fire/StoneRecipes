@@ -10,6 +10,7 @@ import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.listener.RecipeLoader;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.OreVeinTile;
+import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.tileentity.machine.CoalGenerator;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
@@ -29,6 +30,7 @@ public class NoteTypes {
 	public static final NoteTileType<NuclearReactor> REACTOR = register("nuclear_reactor", "data/reactors.yml", Maps.REACTORS, NuclearReactor::new);
 	public static final PlayerTeleType PLAYER_TELEPORTER = register(new PlayerTeleType());
 	public static final NoteTileType<ItemTeleporter> ITEM_TELEPORTER = register("item_teleporter", "data/itemTeleporters.yml", Maps.ITEM_TELEPORTERS, ItemTeleporter::new);
+	public static final NoteTileType<AutoCrafter> AUTO_CRAFTER = register("auto_crafter", "data/autocrafters.yml", Maps.AUTOCRAFTERS, AutoCrafter::new);
 
 	private static <T extends NoteTileEntity> NoteTileType<T> register(String id, String fileName, MapWrapper<T> map, Function<WorldPos, T> factory) {
 		return register(new NoteTileType<>(id, fileName, map, factory));

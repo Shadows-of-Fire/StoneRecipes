@@ -21,6 +21,7 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.OreVeinTile;
+import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
@@ -106,28 +107,21 @@ public class DataHandler implements Listener {
 
 	public static class Maps {
 		public static final Map<WorldPos, NoteTileEntity> ALL_MACHINES = new HashMap<>();
-		private static final Map<WorldPos, Charger> _CHARGERS = new HashMap<>();
-		private static final Map<WorldPos, TypedMachine> _TYPED_MACHINES = new HashMap<>();
-		private static final Map<WorldPos, PowerGenerator> _GENERATORS = new HashMap<>();
-		private static final Map<WorldPos, OreVeinTile> _VEINS = new HashMap<>();
-		private static final Map<WorldPos, NuclearReactor> _REACTORS = new HashMap<>();
-		private static final Map<WorldPos, PlayerTeleporter> _PLAYER_TELEPORTERS = new HashMap<>();
-		private static final Map<WorldPos, ItemTeleporter> _ITEM_TELEPORTERS = new HashMap<>();
-
-		public static final MapWrapper<Charger> CHARGERS = new MapWrapper<>(_CHARGERS);
-		public static final MapWrapper<TypedMachine> TYPED_MACHINES = new MapWrapper<>(_TYPED_MACHINES);
-		public static final MapWrapper<PowerGenerator> GENERATORS = new MapWrapper<>(_GENERATORS);
-		public static final MapWrapper<OreVeinTile> VEINS = new MapWrapper<>(_VEINS);
-		public static final MapWrapper<NuclearReactor> REACTORS = new MapWrapper<>(_REACTORS);
-		public static final MapWrapper<PlayerTeleporter> PLAYER_TELEPORTERS = new MapWrapper<>(_PLAYER_TELEPORTERS);
-		public static final MapWrapper<ItemTeleporter> ITEM_TELEPORTERS = new MapWrapper<>(_ITEM_TELEPORTERS);
+		public static final MapWrapper<Charger> CHARGERS = new MapWrapper<>();
+		public static final MapWrapper<TypedMachine> TYPED_MACHINES = new MapWrapper<>();
+		public static final MapWrapper<PowerGenerator> GENERATORS = new MapWrapper<>();
+		public static final MapWrapper<OreVeinTile> VEINS = new MapWrapper<>();
+		public static final MapWrapper<NuclearReactor> REACTORS = new MapWrapper<>();
+		public static final MapWrapper<PlayerTeleporter> PLAYER_TELEPORTERS = new MapWrapper<>();
+		public static final MapWrapper<ItemTeleporter> ITEM_TELEPORTERS = new MapWrapper<>();
+		public static final MapWrapper<AutoCrafter> AUTOCRAFTERS = new MapWrapper<>();
 	}
 
 	public static class MapWrapper<T extends NoteTileEntity> {
 		private final Map<WorldPos, T> map;
 
-		MapWrapper(Map<WorldPos, T> map) {
-			this.map = map;
+		MapWrapper() {
+			this.map = new HashMap<>();
 		}
 
 		public void put(WorldPos pos, T t) {
