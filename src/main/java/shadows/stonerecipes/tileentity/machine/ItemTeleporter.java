@@ -52,7 +52,7 @@ public class ItemTeleporter extends PoweredMachine {
 	public void setupContainer() {
 		super.setupContainer();
 		ItemMeta buttonMeta = guiTex.getItemMeta();
-		buttonMeta.setDisplayName("");
+		buttonMeta.setDisplayName(" ");
 		this.tpButton.setItemMeta(buttonMeta);
 		tpButton.setDurability((short) 66);
 		onPowerChanged();
