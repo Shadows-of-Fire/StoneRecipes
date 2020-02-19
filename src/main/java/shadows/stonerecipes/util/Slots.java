@@ -23,4 +23,8 @@ public final class Slots {
 
 	public static final int GUI_TEX_SLOT = 8;
 
+	public static final int AUTOCRAFTER_OUTPUT = 15;
+
+	public static final int AUTOCRAFTER_REFRESH = 17;
+
 }

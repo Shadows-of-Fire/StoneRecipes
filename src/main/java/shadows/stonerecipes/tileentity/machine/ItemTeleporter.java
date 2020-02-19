@@ -108,8 +108,8 @@ public class ItemTeleporter extends PoweredMachine {
 					inventory.setItemInternal(i, content.get(i));
 				}
 			}
-			if (file.contains(pos + ".destination")) this.destination = new WorldPos(file.getString(pos + ".destination"));
 		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + name + " at " + pos.translated());
+		if (file.contains(pos + ".destination")) this.destination = new WorldPos(file.getString(pos + ".destination"));
 	}
 
 	@Override
