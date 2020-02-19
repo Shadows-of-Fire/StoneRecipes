@@ -75,7 +75,7 @@ public class WorldPos {
 
 	public boolean isInside(Chunk chunk) {
 		if (!isInside(chunk.getWorld())) return false;
-		return ((x >> 4) == chunk.getX()) && ((z >> 4) == chunk.getZ());
+		return x >> 4 == chunk.getX() && z >> 4 == chunk.getZ();
 	}
 
 	public String translated() {

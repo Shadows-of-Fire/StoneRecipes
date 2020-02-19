@@ -145,7 +145,7 @@ public class ItemData {
 	@SuppressWarnings("deprecation")
 	public static boolean isSimilar(ItemStack one, ItemStack two) {
 
-		if ((one == null && two != null) || (two == null && one != null)) return false;
+		if (one == null && two != null || two == null && one != null) return false;
 
 		if (NoteTileEntity.isEmpty(one) != NoteTileEntity.isEmpty(two)) return false;
 

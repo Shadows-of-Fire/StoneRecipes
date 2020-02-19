@@ -18,16 +18,20 @@ public class BukkitLambda extends BukkitRunnable {
 		r.run();
 	}
 
-	public static BukkitTask runLater(Runnable r, int ticks) {
-		return new BukkitLambda(r).runTaskLater(StoneRecipes.INSTANCE, ticks);
+	public static BukkitTask runLater(Runnable r, int timer) {
+		return new BukkitLambda(r).runTaskLater(StoneRecipes.INSTANCE, timer);
 	}
 
-	public static BukkitTask runTimer(Runnable r, int ticks) {
-		return new BukkitLambda(r).runTaskTimer(StoneRecipes.INSTANCE, 0, ticks);
+	public static BukkitTask runAsync(Runnable r) {
+		return new BukkitLambda(r).runTaskAsynchronously(StoneRecipes.INSTANCE);
 	}
 
-	public static BukkitTask runTimerAsync(Runnable r, int ticks) {
-		return new BukkitLambda(r).runTaskTimerAsynchronously(StoneRecipes.INSTANCE, 0, ticks);
+	public static BukkitTask runTimer(Runnable r, int timer) {
+		return new BukkitLambda(r).runTaskTimer(StoneRecipes.INSTANCE, 0, timer);
+	}
+
+	public static BukkitTask runTimerAsync(Runnable r, int timer) {
+		return new BukkitLambda(r).runTaskTimerAsynchronously(StoneRecipes.INSTANCE, 0, timer);
 	}
 
 }

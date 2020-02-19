@@ -33,7 +33,7 @@ public class NBTShapelessRecipe extends ShapelessRecipes {
 		NonNullList<RecipeItemStack> data = NonNullList.a(ingred.size(), RecipeItemStack.a);
 
 		for (int i = 0; i < ingred.size(); ++i) {
-			data.set(i, original.toNMS((RecipeChoice) ingred.get(i), true));
+			data.set(i, original.toNMS(ingred.get(i), true));
 		}
 
 		MinecraftServer.getServer().getCraftingManager().addRecipe(new NBTShapelessRecipe(CraftNamespacedKey.toMinecraft(original.getKey()), original.getGroup(), CraftItemStack.asNMSCopy(original.getResult()), data));

@@ -31,6 +31,7 @@ public class LavaShotgun extends BasicGun {
 		this.par = Particle.LAVA;
 	}
 
+	@Override
 	public void shoot(ItemStack gun, Player player, StoneRecipes plugin) {
 		if (!usePower(gun)) return;
 		if (!fireSound.isEmpty()) MachineUtils.playDistancedSound(player.getLocation(), fireSound, 90, 1);

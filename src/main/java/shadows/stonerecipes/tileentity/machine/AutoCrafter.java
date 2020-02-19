@@ -41,8 +41,6 @@ public class AutoCrafter extends PoweredMachine {
 	public AutoCrafter(WorldPos pos) {
 		super("autocrafter", "Auto Crafter", "config.yml", pos);
 		this.start_progress = 70;
-		this.timer = 10;
-		this.powerCost = 25;
 		this.updater = false;
 		refresh.setDurability((short) 65);
 		ItemMeta meta = refresh.getItemMeta();
@@ -50,7 +48,7 @@ public class AutoCrafter extends PoweredMachine {
 		meta.setUnbreakable(true);
 		meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES);
 		refresh.setItemMeta(meta);
-		guiTex.setDurability((short) (start_progress));
+		guiTex.setDurability((short) start_progress);
 		meta = guiTex.getItemMeta();
 		meta.setUnbreakable(true);
 		meta.setDisplayName(" ");
@@ -85,7 +83,7 @@ public class AutoCrafter extends PoweredMachine {
 	@Override
 	public void write(PluginFile file) {
 		super.write(file);
-		file.set(pos + ".recipe", recipe == null ? null : recipe.getKey());
+		file.set(pos + ".recipe", recipe == null ? null : recipe.getKey().toString());
 		file.set(pos + ".inv", Arrays.asList(inventory.getContents()));
 	}
 
@@ -100,7 +98,7 @@ public class AutoCrafter extends PoweredMachine {
 			Int2IntMap m = new Int2IntOpenHashMap();
 
 			for (int i = 0; i < 9; i++) {
-				int slot = i < 3 ? i : i < 6 ? (i - 3) + 9 : (i - 6) + 18;
+				int slot = i < 3 ? i : i < 6 ? i - 3 + 9 : i - 6 + 18;
 				org.bukkit.inventory.ItemStack s = this.inventory.getItem(slot);
 				if (!isEmpty(s)) {
 					boolean matched = false;
@@ -131,6 +129,7 @@ public class AutoCrafter extends PoweredMachine {
 				org.bukkit.inventory.ItemStack s = this.inventory.getItem(a);
 				s.setAmount(s.getAmount() - b);
 			});
+			this.usePower(this.powerCost);
 		}
 	}
 
@@ -164,6 +163,16 @@ public class AutoCrafter extends PoweredMachine {
 	@Override
 	protected int[] getInputSlots() {
 		return in;
+	}
+
+	@Override
+	protected void dropItems() {
+		Location dropLoc = location.clone().add(0.5, 0.5, 0.5);
+		for (int i = 0; i < inventory.getSize(); i++) {
+			if (i != Slots.GUI_TEX_SLOT && i != Slots.AUTOCRAFTER_REFRESH && inventory.getItem(i) != null && inventory.getItem(i).getType() != Material.AIR) {
+				location.getWorld().dropItem(dropLoc, inventory.getItem(i));
+			}
+		}
 	}
 
 	@Override
@@ -204,7 +213,7 @@ public class AutoCrafter extends PoweredMachine {
 	}
 
 	public ItemStack getInputItem(int i) {
-		int slot = i < 3 ? i : i < 6 ? (i - 3) + 9 : (i - 6) + 18;
+		int slot = i < 3 ? i : i < 6 ? i - 3 + 9 : i - 6 + 18;
 		org.bukkit.inventory.ItemStack s = this.inventory.getItem(slot);
 		if (isEmpty(s)) return ItemStack.a;
 		return CraftItemStack.asNMSCopy(s);
@@ -216,28 +225,35 @@ public class AutoCrafter extends PoweredMachine {
 			super(null, 3, 3);
 		}
 
+		@Override
 		public int getMaxStackSize() {
 			return 64;
 		}
 
+		@Override
 		public void setMaxStackSize(int size) {
 		}
 
+		@Override
 		public Location getLocation() {
 			return AutoCrafter.this.location.clone();
 		}
 
+		@Override
 		public IRecipe<? extends IInventory> getCurrentRecipe() {
 			return AutoCrafter.this.recipe;
 		}
 
+		@Override
 		public void setCurrentRecipe(@SuppressWarnings("rawtypes") IRecipe currentRecipe) {
 		}
 
+		@Override
 		public int getSize() {
 			return 9;
 		}
 
+		@Override
 		public ItemStack getItem(int i) {
 			return i >= this.getSize() ? ItemStack.a : AutoCrafter.this.getInputItem(i);
 		}

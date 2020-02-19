@@ -40,7 +40,7 @@ public class CoalGenerator extends PowerGenerator {
 		this.whiteStart = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.white");
 		this.maxPower = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.max_power");
 		this.coalPower = StoneRecipes.INSTANCE.getConfig().getInt("powerGenerator.coal_power");
-		guiTex.setDurability((short) (start_progress));
+		guiTex.setDurability((short) start_progress);
 		ItemMeta meta = guiTex.getItemMeta();
 		meta.setUnbreakable(true);
 		meta.setDisplayName(" ");

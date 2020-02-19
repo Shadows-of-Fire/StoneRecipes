@@ -81,7 +81,7 @@ public class DataHandler implements Listener {
 	}
 
 	public static long toLong(Chunk c) {
-		return (((long) c.getX()) << 32L) | (c.getZ() & 0xffffffffL);
+		return (long) c.getX() << 32L | c.getZ() & 0xffffffffL;
 	}
 
 	public void load() {

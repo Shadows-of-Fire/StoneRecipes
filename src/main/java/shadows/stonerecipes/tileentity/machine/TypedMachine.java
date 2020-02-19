@@ -93,7 +93,7 @@ public class TypedMachine extends PoweredMachine {
 	protected void timerTick() {
 		ItemStack input = inventory.getItem(Slots.INPUT);
 		ItemStack output = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
-		if (input == null || output == null || (inventory.getItem(Slots.OUTPUT) != null && !ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output))) {
+		if (input == null || output == null || inventory.getItem(Slots.OUTPUT) != null && !ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output)) {
 			progress = 0;
 			guiTex.setDurability((short) (start_progress + progress));
 			return;

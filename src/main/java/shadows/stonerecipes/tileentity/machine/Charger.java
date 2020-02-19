@@ -36,7 +36,7 @@ public class Charger extends PoweredMachine implements Listener {
 	@Override
 	@SuppressWarnings("deprecation")
 	protected void timerTick() {
-		if (getPower() == 0 || (!canCharge(21) && !canCharge(22) && !canCharge(23))) {
+		if (getPower() == 0 || !canCharge(21) && !canCharge(22) && !canCharge(23)) {
 			progress = 0;
 			guiTex.setDurability((short) (start_progress + progress));
 			return;

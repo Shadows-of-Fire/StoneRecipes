@@ -52,12 +52,9 @@ public class ItemTeleporter extends PoweredMachine {
 	public void setupContainer() {
 		super.setupContainer();
 		ItemMeta buttonMeta = guiTex.getItemMeta();
-		buttonMeta.setDisplayName(ChatColor.YELLOW + "Teleport Items");
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.YELLOW + "Costs " + powerCost + " Power");
-		buttonMeta.setLore(lore);
+		buttonMeta.setDisplayName("");
 		this.tpButton.setItemMeta(buttonMeta);
-		tpButton.setDurability((short) 370);
+		tpButton.setDurability((short) 66);
 		onPowerChanged();
 	}
 
@@ -201,7 +198,7 @@ public class ItemTeleporter extends PoweredMachine {
 				}
 				if (isEmpty(ext)) return;
 				ItemStack res = this.insertItem(ext, false);
-				ext.setAmount((isEmpty(res) ? 0 : res.getAmount()));
+				ext.setAmount(isEmpty(res) ? 0 : res.getAmount());
 				inv.setItem(slot, ext);
 			}
 		}
@@ -232,13 +229,15 @@ public class ItemTeleporter extends PoweredMachine {
 				destination = WorldPos.INVALID;
 				return;
 			}
-			ItemStack ext = this.extractItem(64, true);
+			if (this.getPower() == 0) return;
+			ItemStack ext = this.extractItem(Math.min(this.getPower(), 64), true);
 			if (isEmpty(ext)) return;
 			ItemStack res = link.insertItem(ext, false);
 			if (!isEmpty(res) && ext.getAmount() == res.getAmount()) return;
-			this.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
+			int sent = ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount());
+			this.extractItem(sent, false);
 			new Laser(this.location.clone().add(0.5, 0.5, 0.5), this.destination.toLocation().add(0.5, 0.5, 0.5), Color.BLUE).connect();
-			this.usePower(this.powerCost);
+			this.usePower(sent);
 		}
 	}
 

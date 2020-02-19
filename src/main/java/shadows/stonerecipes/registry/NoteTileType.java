@@ -5,11 +5,11 @@ import java.util.function.Function;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 
-import shadows.stoneblock.utility.BukkitLambda;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
+import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
