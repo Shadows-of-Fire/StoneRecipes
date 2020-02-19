@@ -43,7 +43,8 @@ public class NoteTileType<T extends NoteTileEntity> {
 		}
 		t.destroy();
 		data.set(pos.toString(), null);
-		BukkitLambda.runAsync(data::save);
+		if (StoneRecipes.INSTANCE.isEnabled()) BukkitLambda.runAsync(data::save);
+		else data.save();
 	}
 
 	public boolean accepts(String itemId) {
@@ -72,7 +73,8 @@ public class NoteTileType<T extends NoteTileEntity> {
 			}
 		}
 		map.removeIf(pos -> pos.isInside(chunk));
-		BukkitLambda.runAsync(data::save);
+		if (StoneRecipes.INSTANCE.isEnabled()) BukkitLambda.runAsync(data::save);
+		else data.save();
 	}
 
 	public String getId() {
