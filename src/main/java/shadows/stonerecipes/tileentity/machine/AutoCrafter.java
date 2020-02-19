@@ -67,10 +67,10 @@ public class AutoCrafter extends PoweredMachine {
 	public void read(PluginFile file) {
 		super.read(file);
 		if (file.contains(pos + ".recipe")) {
-			String key = file.getString(pos + ".recipe");
+			String key = file.getString(pos + ".recipe").replace('|', ':');
 			recipe = (IRecipe<InventoryCrafting>) MinecraftServer.getServer().getCraftingManager().recipes.get(Recipes.CRAFTING).get(new MinecraftKey(key));
 		}
-		if (file.isList(pos.toString() + ".inv")) {
+		if (file.isList(pos + ".inv")) {
 			List<org.bukkit.inventory.ItemStack> content = (List<org.bukkit.inventory.ItemStack>) file.getList(pos + ".inv");
 			for (int i = 0; i < 54; i++) {
 				if (content.get(i) != null) {
@@ -83,7 +83,7 @@ public class AutoCrafter extends PoweredMachine {
 	@Override
 	public void write(PluginFile file) {
 		super.write(file);
-		file.set(pos + ".recipe", recipe == null ? null : recipe.getKey().toString());
+		file.set(pos + ".recipe", recipe == null ? null : recipe.getKey().toString().replace(':', '|'));
 		file.set(pos + ".inv", Arrays.asList(inventory.getContents()));
 	}
 
