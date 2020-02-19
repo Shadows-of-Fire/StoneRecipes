@@ -81,14 +81,14 @@ public class StoneRecipes extends JavaPlugin {
 		for (String generator : veins.getKeys(false)) {
 			oreVeins.add(generator);
 		}
+		itemData = new ItemData(this);
+		itemData.loadData();
 		recipeLoader = new RecipeLoader(this);
 		recipeLoader.loadRecipes();
 		recipeLoader.loadFurnaceRecipes();
 		recipeLoader.loadBlastRecipes();
 		recipeLoader.loadMachineRecipes();
 		dataHandler = new DataHandler();
-		itemData = new ItemData(this);
-		itemData.loadData();
 		machines = new CustomMachineHandler();
 		powerArmorHandler = new NanosuitHandler();
 		teleportHandler = new TeleportHandler();
@@ -102,6 +102,7 @@ public class StoneRecipes extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(reactorHandler, this);
 		getServer().getPluginManager().registerEvents(dataHandler, this);
 		getServer().getPluginManager().registerEvents(new CustomBlockHandler(), this);
+		getServer().getPluginManager().registerEvents(machines, this);
 		getCommand("giveitem").setExecutor(new GiveCommand(this));
 		dataHandler.load();
 		for (World w : Bukkit.getWorlds()) {
