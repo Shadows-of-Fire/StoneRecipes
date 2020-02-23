@@ -23,6 +23,7 @@ import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.OreVeinTile;
 import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
+import shadows.stonerecipes.tileentity.machine.IndustrialTypedMachine;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
@@ -115,6 +116,7 @@ public class DataHandler implements Listener {
 		public static final MapWrapper<PlayerTeleporter> PLAYER_TELEPORTERS = new MapWrapper<>();
 		public static final MapWrapper<ItemTeleporter> ITEM_TELEPORTERS = new MapWrapper<>();
 		public static final MapWrapper<AutoCrafter> AUTOCRAFTERS = new MapWrapper<>();
+		public static final MapWrapper<IndustrialTypedMachine> INDUSTRIAL_TYPED_MACHINES = new MapWrapper<>();
 	}
 
 	public static class MapWrapper<T extends NoteTileEntity> {
