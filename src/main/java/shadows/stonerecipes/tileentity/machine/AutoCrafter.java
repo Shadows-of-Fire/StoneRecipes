@@ -94,7 +94,7 @@ public class AutoCrafter extends PoweredMachine {
 
 	@Override
 	protected void timerTick() {
-		if (recipe != null && recipe.a(cInv, ((CraftWorld) this.location.getWorld()).getHandle())) {
+		if (this.getPower() >= powerCost && recipe != null && recipe.a(cInv, ((CraftWorld) this.location.getWorld()).getHandle())) {
 			Int2IntMap m = new Int2IntOpenHashMap();
 
 			for (int i = 0; i < 9; i++) {

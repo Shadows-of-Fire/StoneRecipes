@@ -27,6 +27,7 @@ import shadows.stonerecipes.listener.NanosuitHandler;
 import shadows.stonerecipes.listener.ReactorHandler;
 import shadows.stonerecipes.listener.RecipeLoader;
 import shadows.stonerecipes.listener.TeleportHandler;
+import shadows.stonerecipes.util.BackupTask;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
@@ -114,6 +115,8 @@ public class StoneRecipes extends JavaPlugin {
 		jetLevel = getConfig().getInt("jetpack.level");
 		jetCost = getConfig().getInt("jetpack.cost");
 		jetTime = getConfig().getInt("jetpack.time");
+		getCommand("srbackup").setExecutor(new BackupTask());
+		BukkitLambda.runTimerAsync(new BackupTask(), 60 * 60 * 20);
 	}
 
 	@Override

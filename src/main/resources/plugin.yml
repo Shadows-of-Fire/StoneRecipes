@@ -7,3 +7,6 @@ commands:
   giveitem:
     usage: /giveitem <player> <item id> <amount>
     permission: stone.give
+  srbackup:
+    usage: May only be run from console.
+    permission: sr.backup
