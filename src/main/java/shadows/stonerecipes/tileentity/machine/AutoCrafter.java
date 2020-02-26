@@ -24,6 +24,7 @@ import net.minecraft.server.v1_15_R1.MinecraftKey;
 import net.minecraft.server.v1_15_R1.MinecraftServer;
 import net.minecraft.server.v1_15_R1.Recipes;
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.listener.RecipeLoader;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.ItemData;
@@ -205,6 +206,7 @@ public class AutoCrafter extends PoweredMachine {
 		Collection<IRecipe<?>> recipes = MinecraftServer.getServer().getCraftingManager().recipes.get(Recipes.CRAFTING).values();
 		for (IRecipe r : recipes) {
 			if (r.a(cInv, ((CraftWorld) this.location.getWorld()).getHandle())) {
+				if (RecipeLoader.PERMISSIONS.containsKey(ItemData.getItemId(CraftItemStack.asBukkitCopy(r.getResult())))) continue;
 				recipe = r;
 				return;
 			}
