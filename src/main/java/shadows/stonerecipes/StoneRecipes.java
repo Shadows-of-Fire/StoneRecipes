@@ -89,6 +89,7 @@ public class StoneRecipes extends JavaPlugin {
 		recipeLoader.loadFurnaceRecipes();
 		recipeLoader.loadBlastRecipes();
 		recipeLoader.loadMachineRecipes();
+		recipeLoader.loadPermissions();
 		dataHandler = new DataHandler();
 		machines = new CustomMachineHandler();
 		powerArmorHandler = new NanosuitHandler();

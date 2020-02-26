@@ -37,17 +37,17 @@ public class IndustrialTypedMachine extends PoweredMachine {
 
 	public IndustrialTypedMachine(String type, WorldPos pos) {
 		super(type, type, "industrial_machines.yml", pos);
-		this.type = type;
+		this.type = type.replaceAll("industrial_", "");
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = file.getInt(itemName + ".timer", 1);
-		this.start_progress = file.getInt(itemName + ".start_progress");
-		this.powerCost = file.getInt(itemName + ".powerCost");
+		this.timer = file.getInt(type + ".timer", 1);
+		this.start_progress = file.getInt(type + ".start_progress");
+		this.powerCost = file.getInt(type + ".powerCost");
 		this.maxPower = Math.max(maxPower, powerCost);
-		this.infoCmd = file.getString(itemName + ".infocmd", "");
+		this.infoCmd = file.getString(type + ".infocmd", "");
 		infoHoe.setDurability((short) 77);
 		ItemMeta meta = infoHoe.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "Information");
@@ -102,7 +102,8 @@ public class IndustrialTypedMachine extends PoweredMachine {
 		for (int i = 0; i < 4; i++) {
 			ItemStack input = inventory.getItem(INPUTS[i]);
 			ItemStack output = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
-			if (input != null && (output == null || ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output))) {
+			ItemStack curOut = inventory.getItem(OUTPUTS[i]);
+			if (input != null && output != null && (isEmpty(curOut) || ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output))) {
 				hasNoInputs = false;
 			}
 		}
@@ -136,6 +137,7 @@ public class IndustrialTypedMachine extends PoweredMachine {
 		for (int i = 0; i < 4; i++) {
 			ItemStack input = inventory.getItem(INPUTS[i]);
 			ItemStack output = inventory.getItem(OUTPUTS[i]);
+			if (isEmpty(input)) continue;
 			ItemStack recipeOut = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
 			if (output != null && output.getType() != Material.AIR && output.getAmount() > 0) {
 				if (ItemData.isSimilar(recipeOut, output) && output.getAmount() + recipeOut.getAmount() <= output.getMaxStackSize()) {

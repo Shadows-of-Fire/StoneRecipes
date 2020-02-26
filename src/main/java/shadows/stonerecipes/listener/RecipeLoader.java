@@ -2,8 +2,10 @@ package shadows.stonerecipes.listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -12,8 +14,10 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftShapelessRecipe;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.BlastingRecipe;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -22,6 +26,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
+import me.lucko.luckperms.LuckPerms;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.util.ItemData;
@@ -37,6 +42,11 @@ public class RecipeLoader implements Listener {
 	 * Machine recipe map.  Map of machine types to input-output pairs.
 	 */
 	public static final Map<String, Map<ItemStack, ItemStack>> RECIPES = new HashMap<>();
+
+	/**
+	 * A map of item ids to required permission nodes.  If there is no mapping, the item has no permission.
+	 */
+	public static final Map<String, Set<String>> PERMISSIONS = new HashMap<>();
 
 	protected final StoneRecipes plugin;
 	protected final PluginFile recipeFile;
@@ -184,6 +194,31 @@ public class RecipeLoader implements Listener {
 	@Nullable
 	public ItemStack getMachineOutput(String type, ItemStack input) {
 		return RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey(), input)).map(e -> e.getValue()).findFirst().orElse(null);
+	}
+
+	public void loadPermissions() {
+		PluginFile perms = new PluginFile(StoneRecipes.INSTANCE, "recipeperms.yml");
+		for (String s : perms.getKeys(false)) {
+			Set<String> permset = new HashSet<>();
+			for (String perm : perms.getStringList(s)) {
+				permset.add(perm);
+			}
+			PERMISSIONS.put(s, permset);
+		}
+	}
+
+	@EventHandler
+	public void onCraft(PrepareItemCraftEvent e) {
+		ItemStack out = e.getRecipe().getResult();
+		String id = ItemData.getItemId(out);
+		Set<String> perm = PERMISSIONS.get(id);
+		if (perm != null && !e.getViewers().isEmpty()) {
+			Player player = (Player) e.getViewers().get(0);
+			if (LuckPerms.getApi().getUser(player.getUniqueId()).getAllNodes().stream().map(m -> m.getNode()).map(m -> m.getPermission()).anyMatch(perm::contains)) {
+				return;
+			}
+			e.getInventory().setResult(ItemData.EMPTY);
+		}
 	}
 
 }

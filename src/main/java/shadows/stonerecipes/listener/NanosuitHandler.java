@@ -104,25 +104,25 @@ public class NanosuitHandler implements Listener {
 			ItemStack helm = p.getInventory().getHelmet();
 			PotionEffect nightVis = p.getPotionEffect(PotionEffectType.NIGHT_VISION);
 			if ((nightVis == null || nightVis.getDuration() <= 240) && Charger.getPower(helm) > nightVisCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, DURATION, 0), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, DURATION, 0));
 				Charger.usePower(helm, nightVisCost);
 			}
 			ItemStack legs = p.getInventory().getLeggings();
 			PotionEffect speed = p.getPotionEffect(PotionEffectType.SPEED);
 			if ((speed == null || speed.getDuration() <= 40) && Charger.getPower(legs) > nightVisCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, DURATION, 1), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, DURATION, 1));
 				Charger.usePower(legs, speedCost);
 			}
 			ItemStack chest = p.getInventory().getChestplate();
 			PotionEffect res = p.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
 			if ((res == null || res.getDuration() <= 40) && Charger.getPower(chest) > resCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DURATION, 1), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DURATION, 1));
 				Charger.usePower(chest, resCost);
 			}
 			ItemStack boots = p.getInventory().getBoots();
 			PotionEffect jump = p.getPotionEffect(PotionEffectType.JUMP);
 			if ((jump == null || jump.getDuration() <= 40) && Charger.getPower(boots) > jumpCost) {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, DURATION, 1), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, DURATION, 1));
 				Charger.usePower(boots, jumpCost);
 			}
 		}
