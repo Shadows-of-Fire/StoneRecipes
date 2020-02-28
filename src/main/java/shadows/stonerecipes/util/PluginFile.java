@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -74,14 +73,9 @@ public class PluginFile extends YamlConfiguration {
 				save();
 			}
 
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			exception.printStackTrace();
 			plugin.getLogger().severe("Error while loading file " + file.getName());
-
-		} catch (InvalidConfigurationException exception) {
-			exception.printStackTrace();
-			plugin.getLogger().severe("Error while loading file " + file.getName());
-
 		}
 
 	}
@@ -90,12 +84,10 @@ public class PluginFile extends YamlConfiguration {
 	 * Save configuration
 	 */
 	public void save() {
-
 		try {
 			options().indent(2);
 			save(file);
-
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			exception.printStackTrace();
 			plugin.getLogger().severe("Error while saving file " + file.getName());
 		}

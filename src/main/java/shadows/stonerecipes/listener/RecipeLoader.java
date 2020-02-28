@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -27,6 +28,10 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
 import me.lucko.luckperms.LuckPerms;
+import me.lucko.luckperms.api.LocalizedNode;
+import me.lucko.luckperms.api.LuckPermsApi;
+import me.lucko.luckperms.api.Node;
+import me.lucko.luckperms.api.User;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.util.ItemData;
@@ -209,16 +214,29 @@ public class RecipeLoader implements Listener {
 
 	@EventHandler
 	public void onCraft(PrepareItemCraftEvent e) {
+		if (e.getRecipe() == null || e.getRecipe().getResult() == null || e.getInventory() == null || e.getViewers() == null) return;
 		ItemStack out = e.getRecipe().getResult();
 		String id = ItemData.getItemId(out);
 		Set<String> perm = PERMISSIONS.get(id);
 		if (perm != null && !e.getViewers().isEmpty()) {
 			Player player = (Player) e.getViewers().get(0);
-			if (LuckPerms.getApi().getUser(player.getUniqueId()).getAllNodes().stream().map(m -> m.getNode()).map(m -> m.getPermission()).anyMatch(perm::contains)) {
-				return;
-			}
+			if (hasPerm(player, perm)) return;
 			e.getInventory().setResult(ItemData.EMPTY);
 		}
+	}
+
+	static boolean hasPerm(Player player, Set<String> perm) {
+		LuckPermsApi api = LuckPerms.getApiSafe().orElse(null);
+		if (api == null) return false;
+		User u = api.getUserSafe(player.getUniqueId()).orElse(null);
+		if (u == null) return false;
+		SortedSet<LocalizedNode> nodes = u.getAllNodes();
+		if (nodes != null) {
+			if (nodes.stream().map(LocalizedNode::getNode).map(Node::getPermission).anyMatch(perm::contains)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
