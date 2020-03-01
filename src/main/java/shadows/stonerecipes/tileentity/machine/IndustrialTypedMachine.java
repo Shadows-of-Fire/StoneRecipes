@@ -167,8 +167,8 @@ public class IndustrialTypedMachine extends PoweredMachine {
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				if (StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, clicked) != null) {
-					attemptMerge(inventory, clicked, Slots.INPUT - 1, Slots.INPUT + 2);
-					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.INPUT - 1 - 9, Slots.INPUT + 2 - 9);
+					attemptMerge(inventory, clicked, Slots.INPUT - 1 - 9, Slots.INPUT + 1 - 9);
+					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.INPUT - 1, Slots.INPUT + 1);
 				}
 				if (clicked.hasItemMeta() && clicked.getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT)) {
 					attemptMerge(inventory, clicked, Slots.UPGRADE_0, Slots.UPGRADE_1 + 1);
