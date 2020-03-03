@@ -128,7 +128,8 @@ public class AutoCrafter extends PoweredMachine {
 
 			m.forEach((a, b) -> {
 				org.bukkit.inventory.ItemStack s = this.inventory.getItem(a);
-				s.setAmount(s.getAmount() - b);
+				if (s.getType() == Material.WATER_BUCKET || s.getType() == Material.LAVA_BUCKET) this.inventory.setItemInternal(a, new org.bukkit.inventory.ItemStack(Material.BUCKET));
+				else s.setAmount(s.getAmount() - b);
 			});
 			this.usePower(this.powerCost);
 		}
