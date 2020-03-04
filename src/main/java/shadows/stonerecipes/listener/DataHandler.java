@@ -21,6 +21,7 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.OreVeinTile;
+import shadows.stonerecipes.tileentity.machine.AutoBreaker;
 import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.tileentity.machine.IndustrialTypedMachine;
@@ -117,6 +118,7 @@ public class DataHandler implements Listener {
 		public static final MapWrapper<ItemTeleporter> ITEM_TELEPORTERS = new MapWrapper<>();
 		public static final MapWrapper<AutoCrafter> AUTOCRAFTERS = new MapWrapper<>();
 		public static final MapWrapper<IndustrialTypedMachine> INDUSTRIAL_TYPED_MACHINES = new MapWrapper<>();
+		public static final MapWrapper<AutoBreaker> BREAKERS = new MapWrapper<>();
 	}
 
 	public static class MapWrapper<T extends NoteTileEntity> {

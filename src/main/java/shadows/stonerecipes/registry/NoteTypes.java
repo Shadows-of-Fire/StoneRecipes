@@ -11,6 +11,7 @@ import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.listener.RecipeLoader;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.OreVeinTile;
+import shadows.stonerecipes.tileentity.machine.AutoBreaker;
 import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.tileentity.machine.CoalGenerator;
@@ -34,6 +35,7 @@ public class NoteTypes {
 	public static final NoteTileType<ItemTeleporter> ITEM_TELEPORTER = register("item_teleporter", "data/itemTeleporters.yml", Maps.ITEM_TELEPORTERS, ItemTeleporter::new);
 	public static final NoteTileType<AutoCrafter> AUTO_CRAFTER = register("auto_crafter", "data/autocrafters.yml", Maps.AUTOCRAFTERS, AutoCrafter::new);
 	public static final NoteTileType<IndustrialTypedMachine> INDUSTRIAL_TYPED_MACHINE = register(new MultiNoteTileType<>("industrial_typed_machine", "data/industrial_machines.yml", RecipeLoader.RECIPES.keySet().stream().map(s -> "industrial_" + s).collect(Collectors.toSet()), Maps.INDUSTRIAL_TYPED_MACHINES, IndustrialTypedMachine::new));
+	public static final NoteTileType<AutoBreaker> BREAKER = register("auto_breaker", "data/breakers.yml", Maps.BREAKERS, AutoBreaker::new);
 
 	private static <T extends NoteTileEntity> NoteTileType<T> register(String id, String fileName, MapWrapper<T> map, Function<WorldPos, T> factory) {
 		return register(new NoteTileType<>(id, fileName, map, factory));
