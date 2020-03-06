@@ -3,11 +3,15 @@ package shadows.stonerecipes.util;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import net.minecraft.server.v1_15_R1.EntityHuman;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
@@ -100,6 +104,18 @@ public class MachineUtils {
 				}
 			}
 		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public static ItemStack hoeWithDura(int durability, String name) {
+		ItemStack hoe = new ItemStack(Material.DIAMOND_HOE);
+		hoe.setDurability((short) durability);
+		ItemMeta meta = hoe.getItemMeta();
+		meta.setUnbreakable(true);
+		meta.setDisplayName(name);
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
+		hoe.setItemMeta(meta);
+		return hoe;
 	}
 
 }

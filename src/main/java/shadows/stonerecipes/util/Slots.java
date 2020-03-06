@@ -27,4 +27,9 @@ public final class Slots {
 
 	public static final int AUTOCRAFTER_REFRESH = 17;
 
+	public static final int NORTH = 4;
+	public static final int EAST = 14;
+	public static final int SOUTH = 22;
+	public static final int WEST = 12;
+
 }

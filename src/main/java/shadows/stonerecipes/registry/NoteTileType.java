@@ -33,6 +33,7 @@ public class NoteTileType<T extends NoteTileEntity> {
 		T t = factory.apply(pos);
 		t.start();
 		map.put(pos, t);
+		t.onPlaced(e.getPlacer());
 	}
 
 	public void remove(WorldPos pos) {

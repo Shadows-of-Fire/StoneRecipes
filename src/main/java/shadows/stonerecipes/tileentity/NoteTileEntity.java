@@ -428,4 +428,8 @@ public abstract class NoteTileEntity implements ITickable {
 
 	public abstract NoteTileType<?> getType();
 
+	public void onPlaced(Player placer) {
+
+	}
+
 }

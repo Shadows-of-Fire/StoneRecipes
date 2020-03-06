@@ -29,6 +29,7 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 		T t = factory.apply(e.getItemId(), pos);
 		t.start();
 		map.put(pos, t);
+		t.onPlaced(e.getPlacer());
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package shadows.stonerecipes.util;
 
 import java.util.OptionalInt;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -24,10 +23,8 @@ import net.minecraft.server.v1_15_R1.WorldServer;
 
 public class FakePlayer extends EntityPlayer {
 
-	private static final GameProfile FAKE_PROFILE = new GameProfile(UUID.nameUUIDFromBytes("stonerecipes".getBytes()), "[StoneRecipes]");
-
-	public FakePlayer(WorldServer world) {
-		super(world.getMinecraftServer(), world, FAKE_PROFILE, new PlayerInteractManager(world));
+	public FakePlayer(WorldServer world, GameProfile id) {
+		super(world.getMinecraftServer(), world, id, new PlayerInteractManager(world));
 		this.playerInteractManager.setGameMode(EnumGamemode.SURVIVAL);
 	}
 

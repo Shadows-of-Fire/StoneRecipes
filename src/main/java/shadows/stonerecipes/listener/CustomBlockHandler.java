@@ -123,7 +123,7 @@ public class CustomBlockHandler implements Listener {
 			Bukkit.getServer().getPluginManager().callEvent(ev);
 			if (ev.isCancelled()) return;
 			MachineUtils.placeNoteBlock(block, cBlock);
-			if (block.getType() == Material.NOTE_BLOCK) StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(id, block, e.getItem()));
+			if (block.getType() == Material.NOTE_BLOCK) StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(id, block, e.getItem(), e.getPlayer()));
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getItem().setAmount(e.getItem().getAmount() - 1);
 		}
 
@@ -388,11 +388,13 @@ public class CustomBlockHandler implements Listener {
 
 		protected final String itemId;
 		protected final ItemStack placed;
+		protected final Player placer;
 
-		public NoteBlockPlacedEvent(String itemId, Block noteBlock, ItemStack placed) {
+		public NoteBlockPlacedEvent(String itemId, Block noteBlock, ItemStack placed, Player placer) {
 			super(noteBlock);
 			this.itemId = itemId;
 			this.placed = placed;
+			this.placer = placer;
 		}
 
 		public String getItemId() {
@@ -401,6 +403,10 @@ public class CustomBlockHandler implements Listener {
 
 		public ItemStack getPlaced() {
 			return placed;
+		}
+
+		public Player getPlacer() {
+			return placer;
 		}
 
 		@Override
