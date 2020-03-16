@@ -56,13 +56,18 @@ public class NoteTileType<T extends NoteTileEntity> {
 		for (String s : data.getKeys(false)) {
 			WorldPos pos = new WorldPos(s);
 			if (pos.isInside(chunk)) {
-				if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
-					data.set(s, null);
-					continue;
+				try {
+					if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
+						data.set(s, null);
+						continue;
+					}
+					T t = factory.apply(pos);
+					MachineUtils.loadMachine(t, data);
+					map.put(pos, t);
+				} catch (Exception e) {
+					StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " at " + pos);
+					e.printStackTrace();
 				}
-				T t = factory.apply(pos);
-				MachineUtils.loadMachine(t, data);
-				map.put(pos, t);
 			}
 		}
 	}
@@ -70,7 +75,12 @@ public class NoteTileType<T extends NoteTileEntity> {
 	public void save(Chunk chunk) {
 		for (WorldPos pos : map.keySet()) {
 			if (pos.isInside(chunk)) {
-				MachineUtils.saveMachine(map.get(pos), data);
+				try {
+					MachineUtils.saveMachine(map.get(pos), data);
+				} catch (Exception e) {
+					StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to save a " + this.getId() + " at " + pos);
+					e.printStackTrace();
+				}
 			}
 		}
 		map.removeIf(pos -> pos.isInside(chunk));

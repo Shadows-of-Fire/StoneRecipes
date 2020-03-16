@@ -6,6 +6,7 @@ import java.util.function.BiFunction;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 
+import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
@@ -42,14 +43,19 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 		for (String s : data.getKeys(false)) {
 			WorldPos pos = new WorldPos(s);
 			if (pos.isInside(chunk)) {
-				if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
-					data.set(s, null);
-					continue;
+				try {
+					if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
+						data.set(s, null);
+						continue;
+					}
+					String type = data.getString(pos + ".type");
+					T t = factory.apply(type, pos);
+					MachineUtils.loadMachine(t, data);
+					map.put(pos, t);
+				} catch (Exception e) {
+					StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " at " + pos);
+					e.printStackTrace();
 				}
-				String type = data.getString(pos + ".type");
-				T t = factory.apply(type, pos);
-				MachineUtils.loadMachine(t, data);
-				map.put(pos, t);
 			}
 		}
 	}
