@@ -46,7 +46,7 @@ public class PluginFile extends YamlConfiguration {
 	/**
 	 * Reload configuration
 	 */
-	public void reload() {
+	public synchronized void reload() {
 
 		if (!file.exists()) {
 
@@ -85,7 +85,7 @@ public class PluginFile extends YamlConfiguration {
 	/**
 	 * Save configuration
 	 */
-	public void save() {
+	public synchronized void save() {
 		try {
 			options().indent(2);
 			save(file);
@@ -97,7 +97,7 @@ public class PluginFile extends YamlConfiguration {
 	}
 
 	@Override
-	public void set(String path, Object value) {
+	public synchronized void set(String path, Object value) {
 		Object old = this.get(path);
 		super.set(path, value);
 		try {
