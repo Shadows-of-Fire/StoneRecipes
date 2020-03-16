@@ -38,7 +38,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 	@Override
 	public void loadConfigData(PluginFile file) {
 		super.loadConfigData(file);
-		this.powerCost = file.getInt(this.name + ".powerCost");
+		this.powerCost = file.getInt(this.id + ".powerCost");
 	}
 
 	@Override

@@ -39,13 +39,13 @@ public class OreVeinTile extends NoteTileEntity {
 
 	@Override
 	public void loadConfigData(PluginFile file) {
-		String ore = file.getString(name + ".ore");
+		String ore = file.getString(id + ".ore");
 		if (StoneRecipes.INSTANCE.getItems().getBlock(ore) != null) {
 			this.ore = StoneRecipes.INSTANCE.getItems().getBlock(ore);
 		} else {
 			this.ore = new CustomBlock(Material.valueOf(ore), null);
 		}
-		this.timer = file.getInt(name + ".interval", 1);
+		this.timer = file.getInt(id + ".interval", 1);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class OreVeinTile extends NoteTileEntity {
 
 	@Override
 	public void write(PluginFile file) {
-		file.set(pos + ".type", name);
+		file.set(pos + ".type", id);
 	}
 
 	@Override

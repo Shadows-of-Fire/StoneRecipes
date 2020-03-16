@@ -40,11 +40,11 @@ public class TypedMachine extends PoweredMachine {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = file.getInt(itemName + ".timer", 1);
-		this.start_progress = file.getInt(itemName + ".start_progress");
-		this.powerCost = file.getInt(itemName + ".powerCost");
+		this.timer = file.getInt(id + ".timer", 1);
+		this.start_progress = file.getInt(id + ".start_progress");
+		this.powerCost = file.getInt(id + ".powerCost");
 		this.maxPower = Math.max(maxPower, powerCost);
-		this.infoCmd = file.getString(itemName + ".infocmd", "");
+		this.infoCmd = file.getString(id + ".infocmd", "");
 		infoHoe.setDurability((short) 77);
 		ItemMeta meta = infoHoe.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "Information");

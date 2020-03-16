@@ -110,7 +110,7 @@ public class NuclearReactor extends PowerGenerator {
 					}
 				}
 			}
-		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + name + " at " + pos.translated());
+		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + displayName + " at " + pos.translated());
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class AutoBreaker extends PoweredMachine {
 					inventory.setItemInternal(i, content.get(i - 9 * 3));
 				}
 			}
-		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + name + " at " + pos.translated());
+		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + displayName + " at " + pos.translated());
 		this.facing = BlockFace.valueOf(file.getString(pos + ".facing"));
 		this.playerId = new GameProfile(UUID.fromString(file.getString(pos + ".uuid")), file.getString(pos + ".username"));
 	}

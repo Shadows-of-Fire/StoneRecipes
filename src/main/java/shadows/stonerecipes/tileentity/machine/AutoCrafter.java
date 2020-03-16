@@ -78,7 +78,7 @@ public class AutoCrafter extends PoweredMachine {
 					inventory.setItemInternal(i, content.get(i));
 				}
 			}
-		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + name + " at " + pos.translated());
+		} else StoneRecipes.INSTANCE.getLogger().info("Failed to read inventory for a " + displayName + " at " + pos.translated());
 	}
 
 	@Override
