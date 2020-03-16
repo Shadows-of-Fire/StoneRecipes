@@ -253,9 +253,8 @@ public class AutoBreaker extends PoweredMachine {
 
 				itemstack = player.getItemInMainHand();
 				net.minecraft.server.v1_15_R1.ItemStack itemstack1 = itemstack.cloneItemStack();
-				boolean flag1 = player.hasBlock(iblockdata);
 				itemstack.a(world, iblockdata, blockposition, player);
-				if (flag && flag1 && event.isDropItems()) {
+				if (flag && event.isDropItems()) {
 					block.a(world, player, blockposition, iblockdata, tileentity, itemstack1);
 				}
 

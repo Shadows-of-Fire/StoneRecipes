@@ -4,6 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
@@ -41,13 +42,24 @@ public class CustomMachineHandler implements Listener {
 	}
 
 	public void load(Chunk chunk) {
-		for (NoteTileType<?> t : NoteTypes.REGISTRY.values())
-			t.load(chunk);
+		for (NoteTileType<?> t : NoteTypes.REGISTRY.values()) {
+			try {
+				t.load(chunk);
+			} catch (Exception e) {
+				StoneRecipes.INSTANCE.getLogger().info(String.format("An error occurred while loading chunk (%d, %d) for the tile type %s.", chunk.getX(), chunk.getZ(), t.getId()));
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void save(Chunk chunk) {
 		for (NoteTileType<?> t : NoteTypes.REGISTRY.values())
-			t.save(chunk);
+			try {
+				t.save(chunk);
+			} catch (Exception e) {
+				StoneRecipes.INSTANCE.getLogger().info(String.format("An error occurred while saving chunk (%d, %d) for the tile type %s.", chunk.getX(), chunk.getZ(), t.getId()));
+				e.printStackTrace();
+			}
 	}
 
 }
