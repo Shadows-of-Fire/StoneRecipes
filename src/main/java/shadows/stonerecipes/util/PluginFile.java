@@ -8,8 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import shadows.stonerecipes.StoneRecipes;
-
 /**
  * An automatically loaded yaml configuration file.  Uses 2 space indents.
  */
@@ -98,6 +96,8 @@ public class PluginFile extends YamlConfiguration {
 
 	@Override
 	public synchronized void set(String path, Object value) {
+		super.set(path, value);
+		/*
 		Object old = this.get(path);
 		super.set(path, value);
 		try {
@@ -107,7 +107,7 @@ public class PluginFile extends YamlConfiguration {
 			StoneRecipes.INSTANCE.getLogger().info("Attempted to add an invalid element to a YAML file!");
 			StoneRecipes.INSTANCE.getLogger().info("File: " + this.file.getName() + ", Path: " + path + ", Object: " + value);
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }
