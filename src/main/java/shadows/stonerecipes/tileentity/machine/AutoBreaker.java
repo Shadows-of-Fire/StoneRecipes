@@ -100,7 +100,7 @@ public class AutoBreaker extends PoweredMachine {
 	@Override
 	public void write(PluginFile file) {
 		super.write(file);
-		file.set(pos + ".inv", Arrays.asList(inventory.getContents()).subList(9 * 3, inventory.getSize() - 1));
+		file.set(pos + ".inv", Arrays.asList(inventory.getContents()).subList(9 * 3, inventory.getSize()));
 		file.set(pos + ".facing", facing.toString());
 		file.set(pos + ".uuid", playerId.getId().toString());
 		file.set(pos + ".username", playerId.getName());
@@ -186,6 +186,10 @@ public class AutoBreaker extends PoweredMachine {
 
 	@Override
 	public void handleShiftClick(InventoryClickEvent e) {
+		if (e.getSlot() == Slots.NORTH || e.getSlot() == Slots.EAST || e.getSlot() == Slots.SOUTH || e.getSlot() == Slots.WEST) {
+			updateAndCancel(e);
+			return;
+		}
 		Inventory inv = e.getClickedInventory();
 		org.bukkit.inventory.ItemStack clicked = e.getCurrentItem();
 		if (isEmpty(clicked)) return;
