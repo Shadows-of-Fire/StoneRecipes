@@ -72,18 +72,21 @@ public class NoteTileType<T extends NoteTileEntity> {
 		}
 	}
 
-	public void save(Chunk chunk) {
-		for (WorldPos pos : map.keySet()) {
-			if (pos.isInside(chunk)) {
-				try {
-					MachineUtils.saveMachine(map.get(pos), data);
-				} catch (Exception e) {
-					StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to save a " + this.getId() + " at " + pos);
-					e.printStackTrace();
-				}
-			}
+	/**
+	 * Saves and unloads a given machine.
+	 * @param t
+	 */
+	public void save(T t) {
+		try {
+			MachineUtils.saveMachine(t, data);
+		} catch (Exception e) {
+			StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to save a " + this.getId() + " at " + t.getPos());
+			e.printStackTrace();
 		}
-		map.removeIf(pos -> pos.isInside(chunk));
+		map.remove(t.getPos());
+	}
+
+	public void saveFile() {
 		if (StoneRecipes.INSTANCE.isEnabled()) BukkitLambda.runAsync(data::save);
 		else data.save();
 	}

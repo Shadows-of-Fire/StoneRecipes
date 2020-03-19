@@ -2,6 +2,7 @@ package shadows.stonerecipes.tileentity.machine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -175,7 +176,7 @@ public class ItemTeleporter extends PoweredMachine {
 	}
 
 	private void extract() {
-		NoteTileEntity above = Maps.ALL_MACHINES.get(this.pos.up());
+		NoteTileEntity above = Maps.ALL_MACHINES.getOrDefault(this.pos.toChunkCoords(), Collections.emptyMap()).get(this.pos.up());
 		if (above != null) {
 			ItemStack ext = above.extractItem(64, true);
 			if (isEmpty(ext)) return;
@@ -206,7 +207,7 @@ public class ItemTeleporter extends PoweredMachine {
 
 	private void insert() {
 		if (destination.equals(WorldPos.INVALID)) {
-			NoteTileEntity below = Maps.ALL_MACHINES.get(this.pos.down());
+			NoteTileEntity below = Maps.ALL_MACHINES.getOrDefault(this.pos.toChunkCoords(), Collections.emptyMap()).get(this.pos.down());
 			if (below != null) {
 				ItemStack ext = this.extractItem(64, true);
 				if (isEmpty(ext)) return;

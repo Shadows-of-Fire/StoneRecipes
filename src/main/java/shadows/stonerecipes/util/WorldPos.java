@@ -94,4 +94,8 @@ public class WorldPos {
 		return new WorldPos(dim, this.x + x, this.y + y, this.z + z);
 	}
 
+	public WorldPos toChunkCoords() {
+		return new WorldPos(dim, this.x >> 4, 0, this.z >> 4);
+	}
+
 }

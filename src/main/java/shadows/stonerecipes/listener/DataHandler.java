@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -108,7 +107,13 @@ public class DataHandler implements Listener {
 	}
 
 	public static class Maps {
-		public static final Map<WorldPos, NoteTileEntity> ALL_MACHINES = new HashMap<>();
+
+		public static final Map<WorldPos, NoteTileEntity> EMPTY = new HashMap<>(0);
+
+		/**
+		 * Main machine map.  This map is a map of chunk coordinates to individual positions.
+		 */
+		public static final Map<WorldPos, Map<WorldPos, NoteTileEntity>> ALL_MACHINES = new HashMap<>();
 		public static final MapWrapper<Charger> CHARGERS = new MapWrapper<>();
 		public static final MapWrapper<TypedMachine> TYPED_MACHINES = new MapWrapper<>();
 		public static final MapWrapper<PowerGenerator> GENERATORS = new MapWrapper<>();
@@ -130,11 +135,11 @@ public class DataHandler implements Listener {
 
 		public void put(WorldPos pos, T t) {
 			map.put(pos, t);
-			Maps.ALL_MACHINES.put(pos, t);
+			Maps.ALL_MACHINES.computeIfAbsent(pos.toChunkCoords(), p -> new HashMap<>()).put(pos, t);
 		}
 
 		public T remove(WorldPos pos) {
-			Maps.ALL_MACHINES.remove(pos);
+			Maps.ALL_MACHINES.getOrDefault(pos.toChunkCoords(), Maps.EMPTY).remove(pos);
 			return map.remove(pos);
 		}
 
@@ -152,11 +157,6 @@ public class DataHandler implements Listener {
 
 		public Set<WorldPos> keySet() {
 			return map.keySet();
-		}
-
-		public void removeIf(Predicate<WorldPos> p) {
-			map.keySet().removeIf(p);
-			Maps.ALL_MACHINES.keySet().removeIf(p);
 		}
 
 		public Collection<T> values() {
