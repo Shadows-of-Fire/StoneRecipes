@@ -1,5 +1,6 @@
 package shadows.stonerecipes.util;
 
+import java.io.File;
 import java.util.OptionalInt;
 
 import javax.annotation.Nullable;
@@ -8,6 +9,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.mojang.authlib.GameProfile;
 
+import net.minecraft.server.v1_15_R1.AdvancementDataPlayer;
 import net.minecraft.server.v1_15_R1.DamageSource;
 import net.minecraft.server.v1_15_R1.DimensionManager;
 import net.minecraft.server.v1_15_R1.Entity;
@@ -68,4 +70,17 @@ public class FakePlayer extends EntityPlayer {
 	public boolean p(boolean flag) {
 		return true;
 	}
+
+	AdvancementDataPlayer data;
+
+	@Override
+	public AdvancementDataPlayer getAdvancementData() {
+		if (data == null) {
+			File file = new File(this.server.getWorldServer(DimensionManager.OVERWORLD).getDataManager().getDirectory(), "advancements");
+			File file1 = new File(file, "fake.json");
+			data = new AdvancementDataPlayer(this.server, file1, this);
+		}
+		return data;
+	}
+
 }

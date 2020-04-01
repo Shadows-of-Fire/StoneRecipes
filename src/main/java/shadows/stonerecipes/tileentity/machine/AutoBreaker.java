@@ -53,6 +53,7 @@ public class AutoBreaker extends PoweredMachine {
 
 	protected BlockFace facing = BlockFace.NORTH;
 	protected GameProfile playerId;
+	protected FakePlayer fakePlayer;
 
 	protected static final ItemStack NORTH = MachineUtils.hoeWithDura(422, ChatColor.RESET + "North");
 	protected static final ItemStack EAST = MachineUtils.hoeWithDura(423, ChatColor.RESET + "East");
@@ -220,7 +221,7 @@ public class AutoBreaker extends PoweredMachine {
 	 */
 	public boolean breakBlock(BlockPosition blockposition) {
 		World world = ((CraftWorld) this.location.getWorld()).getHandle();
-		FakePlayer player = new FakePlayer((WorldServer) world, playerId);
+		FakePlayer player = fakePlayer == null ? (fakePlayer = new FakePlayer((WorldServer) world, playerId)) : fakePlayer;
 		IBlockData iblockdata = world.getType(blockposition);
 		org.bukkit.block.Block bblock = CraftBlock.at(world, blockposition);
 		BlockBreakEvent event = new BlockBreakEvent(bblock, player.getBukkitEntity());

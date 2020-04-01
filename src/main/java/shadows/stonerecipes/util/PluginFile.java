@@ -44,7 +44,7 @@ public class PluginFile extends YamlConfiguration {
 	/**
 	 * Reload configuration
 	 */
-	public synchronized void reload() {
+	public void reload() {
 
 		if (!file.exists()) {
 
@@ -83,7 +83,7 @@ public class PluginFile extends YamlConfiguration {
 	/**
 	 * Save configuration
 	 */
-	public synchronized void save() {
+	public void save() {
 		try {
 			options().indent(2);
 			save(file);
@@ -92,22 +92,6 @@ public class PluginFile extends YamlConfiguration {
 			plugin.getLogger().severe("Error while saving file " + file.getName());
 		}
 
-	}
-
-	@Override
-	public synchronized void set(String path, Object value) {
-		super.set(path, value);
-		/*
-		Object old = this.get(path);
-		super.set(path, value);
-		try {
-			this.saveToString();
-		} catch (Exception e) {
-			this.set(path, old);
-			StoneRecipes.INSTANCE.getLogger().info("Attempted to add an invalid element to a YAML file!");
-			StoneRecipes.INSTANCE.getLogger().info("File: " + this.file.getName() + ", Path: " + path + ", Object: " + value);
-			e.printStackTrace();
-		}*/
 	}
 
 }

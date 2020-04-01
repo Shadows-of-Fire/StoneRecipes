@@ -25,7 +25,7 @@ import shadows.stonerecipes.util.WorldPos;
 
 public class NuclearReactor extends PowerGenerator {
 
-	protected NoteBlockInventory powerInv;
+	protected NoteBlockInventory monitorInv;
 	protected int maxHeat = 10;
 	protected int uraniumHeat = 1;
 	protected int uraniumPower = 1;
@@ -35,13 +35,15 @@ public class NuclearReactor extends PowerGenerator {
 	protected int chambers = -1;
 	protected boolean exploded = false;
 	protected final ItemStack lock = new ItemStack(Material.DIAMOND_HOE);
+	protected final ItemStack heatBar;
+	protected final ItemStack heatTex;
 
 	protected static final BlockFace[] FACES = ReactorHandler.CHAMBER_FACES;
 
 	@SuppressWarnings("deprecation")
 	public NuclearReactor(WorldPos pos) {
 		super("nuclear_reactor", "Nuclear Reactor", "config.yml", pos);
-		powerInv = new NoteBlockInventory(null, 9, "Reactor Energy Gauge");
+		monitorInv = new NoteBlockInventory(null, 18, "Reactor Monitor");
 		ItemMeta meta = lock.getItemMeta();
 		meta.setDisplayName(ChatColor.RED + "Section Locked - Add Chambers");
 		meta.setUnbreakable(true);
@@ -50,6 +52,11 @@ public class NuclearReactor extends PowerGenerator {
 		lock.setDurability((short) 371);
 		this.updateChambers();
 		this.onPowerChanged();
+		this.heatBar = this.powerBar.clone();
+		ItemMeta barMeta = heatBar.getItemMeta();
+		barMeta.setDisplayName(ChatColor.GREEN + "Reactor Heat");
+		heatBar.setItemMeta(barMeta);
+		this.heatTex = guiTex.clone();
 	}
 
 	public void updateChambers() {
@@ -85,9 +92,24 @@ public class NuclearReactor extends PowerGenerator {
 		this.guiTex.setItemMeta(barMeta);
 		guiTex.setDurability((short) (start_progress + Math.min(9, getPower() / (maxPower / 10))));
 		for (int i = 0; i < 9; i++) {
-			powerInv.setItemInternal(i, powerBar);
+			monitorInv.setItemInternal(i, powerBar);
 		}
-		powerInv.setItemInternal(8, guiTex);
+		monitorInv.setItemInternal(8, guiTex);
+	}
+
+	@SuppressWarnings("deprecation")
+	public void updateHeatBar(int heat) {
+		ItemMeta barMeta = this.heatBar.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.YELLOW + "" + heat + "/" + this.maxHeat);
+		barMeta.setLore(lore);
+		this.heatBar.setItemMeta(barMeta);
+		this.heatTex.setItemMeta(barMeta);
+		heatTex.setDurability((short) (start_progress + Math.min(9, heat / (maxHeat / 10))));
+		for (int i = 0; i < 9; i++) {
+			monitorInv.setItemInternal(i + 9, heatBar);
+		}
+		monitorInv.setItemInternal(8 + 9, heatTex);
 	}
 
 	@Override
@@ -195,7 +217,7 @@ public class NuclearReactor extends PowerGenerator {
 
 	public void openPowerGUI(Player player) {
 		onPowerChanged();
-		player.openInventory(powerInv);
+		player.openInventory(monitorInv);
 	}
 
 	@Override
@@ -279,6 +301,7 @@ public class NuclearReactor extends PowerGenerator {
 			}
 		}
 
+		updateHeatBar(heat);
 		if (heat > maxHeat) {
 			explode();
 			return;
@@ -304,12 +327,12 @@ public class NuclearReactor extends PowerGenerator {
 
 	@Override
 	public void onSlotClick(InventoryClickEvent e) {
-		if (e.getClickedInventory() == powerInv) e.setCancelled(true);
+		if (e.getClickedInventory() == monitorInv) e.setCancelled(true);
 	}
 
 	@Override
 	public void handleShiftClick(InventoryClickEvent e) {
-		if (e.getClickedInventory() == powerInv) {
+		if (e.getClickedInventory() == monitorInv) {
 			e.setCancelled(true);
 			return;
 		}

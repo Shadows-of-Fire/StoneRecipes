@@ -64,8 +64,9 @@ public class CustomMachineHandler implements Listener {
 		Map<WorldPos, NoteTileEntity> map = Maps.ALL_MACHINES.get(chunkPos);
 		if (map == null || map.isEmpty()) return;
 
-		Set<NoteTileType> dirty = new HashSet<>();
+		Maps.ALL_MACHINES.remove(chunkPos);
 
+		Set<NoteTileType> dirty = new HashSet<>();
 		for (NoteTileEntity t : map.values()) {
 			NoteTileType type = t.getType();
 			type.save(t);
@@ -73,8 +74,6 @@ public class CustomMachineHandler implements Listener {
 		}
 
 		dirty.forEach(NoteTileType::saveFile);
-
-		Maps.ALL_MACHINES.remove(chunkPos);
 	}
 
 }
