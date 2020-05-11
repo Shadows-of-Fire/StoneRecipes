@@ -25,8 +25,8 @@ public class Chainsword extends BasicGun {
 
 	float dotDmg;
 
-	public Chainsword(StoneRecipes plugin) {
-		super(plugin, "chainsword");
+	public Chainsword(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.melee = true;
 	}
 

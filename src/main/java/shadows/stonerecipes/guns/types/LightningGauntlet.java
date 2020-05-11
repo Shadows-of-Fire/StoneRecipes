@@ -22,8 +22,8 @@ public class LightningGauntlet extends BasicGun {
 
 	float effectDmg;
 
-	public LightningGauntlet(StoneRecipes plugin) {
-		super(plugin, "lightning_gauntlet");
+	public LightningGauntlet(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.melee = true;
 	}
 

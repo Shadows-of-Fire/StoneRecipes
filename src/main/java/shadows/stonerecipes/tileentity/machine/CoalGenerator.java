@@ -117,6 +117,7 @@ public class CoalGenerator extends PowerGenerator {
 	@Override
 	public void finish() {
 		ItemStack input = inventory.getItem(Slots.COAL_GEN_INPUT);
+		if (input.getType() != Material.COAL) return;
 		input.setAmount(input.getAmount() - 1);
 		addPower(coalPower);
 		this.onPowerChanged();
@@ -149,6 +150,12 @@ public class CoalGenerator extends PowerGenerator {
 			}
 			updateAndCancel(e);
 		}
+	}
+
+	@Override
+	public ItemStack insertItem(ItemStack stack, boolean simulate) {
+		if (stack.getType() != Material.COAL) return stack;
+		return super.insertItem(stack, simulate);
 	}
 
 	@Override

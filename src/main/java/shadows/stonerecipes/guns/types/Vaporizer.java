@@ -26,8 +26,8 @@ import shadows.stonerecipes.util.MachineUtils;
 
 public class Vaporizer extends BasicGun {
 
-	public Vaporizer(StoneRecipes plugin) {
-		super(plugin, "quantum_vaporizer");
+	public Vaporizer(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.range = 15;
 		this.spreadDefault = 0;
 		this.pellets = 1;

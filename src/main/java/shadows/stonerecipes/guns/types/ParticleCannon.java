@@ -24,8 +24,8 @@ public class ParticleCannon extends BasicGun {
 
 	Map<UUID, BeamTask> activeBeams = new HashMap<>();
 
-	public ParticleCannon(StoneRecipes plugin) {
-		super(plugin, "particle_cannon");
+	public ParticleCannon(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.range = 13;
 		this.spreadDefault = 0;
 		this.pellets = 1;

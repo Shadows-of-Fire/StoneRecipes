@@ -20,8 +20,8 @@ public class GrenadeLauncher extends BasicGun {
 
 	float exPower = 5;
 
-	public GrenadeLauncher(StoneRecipes plugin) {
-		super(plugin, "grenade_launcher");
+	public GrenadeLauncher(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.range = 10;
 		this.spreadDefault = 4;
 		this.pellets = 1;

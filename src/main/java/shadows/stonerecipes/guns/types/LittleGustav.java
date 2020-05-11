@@ -28,8 +28,8 @@ public class LittleGustav extends BasicGun {
 	int cloudTime = 20;
 	float exPower = 8;
 
-	public LittleGustav(StoneRecipes plugin) {
-		super(plugin, "little_gustav");
+	public LittleGustav(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.range = 30;
 		this.spreadDefault = 4;
 		this.recoil = 9;

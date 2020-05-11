@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -71,9 +71,9 @@ public class GunHandler implements Listener {
 		this.gunFile = new PluginFile(plugin, "guns.yml");
 	}
 
-	private <T> void loadGun(String name, Function<StoneRecipes, BasicGun> ctor) {
+	private <T> void loadGun(String name, BiFunction<StoneRecipes, String, BasicGun> ctor) {
 		try {
-			guns.put(name, ctor.apply(plugin));
+			guns.put(name, ctor.apply(plugin, name));
 			guns.get(name).loadConfig(gunFile);
 			ItemStack gun = plugin.getItems().getItemHolder(name).getStack();
 			ItemMeta meta = gun.getItemMeta();
@@ -96,6 +96,24 @@ public class GunHandler implements Listener {
 		loadGun("little_gustav", LittleGustav::new);
 		loadGun("lightning_gauntlet", LightningGauntlet::new);
 		loadGun("chainsword", Chainsword::new);
+		
+		loadGun("gold_lava_shotgun", LavaShotgun::new);
+		loadGun("gold_portable_railgun", PortableRailgun::new);
+		loadGun("gold_quantum_vaporizer", Vaporizer::new);
+		loadGun("gold_particle_cannon", ParticleCannon::new);
+		loadGun("gold_grenade_launcher", GrenadeLauncher::new);
+		loadGun("gold_little_gustav", LittleGustav::new);
+		loadGun("gold_lightning_gauntlet", LightningGauntlet::new);
+		loadGun("gold_chainsword", Chainsword::new);
+		
+		loadGun("rgb_lava_shotgun", LavaShotgun::new);
+		loadGun("rgb_portable_railgun", PortableRailgun::new);
+		loadGun("rgb_quantum_vaporizer", Vaporizer::new);
+		loadGun("rgb_particle_cannon", ParticleCannon::new);
+		loadGun("rgb_grenade_launcher", GrenadeLauncher::new);
+		loadGun("rgb_little_gustav", LittleGustav::new);
+		loadGun("rgb_lightning_gauntlet", LightningGauntlet::new);
+		loadGun("rgb_chainsword", Chainsword::new);
 	}
 
 	@EventHandler

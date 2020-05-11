@@ -22,8 +22,8 @@ public class LavaShotgun extends BasicGun {
 
 	static Predicate<Entity> selector = e -> e instanceof LivingEntity && !e.isDead();
 
-	public LavaShotgun(StoneRecipes plugin) {
-		super(plugin, "lava_shotgun");
+	public LavaShotgun(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.range = 10;
 		this.spreadDefault = 25;
 		this.pellets = 10;

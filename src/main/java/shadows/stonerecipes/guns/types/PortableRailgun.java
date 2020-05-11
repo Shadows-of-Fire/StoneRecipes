@@ -17,8 +17,8 @@ public class PortableRailgun extends BasicGun {
 
 	static Color color = Color.fromRGB(0x00E6FF);
 
-	public PortableRailgun(StoneRecipes plugin) {
-		super(plugin, "portable_railgun");
+	public PortableRailgun(StoneRecipes plugin, String name) {
+		super(plugin, name);
 		this.range = 35;
 		this.spreadDefault = 0;
 		this.pellets = 1;
