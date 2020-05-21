@@ -17,6 +17,8 @@ import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Result;
@@ -67,6 +69,7 @@ import shadows.stonerecipes.util.FlameParticleTask;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.ReflectionHelper;
+import shadows.stonerecipes.util.RocketTask;
 
 public class CustomBlockHandler implements Listener {
 
@@ -108,6 +111,17 @@ public class CustomBlockHandler implements Listener {
 					e.getClickedBlock().getRelative(x, 0, z).setType(Material.AIR);
 				}
 			}
+		}
+
+		if ("rocketship".equals(id) && e.getClickedBlock() != null) {
+			ArmorStand rocket = (ArmorStand) e.getPlayer().getWorld().spawnEntity(e.getClickedBlock().getLocation().clone().add(0.5, 0.5, 0.5), EntityType.ARMOR_STAND);
+			rocket.setInvulnerable(true);
+			rocket.setVisible(false);
+			rocket.getEquipment().setHelmet(e.getItem().clone());
+			e.getItem().setAmount(e.getItem().getAmount() - 1);
+			rocket.addPassenger(e.getPlayer());
+			new RocketTask().start(rocket, e.getPlayer());
+			return;
 		}
 
 		if (e.getItem().getType() != Material.DIAMOND_HOE || !block.getType().equals(Material.AIR)) return;
