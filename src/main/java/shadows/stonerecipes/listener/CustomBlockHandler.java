@@ -78,6 +78,7 @@ public class CustomBlockHandler implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent e) {
 		if (handleJetpackClicks(e)) return;
+		if (handleBatteryPack(e)) return;
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() != EquipmentSlot.HAND || e.getClickedBlock() == null) return;
 		if (HOEABLE.contains(e.getClickedBlock().getType()) && e.getItem() != null && e.getItem().getType() == Material.DIAMOND_HOE) e.setUseItemInHand(Result.DENY);
 		if (!IslandProtection.canAccess(e.getPlayer(), e.getClickedBlock().getLocation())) return;
@@ -100,7 +101,6 @@ public class CustomBlockHandler implements Listener {
 
 	private void processItem(PlayerInteractEvent e) {
 		if (e.getItem() == null || !e.getItem().hasItemMeta()) return;
-		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
 		String id = ItemData.getItemId(e.getItem());
 
 		if ("dimensional_key".equals(id) && e.getClickedBlock().getType() == Material.BLUE_ICE) {
@@ -124,6 +124,7 @@ public class CustomBlockHandler implements Listener {
 			return;
 		}
 
+		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
 		if (e.getItem().getType() != Material.DIAMOND_HOE || !block.getType().equals(Material.AIR)) return;
 
 		Location loc = block.getLocation();
@@ -389,6 +390,46 @@ public class CustomBlockHandler implements Listener {
 				e.getPlayer().getEquipment().setItemInMainHand(helm);
 			} else e.getPlayer().getEquipment().setItemInOffHand(helm);
 			return true;
+		}
+		return false;
+	}
+
+	public static boolean handleBatteryPack(PlayerInteractEvent e) {
+		String id = ItemData.getItemId(e.getItem());
+		EquipmentSlot hand = e.getHand();
+		Player player = e.getPlayer();
+		if ("battery_pack".equals(id)) {
+			ItemStack battery = e.getItem();
+			int power = Charger.getPower(battery);
+			if (power <= 0) return false;
+			ItemStack stack;
+			if (hand == EquipmentSlot.HAND) stack = player.getInventory().getItemInOffHand();
+			else stack = player.getInventory().getItemInMainHand();
+
+			if (stack == null || Charger.getMaxPower(stack) <= 0) return false;
+			int reqPower = Charger.getMaxPower(stack) - Charger.getPower(stack);
+
+			if (reqPower <= 0) return false;
+			Charger.usePower(stack, -Math.min(reqPower, power));
+			Charger.usePower(battery, Math.min(reqPower, power));
+			if (hand == EquipmentSlot.HAND) {
+				player.getInventory().setItemInMainHand(battery);
+				player.getInventory().setItemInOffHand(stack);
+			} else {
+				player.getInventory().setItemInOffHand(battery);
+				player.getInventory().setItemInMainHand(stack);
+			}
+
+			e.setUseItemInHand(Result.ALLOW);
+			return true;
+		} else {
+			ItemStack stack;
+			if (hand == EquipmentSlot.HAND) stack = player.getInventory().getItemInOffHand();
+			else stack = player.getInventory().getItemInMainHand();
+			if ("battery_pack".equals(ItemData.getItemId(stack))) {
+				e.setCancelled(true);
+				return true;
+			}
 		}
 		return false;
 	}

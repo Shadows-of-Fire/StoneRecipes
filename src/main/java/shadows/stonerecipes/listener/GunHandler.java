@@ -14,6 +14,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -96,7 +97,7 @@ public class GunHandler implements Listener {
 		loadGun("little_gustav", LittleGustav::new);
 		loadGun("lightning_gauntlet", LightningGauntlet::new);
 		loadGun("chainsword", Chainsword::new);
-		
+
 		loadGun("gold_lava_shotgun", LavaShotgun::new);
 		loadGun("gold_portable_railgun", PortableRailgun::new);
 		loadGun("gold_quantum_vaporizer", Vaporizer::new);
@@ -105,7 +106,7 @@ public class GunHandler implements Listener {
 		loadGun("gold_little_gustav", LittleGustav::new);
 		loadGun("gold_lightning_gauntlet", LightningGauntlet::new);
 		loadGun("gold_chainsword", Chainsword::new);
-		
+
 		loadGun("rgb_lava_shotgun", LavaShotgun::new);
 		loadGun("rgb_portable_railgun", PortableRailgun::new);
 		loadGun("rgb_quantum_vaporizer", Vaporizer::new);
@@ -119,7 +120,7 @@ public class GunHandler implements Listener {
 	@EventHandler
 	public void onPlayerUseGun(PlayerInteractEvent e) {
 		BasicGun gun = guns.get(ItemData.getItemId(e.getItem()));
-		if (gun == null) return;
+		if (gun == null || e.getHand() != EquipmentSlot.HAND || e.useItemInHand() == Result.DENY) return;
 		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (!isOnCooldown(e.getPlayer(), gun.getName())) gun.shoot(e.getItem(), e.getPlayer(), plugin);
 		}

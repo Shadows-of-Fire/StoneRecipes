@@ -31,7 +31,7 @@ public class RocketTask implements Runnable {
 	@Override
 	public void run() {
 		if (this.ticksExisted % 20 == 0) {
-			StoneRecipes.INSTANCE.getServer().dispatchCommand(StoneRecipes.INSTANCE.getServer().getConsoleSender(), "title " + player.getName() + " title {\"text\": \"Liftoff in: " + (5 - (this.ticksExisted / 20)) + "\"}");
+			StoneRecipes.INSTANCE.getServer().dispatchCommand(StoneRecipes.INSTANCE.getServer().getConsoleSender(), "title " + player.getName() + " title {\"text\": \"Liftoff in: " + (5 - this.ticksExisted / 20) + "\"}");
 		}
 		if (this.ticksExisted++ >= 120) {
 			StoneRecipes.INSTANCE.getServer().dispatchCommand(StoneRecipes.INSTANCE.getServer().getConsoleSender(), "title " + player.getName() + " title {\"text\": \"Liftoff!\"}");

@@ -30,43 +30,55 @@ public class FakePlayer extends EntityPlayer {
 		this.playerInteractManager.setGameMode(EnumGamemode.SURVIVAL);
 	}
 
+	@Override
 	public Vec3D getPositionVector() {
 		return new Vec3D(0.0D, 0.0D, 0.0D);
 	}
 
+	@Override
 	public void tick() {
 	}
 
+	@Override
 	public void die(DamageSource damagesource) {
 	}
 
+	@Override
 	public Entity a(DimensionManager dimensionmanager, TeleportCause cause) {
 		return this;
 	}
 
+	@Override
 	public OptionalInt openContainer(@Nullable ITileInventory itileinventory) {
 		return OptionalInt.empty();
 	}
 
+	@Override
 	public void a(PacketPlayInSettings packetplayinsettings) {
 	}
 
+	@Override
 	public void sendMessage(IChatBaseComponent ichatbasecomponent) {
 	}
 
+	@Override
 	public void a(IChatBaseComponent ichatbasecomponent, boolean flag) {
 	}
 
+	@Override
 	public void a(Statistic<?> statistic, int i) {
 	}
 
+	@Override
 	public void a(Statistic<?> statistic) {
 	}
 
+	@Override
 	public boolean isInvulnerable(DamageSource damagesource) {
 		return true;
 	}
 
+	@Override
 	public boolean p(boolean flag) {
 		return true;
 	}

@@ -32,7 +32,6 @@ import net.minecraft.server.v1_15_R1.BlockCommand;
 import net.minecraft.server.v1_15_R1.BlockJigsaw;
 import net.minecraft.server.v1_15_R1.BlockPosition;
 import net.minecraft.server.v1_15_R1.BlockStructure;
-import net.minecraft.server.v1_15_R1.EntityHuman;
 import net.minecraft.server.v1_15_R1.EnumGamemode;
 import net.minecraft.server.v1_15_R1.EnumItemSlot;
 import net.minecraft.server.v1_15_R1.IBlockData;
@@ -245,12 +244,12 @@ public class AutoBreaker extends PoweredMachine {
 			if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !player.isCreativeAndOp()) {
 				world.notify(blockposition, iblockdata, iblockdata, 3);
 				return false;
-			} else if (player.a((World) world, (BlockPosition) blockposition, EnumGamemode.SURVIVAL)) {
+			} else if (player.a(world, blockposition, EnumGamemode.SURVIVAL)) {
 				return false;
 			} else {
 				org.bukkit.block.BlockState state = bblock.getState();
 				world.captureDrops = new ArrayList<>();
-				block.a((World) world, (BlockPosition) blockposition, (IBlockData) iblockdata, (EntityHuman) player);
+				block.a(world, blockposition, iblockdata, player);
 				boolean flag = world.a(blockposition, false);
 				if (flag) {
 					block.postBreak(world, blockposition, iblockdata);
