@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftShapelessRecipe;
 import org.bukkit.entity.Player;
@@ -47,6 +48,11 @@ public class RecipeLoader implements Listener {
 	 * Machine recipe map.  Map of machine types to input-output pairs.
 	 */
 	public static final Map<String, Map<ItemStack, ItemStack>> RECIPES = new HashMap<>();
+
+	/**
+	 * Machine recipe map.  Map of machine types to input-output pairs.
+	 */
+	public static final Map<String, Map<Pair<ItemStack, ItemStack>, ItemStack>> DUAL_RECIPES = new HashMap<>();
 
 	/**
 	 * A map of item ids to required permission nodes.  If there is no mapping, the item has no permission.
@@ -194,11 +200,48 @@ public class RecipeLoader implements Listener {
 			}
 			RECIPES.put(type, outputs);
 		}
+
+		DUAL_RECIPES.clear();
+		machineTypes = new PluginFile(StoneRecipes.INSTANCE, "dual_machines.yml");
+		for (String type : machineTypes.getKeys(false)) {
+			PluginFile machineOutput = new PluginFile(StoneRecipes.INSTANCE, "dual_machines/" + type + ".yml");
+			Map<Pair<ItemStack, ItemStack>, ItemStack> outputs = new HashMap<>();
+			for (String input : machineOutput.getKeys(false)) {
+				String[] inputs = input.split(",");
+				ItemStack leftInput = StoneRecipes.INSTANCE.getItems().getItemForRecipe(inputs[0]);
+				ItemStack rightInput = StoneRecipes.INSTANCE.getItems().getItemForRecipe(inputs[1]);
+				String output = machineOutput.getString(input);
+				int outcount = 1;
+				if (output.contains(",")) {
+					String[] split = output.split(",");
+					output = split[0];
+					outcount = Integer.parseInt(split[1]);
+				}
+				ItemStack stackOut = StoneRecipes.INSTANCE.getItems().getItemForRecipe(output);
+				stackOut.setAmount(outcount);
+				if (leftInput != null && rightInput != null && stackOut != null) outputs.put(Pair.of(leftInput, rightInput), stackOut);
+				else StoneRecipes.debug("Invalid machine recipe for %s.  Recipe %s -> %s was translated into %s, %s -> %s.", type, input, machineOutput.getString(input), leftInput, rightInput, stackOut);
+			}
+			DUAL_RECIPES.put(type, outputs);
+		}
 	}
 
 	@Nullable
 	public ItemStack getMachineOutput(String type, ItemStack input) {
 		return RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey(), input)).map(e -> e.getValue()).findFirst().orElse(null);
+	}
+
+	@Nullable
+	public ItemStack getDualMachineOutput(String type, ItemStack left, ItemStack right) {
+		return DUAL_RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey().getLeft(), left) && ItemData.isSimilar(e.getKey().getRight(), right)).map(e -> e.getValue()).findFirst().orElse(null);
+	}
+
+	public boolean isValidLeftInput(String type, ItemStack left) {
+		return DUAL_RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey().getLeft(), left)).findAny().isPresent();
+	}
+
+	public boolean isValidRightInput(String type, ItemStack right) {
+		return DUAL_RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey().getRight(), right)).findAny().isPresent();
 	}
 
 	public void loadPermissions() {

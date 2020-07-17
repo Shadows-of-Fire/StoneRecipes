@@ -23,6 +23,7 @@ import shadows.stonerecipes.tileentity.OreVeinTile;
 import shadows.stonerecipes.tileentity.machine.AutoBreaker;
 import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
+import shadows.stonerecipes.tileentity.machine.DualTypedMachine;
 import shadows.stonerecipes.tileentity.machine.IndustrialTypedMachine;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
@@ -116,6 +117,7 @@ public class DataHandler implements Listener {
 		public static final Map<WorldPos, Map<WorldPos, NoteTileEntity>> ALL_MACHINES = new HashMap<>();
 		public static final MapWrapper<Charger> CHARGERS = new MapWrapper<>();
 		public static final MapWrapper<TypedMachine> TYPED_MACHINES = new MapWrapper<>();
+		public static final MapWrapper<DualTypedMachine> DUAL_TYPED_MACHINES = new MapWrapper<>();
 		public static final MapWrapper<PowerGenerator> GENERATORS = new MapWrapper<>();
 		public static final MapWrapper<OreVeinTile> VEINS = new MapWrapper<>();
 		public static final MapWrapper<NuclearReactor> REACTORS = new MapWrapper<>();

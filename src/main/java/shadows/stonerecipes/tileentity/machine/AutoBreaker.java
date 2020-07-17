@@ -32,6 +32,7 @@ import net.minecraft.server.v1_15_R1.BlockCommand;
 import net.minecraft.server.v1_15_R1.BlockJigsaw;
 import net.minecraft.server.v1_15_R1.BlockPosition;
 import net.minecraft.server.v1_15_R1.BlockStructure;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
 import net.minecraft.server.v1_15_R1.EnumGamemode;
 import net.minecraft.server.v1_15_R1.EnumItemSlot;
 import net.minecraft.server.v1_15_R1.IBlockData;
@@ -117,7 +118,9 @@ public class AutoBreaker extends PoweredMachine {
 			Block toBreak = this.location.getBlock().getRelative(facing);
 			if (toBreak.getType() != Material.AIR) {
 				BlockState state = toBreak.getState();
-				breakBlock(new BlockPosition(toBreak.getX(), toBreak.getY(), toBreak.getZ()));
+				World world = ((CraftWorld) this.location.getWorld()).getHandle();
+				FakePlayer player = fakePlayer == null ? (fakePlayer = new FakePlayer((WorldServer) world, playerId)) : fakePlayer;
+				breakBlock(world, new BlockPosition(toBreak.getX(), toBreak.getY(), toBreak.getZ()), player);
 				if (!toBreak.getState().equals(state)) {
 					List<Item> items = toBreak.getWorld().getNearbyEntities(toBreak.getLocation(), 1.5, 1.5, 1.5).stream().filter(t -> t instanceof Item).map(t -> (Item) t).collect(Collectors.toList());
 					for (Item i : items) {
@@ -218,9 +221,7 @@ public class AutoBreaker extends PoweredMachine {
 	 * @param blockposition The location of the block to break.
 	 * @return If a block was successfully broken.
 	 */
-	public boolean breakBlock(BlockPosition blockposition) {
-		World world = ((CraftWorld) this.location.getWorld()).getHandle();
-		FakePlayer player = fakePlayer == null ? (fakePlayer = new FakePlayer((WorldServer) world, playerId)) : fakePlayer;
+	public static boolean breakBlock(World world, BlockPosition blockposition, EntityPlayer player) {
 		IBlockData iblockdata = world.getType(blockposition);
 		org.bukkit.block.Block bblock = CraftBlock.at(world, blockposition);
 		BlockBreakEvent event = new BlockBreakEvent(bblock, player.getBukkitEntity());

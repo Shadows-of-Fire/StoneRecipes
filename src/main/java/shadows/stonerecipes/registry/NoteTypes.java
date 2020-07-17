@@ -15,6 +15,7 @@ import shadows.stonerecipes.tileentity.machine.AutoBreaker;
 import shadows.stonerecipes.tileentity.machine.AutoCrafter;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.tileentity.machine.CoalGenerator;
+import shadows.stonerecipes.tileentity.machine.DualTypedMachine;
 import shadows.stonerecipes.tileentity.machine.IndustrialTypedMachine;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
@@ -29,6 +30,7 @@ public class NoteTypes {
 	public static final NoteTileType<Charger> CHARGER = register("armor_charger", "data/chargers.yml", Maps.CHARGERS, Charger::new);
 	public static final NoteTileType<PowerGenerator> GENERATOR = register("generator", "data/generators.yml", Maps.GENERATORS, CoalGenerator::new);
 	public static final MultiNoteTileType<TypedMachine> TYPED_MACHINE = register(new MultiNoteTileType<>("typed_machine", "data/machines.yml", RecipeLoader.RECIPES.keySet(), Maps.TYPED_MACHINES, TypedMachine::new));
+	public static final MultiNoteTileType<DualTypedMachine> DUAL_TYPED_MACHINE = register(new MultiNoteTileType<>("dual_typed_machine", "data/dual_machines.yml", RecipeLoader.DUAL_RECIPES.keySet(), Maps.DUAL_TYPED_MACHINES, DualTypedMachine::new));
 	public static final MultiNoteTileType<OreVeinTile> ORE_VEIN = register(new MultiNoteTileType<>("ore_vein", "data/ore_veins.yml", StoneRecipes.INSTANCE.getOreVeins(), Maps.VEINS, OreVeinTile::new));
 	public static final NoteTileType<NuclearReactor> REACTOR = register("nuclear_reactor", "data/reactors.yml", Maps.REACTORS, NuclearReactor::new);
 	public static final PlayerTeleType PLAYER_TELEPORTER = register(new PlayerTeleType());
