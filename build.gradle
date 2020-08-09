@@ -12,10 +12,10 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 group = 'shadows.stonerecipes'
-version = '2.4.0'
+version = '3.0.0'
 
 ext.projectName = 'StoneRecipes'
-ext.inceptionYear = '2019'
+ext.inceptionYear = '2020'
 ext.packaging = 'jar'
 
 repositories {

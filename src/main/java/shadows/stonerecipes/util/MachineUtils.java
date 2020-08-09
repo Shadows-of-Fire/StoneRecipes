@@ -46,14 +46,14 @@ public class MachineUtils {
 	/**
 	 * Saves a machine to disk and unloads it from the game.  Handlers should remove this machine from their maps after calling this method.
 	 */
-	public static void saveMachine(NoteTileEntity machine, PluginFile file) {
+	public static void saveMachine(PluginFile file, NoteTileEntity tile) {
 		try {
-			machine.write(file);
+			tile.write(file);
 		} catch (Exception e) {
 			StoneRecipes.INSTANCE.getLogger().info("A machine has thrown an exception trying to write state, it will not persist!");
 			e.printStackTrace();
 		}
-		machine.unload();
+		tile.unload();
 	}
 
 	/**

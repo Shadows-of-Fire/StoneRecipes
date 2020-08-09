@@ -12,12 +12,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.DataHandler.Maps;
-import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
-import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.WorldPos;
 
 /**
@@ -121,30 +120,26 @@ public class TeleportHandler implements Listener {
 
 	/**
 	 * Attempts to load a player teleporter for a given position.
-	 * Does nothing if already loaded OR this location has no teleporter on disk.
+	 * Does nothing if already loaded.
+	 * If the teleporter isn't loaded, the chunk will be loaded, and it will be rechecked if the tile is present.
 	 */
 	@Nullable
 	public PlayerTeleporter hotloadPlayerT(WorldPos pos) {
 		if (Maps.PLAYER_TELEPORTERS.contains(pos)) return Maps.PLAYER_TELEPORTERS.get(pos);
-		if (!NoteTypes.PLAYER_TELEPORTER.getData().contains(pos.toString())) return null;
-		PlayerTeleporter tele = new PlayerTeleporter(pos);
-		MachineUtils.loadMachine(tele, NoteTypes.PLAYER_TELEPORTER.getData());
-		Maps.PLAYER_TELEPORTERS.put(pos, tele);
-		return tele;
+		StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
+		return Maps.PLAYER_TELEPORTERS.get(pos);
 	}
 
 	/**
 	 * Attempts to load an item teleporter for a given position.
-	 * Does nothing if already loaded OR this location has no teleporter on disk.
+	 * Does nothing if already loaded.
+	 * If the teleporter isn't loaded, the chunk will be loaded, and it will be rechecked if the tile is present.
 	 */
 	@Nullable
 	public ItemTeleporter hotloadItemT(WorldPos pos) {
 		if (Maps.ITEM_TELEPORTERS.contains(pos)) return Maps.ITEM_TELEPORTERS.get(pos);
-		if (!NoteTypes.ITEM_TELEPORTER.getData().contains(pos.toString())) return null;
-		ItemTeleporter tele = new ItemTeleporter(pos);
-		MachineUtils.loadMachine(tele, NoteTypes.ITEM_TELEPORTER.getData());
-		Maps.ITEM_TELEPORTERS.put(pos, tele);
-		return tele;
+		StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
+		return Maps.ITEM_TELEPORTERS.get(pos);
 	}
 
 }

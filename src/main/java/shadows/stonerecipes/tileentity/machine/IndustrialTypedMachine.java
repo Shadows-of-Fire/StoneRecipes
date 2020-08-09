@@ -30,24 +30,24 @@ public class IndustrialTypedMachine extends PoweredMachine {
 	public static final int[] INPUTS = { Slots.INPUT, Slots.INPUT - 1, Slots.INPUT - 9, Slots.INPUT - 9 - 1 };
 	public static final int[] OUTPUTS = { Slots.OUTPUT, Slots.OUTPUT + 1, Slots.OUTPUT - 9, Slots.OUTPUT - 9 + 1 };
 
-	protected final String type;
+	protected final String subtype;
 	protected final ItemStack infoHoe = new ItemStack(Material.DIAMOND_HOE);
 	protected String infoCmd;
 	protected int upgradeTicks = 0;
 
 	public IndustrialTypedMachine(String type, WorldPos pos) {
 		super(type, type, "industrial_machines.yml", pos);
-		this.type = type.replaceAll("industrial_", "");
+		this.subtype = type.replaceAll("industrial_", "");
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = file.getInt(type + ".timer", 1);
-		this.start_progress = file.getInt(type + ".start_progress");
-		this.powerCost = file.getInt(type + ".powerCost");
+		this.timer = file.getInt(subtype + ".timer", 1);
+		this.start_progress = file.getInt(subtype + ".start_progress");
+		this.powerCost = file.getInt(subtype + ".powerCost");
 		this.maxPower = Math.max(maxPower, powerCost);
-		this.infoCmd = file.getString(type + ".infocmd", "");
+		this.infoCmd = file.getString(subtype + ".infocmd", "");
 		infoHoe.setDurability((short) 77);
 		ItemMeta meta = infoHoe.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "Information");
@@ -84,7 +84,7 @@ public class IndustrialTypedMachine extends PoweredMachine {
 	@Override
 	public void write(PluginFile file) {
 		super.write(file);
-		file.set(pos + ".type", type);
+		file.set(pos + ".subtype", subtype);
 		for (int i = 0; i < 4; i++) {
 			file.set(pos + ".input" + i, inventory.getItem(INPUTS[i]));
 			file.set(pos + ".output" + i, inventory.getItem(OUTPUTS[i]));
@@ -101,7 +101,7 @@ public class IndustrialTypedMachine extends PoweredMachine {
 		boolean hasNoInputs = true;
 		for (int i = 0; i < 4; i++) {
 			ItemStack input = inventory.getItem(INPUTS[i]);
-			ItemStack output = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
+			ItemStack output = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(subtype, input);
 			ItemStack curOut = inventory.getItem(OUTPUTS[i]);
 			if (input != null && output != null && (isEmpty(curOut) || ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output))) {
 				hasNoInputs = false;
@@ -138,7 +138,7 @@ public class IndustrialTypedMachine extends PoweredMachine {
 			ItemStack input = inventory.getItem(INPUTS[i]);
 			ItemStack output = inventory.getItem(OUTPUTS[i]);
 			if (isEmpty(input)) continue;
-			ItemStack recipeOut = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, input);
+			ItemStack recipeOut = StoneRecipes.INSTANCE.getRecipes().getMachineOutput(subtype, input);
 			if (output != null && output.getType() != Material.AIR && output.getAmount() > 0) {
 				if (ItemData.isSimilar(recipeOut, output) && output.getAmount() + recipeOut.getAmount() <= output.getMaxStackSize()) {
 					this.usePower(powerCost);
@@ -166,7 +166,7 @@ public class IndustrialTypedMachine extends PoweredMachine {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
-				if (StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, clicked) != null) {
+				if (StoneRecipes.INSTANCE.getRecipes().getMachineOutput(subtype, clicked) != null) {
 					attemptMerge(inventory, clicked, Slots.INPUT - 1 - 9, Slots.INPUT + 1 - 9);
 					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.INPUT - 1, Slots.INPUT + 1);
 				}
@@ -206,17 +206,17 @@ public class IndustrialTypedMachine extends PoweredMachine {
 
 	@Override
 	public boolean equals(Object obj) {
-		return super.equals(obj) && ((IndustrialTypedMachine) obj).type.equals(type);
+		return super.equals(obj) && ((IndustrialTypedMachine) obj).subtype.equals(subtype);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.getClass(), this.type, this.pos);
+		return Objects.hash(this.getClass(), this.subtype, this.pos);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Industrial Machine: %s, Location: %s", StringUtils.capitalize(type), this.pos.translated());
+		return String.format("Industrial Machine: %s, Location: %s", StringUtils.capitalize(subtype), this.pos.translated());
 	}
 
 	@Override

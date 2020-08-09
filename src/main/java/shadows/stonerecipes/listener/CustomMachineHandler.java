@@ -1,9 +1,8 @@
 package shadows.stonerecipes.listener;
 
+import java.io.File;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
@@ -17,6 +16,8 @@ import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
+import shadows.stonerecipes.util.BukkitLambda;
+import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
 public class CustomMachineHandler implements Listener {
@@ -48,11 +49,13 @@ public class CustomMachineHandler implements Listener {
 	}
 
 	public void load(Chunk chunk) {
-		for (NoteTileType<?> t : NoteTypes.REGISTRY.values()) {
+		PluginFile file = getFileFor(chunk);
+		for (String s : file.getKeys(false)) {
+			NoteTileType<?> type = NoteTypes.getTypeFor(file.getString(s + ".type"));
 			try {
-				t.load(chunk);
+				type.load(file, s);
 			} catch (Exception e) {
-				StoneRecipes.INSTANCE.getLogger().info(String.format("An error occurred while loading chunk (%d, %d) for the tile type %s.", chunk.getX(), chunk.getZ(), t.getId()));
+				StoneRecipes.INSTANCE.getLogger().info(String.format("An error occurred while loading a macine at %s with tile type %s.", s, type == null ? "null" : type.getId()));
 				e.printStackTrace();
 			}
 		}
@@ -60,20 +63,25 @@ public class CustomMachineHandler implements Listener {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void save(Chunk chunk) {
+		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getName() + "/" + chunk.getX() + "_" + chunk.getZ());
+		if (trueFile.exists()) trueFile.delete();
+		PluginFile file = getFileFor(chunk);
 		WorldPos chunkPos = new WorldPos(chunk.getWorld().getUID(), chunk.getX(), 0, chunk.getZ());
-		Map<WorldPos, NoteTileEntity> map = Maps.ALL_MACHINES.get(chunkPos);
+		Map<WorldPos, NoteTileEntity> map = Maps.ALL_MACHINES.remove(chunkPos);
 		if (map == null || map.isEmpty()) return;
 
-		Maps.ALL_MACHINES.remove(chunkPos);
-
-		Set<NoteTileType> dirty = new HashSet<>();
-		for (NoteTileEntity t : map.values()) {
-			NoteTileType type = t.getType();
-			type.save(t);
-			dirty.add(type);
+		for (NoteTileEntity tile : map.values()) {
+			NoteTileType type = tile.getType();
+			file.set(tile.getPos() + ".type", type.getId());
+			type.save(file, tile);
 		}
 
-		dirty.forEach(NoteTileType::saveFile);
+		if (StoneRecipes.INSTANCE.isEnabled()) BukkitLambda.runAsync(file::save);
+		else file.save();
+	}
+
+	public static PluginFile getFileFor(Chunk chunk) {
+		return new PluginFile(StoneRecipes.INSTANCE, "data/" + chunk.getWorld().getName() + "/" + chunk.getX() + "_" + chunk.getZ());
 	}
 
 }

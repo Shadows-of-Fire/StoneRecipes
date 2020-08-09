@@ -54,7 +54,7 @@ public class OreVeinTile extends NoteTileEntity {
 
 	@Override
 	public void write(PluginFile file) {
-		file.set(pos + ".type", id);
+		file.set(pos + ".subtype", id);
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package shadows.stonerecipes.registry;
 import java.util.Collection;
 import java.util.function.BiFunction;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 
 import shadows.stonerecipes.StoneRecipes;
@@ -11,6 +10,7 @@ import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.MachineUtils;
+import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
 public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T> {
@@ -18,8 +18,8 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 	protected final Collection<String> ids;
 	protected final BiFunction<String, WorldPos, T> factory;
 
-	public MultiNoteTileType(String id, String data, Collection<String> ids, MapWrapper<T> map, BiFunction<String, WorldPos, T> factory) {
-		super(id, data, map, null);
+	public MultiNoteTileType(String id, Collection<String> ids, MapWrapper<T> map, BiFunction<String, WorldPos, T> factory) {
+		super(id, map, null);
 		this.ids = ids;
 		this.factory = factory;
 	}
@@ -39,25 +39,22 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 	}
 
 	@Override
-	public void load(Chunk chunk) {
-		for (String s : data.getKeys(false)) {
-			WorldPos pos = new WorldPos(s);
-			if (pos.isInside(chunk)) {
-				try {
-					if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
-						data.set(s, null);
-						continue;
-					}
-					String type = data.getString(pos + ".type");
-					T t = factory.apply(type, pos);
-					MachineUtils.loadMachine(t, data);
-					map.put(pos, t);
-				} catch (Exception e) {
-					StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " at " + pos);
-					e.printStackTrace();
-				}
+	public void load(PluginFile file, String key) {
+		WorldPos pos = new WorldPos(key);
+		try {
+			if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
+				file.set(key, null);
+				return;
 			}
+			String subtype = file.getString(pos + ".subtype");
+			T t = factory.apply(subtype, pos);
+			MachineUtils.loadMachine(t, file);
+			map.put(pos, t);
+		} catch (Exception e) {
+			StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " at " + pos);
+			e.printStackTrace();
 		}
+
 	}
 
 }

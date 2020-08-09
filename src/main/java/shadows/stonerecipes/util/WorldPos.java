@@ -98,4 +98,8 @@ public class WorldPos {
 		return new WorldPos(dim, this.x >> 4, 0, this.z >> 4);
 	}
 
+	public UUID getDim() {
+		return dim;
+	}
+
 }

@@ -27,14 +27,14 @@ import shadows.stonerecipes.util.WorldPos;
  */
 public class DualTypedMachine extends PoweredMachine {
 
-	protected final String type;
+	protected final String subtype;
 	protected final ItemStack infoHoe = new ItemStack(Material.DIAMOND_HOE);
 	protected String infoCmd;
 	protected int upgradeTicks = 0;
 
 	public DualTypedMachine(String type, WorldPos pos) {
 		super(type, type, "dual_machines.yml", pos);
-		this.type = type;
+		this.subtype = type;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -80,7 +80,7 @@ public class DualTypedMachine extends PoweredMachine {
 	@Override
 	public void write(PluginFile file) {
 		super.write(file);
-		file.set(pos + ".type", type);
+		file.set(pos + ".subtype", subtype);
 		file.set(pos + ".left_input", inventory.getItem(Slots.INPUT - 1));
 		file.set(pos + ".right_input", inventory.getItem(Slots.INPUT));
 		file.set(pos + ".output", inventory.getItem(Slots.OUTPUT));
@@ -95,7 +95,7 @@ public class DualTypedMachine extends PoweredMachine {
 	protected void timerTick() {
 		ItemStack left = inventory.getItem(Slots.INPUT - 1);
 		ItemStack right = inventory.getItem(Slots.INPUT);
-		ItemStack output = StoneRecipes.INSTANCE.getRecipes().getDualMachineOutput(type, left, right);
+		ItemStack output = StoneRecipes.INSTANCE.getRecipes().getDualMachineOutput(subtype, left, right);
 		if (left == null || right == null || output == null || inventory.getItem(Slots.OUTPUT) != null && !ItemData.isSimilar(inventory.getItem(Slots.OUTPUT), output)) {
 			progress = 0;
 			guiTex.setDurability((short) (start_progress + progress));
@@ -126,7 +126,7 @@ public class DualTypedMachine extends PoweredMachine {
 		ItemStack left = inventory.getItem(Slots.INPUT - 1);
 		ItemStack right = inventory.getItem(Slots.INPUT);
 		ItemStack output = inventory.getItem(Slots.OUTPUT);
-		ItemStack recipeOut = StoneRecipes.INSTANCE.getRecipes().getDualMachineOutput(type, left, right);
+		ItemStack recipeOut = StoneRecipes.INSTANCE.getRecipes().getDualMachineOutput(subtype, left, right);
 		if (output != null && output.getType() != Material.AIR && output.getAmount() > 0) {
 			if (ItemData.isSimilar(recipeOut, output) && output.getAmount() + recipeOut.getAmount() <= output.getMaxStackSize()) {
 				this.usePower(powerCost);
@@ -154,8 +154,8 @@ public class DualTypedMachine extends PoweredMachine {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
-				if (StoneRecipes.INSTANCE.getRecipes().isValidLeftInput(type, clicked)) attemptMerge(inventory, clicked, Slots.INPUT - 1, Slots.INPUT);
-				if (StoneRecipes.INSTANCE.getRecipes().isValidRightInput(type, clicked)) attemptMerge(inventory, clicked, Slots.INPUT, Slots.INPUT + 1);
+				if (StoneRecipes.INSTANCE.getRecipes().isValidLeftInput(subtype, clicked)) attemptMerge(inventory, clicked, Slots.INPUT - 1, Slots.INPUT);
+				if (StoneRecipes.INSTANCE.getRecipes().isValidRightInput(subtype, clicked)) attemptMerge(inventory, clicked, Slots.INPUT, Slots.INPUT + 1);
 				if (clicked.hasItemMeta() && clicked.getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT)) {
 					attemptMerge(inventory, clicked, Slots.UPGRADE_0, Slots.UPGRADE_1 + 1);
 					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.UPGRADE_2, Slots.UPGRADE_3 + 1);
@@ -189,17 +189,17 @@ public class DualTypedMachine extends PoweredMachine {
 
 	@Override
 	public boolean equals(Object obj) {
-		return super.equals(obj) && ((DualTypedMachine) obj).type.equals(type);
+		return super.equals(obj) && ((DualTypedMachine) obj).subtype.equals(subtype);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.getClass(), this.type, this.pos);
+		return Objects.hash(this.getClass(), this.subtype, this.pos);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Machine: %s, Location: %s", StringUtils.capitalize(type), this.pos.translated());
+		return String.format("Machine: %s, Location: %s", StringUtils.capitalize(subtype), this.pos.translated());
 	}
 
 	@Override
