@@ -34,7 +34,7 @@ public abstract class NoteTileEntity implements ITickable {
 	public static final int MAX_PROGRESS = 5;
 
 	protected final String displayName;
-	protected final String id;
+	protected final String configId;
 	protected final WorldPos pos;
 	protected final Location location;
 	protected final NoteBlockInventory inventory;
@@ -50,14 +50,14 @@ public abstract class NoteTileEntity implements ITickable {
 
 	/**
 	 * Basic machine constructor.
-	 * @param id The name of the item that represents this machine.
+	 * @param configId The top-level key for configs for this tile.
 	 * @param displayName The literal english name of this machine.  Used for GUI displays.
 	 * @param file The file that this machine's data should be loaded from.  @Deprecated should be removed in the future.  Possibly changed to enum.
 	 * @param pos Where this machine is in the world.  Creating a machine that is not where a Note Block is will cause a ClassCastException.
 	 */
-	public NoteTileEntity(String id, String displayName, @Deprecated String file, WorldPos pos) {
+	public NoteTileEntity(String configId, String displayName, @Deprecated String file, WorldPos pos) {
 		this.displayName = displayName;
-		this.id = id;
+		this.configId = configId;
 		this.pos = pos;
 		this.location = pos.toLocation();
 		this.inventory = new NoteBlockInventory(null, 54, localize(this.displayName));
@@ -137,8 +137,8 @@ public abstract class NoteTileEntity implements ITickable {
 	 * @param file The config file as specified in the constructor.
 	 */
 	public void loadConfigData(PluginFile file) {
-		this.timer = file.getInt(id + ".timer", 1);
-		this.start_progress = file.getInt(id + ".start_progress");
+		this.timer = file.getInt(configId + ".timer", 1);
+		this.start_progress = file.getInt(configId + ".start_progress");
 	}
 
 	/**
@@ -166,12 +166,16 @@ public abstract class NoteTileEntity implements ITickable {
 	/**
 	 * Writes all instance data for this machine to disk.
 	 */
-	public abstract void write(PluginFile file);
+	public void write(PluginFile file) {
+		file.set(pos + ".type", this.getType().getId());
+	}
 
 	/**
 	 * Reads all instance data for this machine from disk.
 	 */
-	public abstract void read(PluginFile file);
+	public void read(PluginFile file) {
+
+	}
 
 	/**
 	 * Called when this machine has been broken in-world.

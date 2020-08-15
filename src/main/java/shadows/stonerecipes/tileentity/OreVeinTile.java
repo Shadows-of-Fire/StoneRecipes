@@ -13,10 +13,12 @@ import shadows.stonerecipes.util.WorldPos;
 
 public class OreVeinTile extends NoteTileEntity {
 
+	protected String subtype;
 	protected CustomBlock ore;
 
 	public OreVeinTile(String name, WorldPos pos) {
 		super(name, name, "ore_veins.yml", pos);
+		this.subtype = name;
 	}
 
 	/**
@@ -39,13 +41,13 @@ public class OreVeinTile extends NoteTileEntity {
 
 	@Override
 	public void loadConfigData(PluginFile file) {
-		String ore = file.getString(id + ".ore");
+		String ore = file.getString(configId + ".ore");
 		if (StoneRecipes.INSTANCE.getItems().getBlock(ore) != null) {
 			this.ore = StoneRecipes.INSTANCE.getItems().getBlock(ore);
 		} else {
 			this.ore = new CustomBlock(Material.valueOf(ore), null);
 		}
-		this.timer = file.getInt(id + ".interval", 1);
+		this.timer = file.getInt(configId + ".interval", 1);
 	}
 
 	@Override
@@ -54,7 +56,8 @@ public class OreVeinTile extends NoteTileEntity {
 
 	@Override
 	public void write(PluginFile file) {
-		file.set(pos + ".subtype", id);
+		super.write(file);
+		file.set(pos + ".subtype", subtype);
 	}
 
 	@Override

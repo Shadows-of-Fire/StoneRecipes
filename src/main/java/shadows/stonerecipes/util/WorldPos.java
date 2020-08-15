@@ -21,7 +21,7 @@ public class WorldPos {
 	 */
 	public static final WorldPos INVALID = new WorldPos(UUID.fromString("5d011ece-2270-4b99-8eae-3b7741d9caf1"), -1, -1, -1);
 
-	private final int x, y, z;
+	public final int x, y, z;
 
 	private final UUID dim;
 

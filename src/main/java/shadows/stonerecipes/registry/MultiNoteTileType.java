@@ -9,7 +9,6 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
-import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
@@ -41,17 +40,18 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 	@Override
 	public void load(PluginFile file, String key) {
 		WorldPos pos = new WorldPos(key);
+		String subtype = file.getString(pos + ".subtype");
 		try {
 			if (pos.toLocation().getBlock().getType() != Material.NOTE_BLOCK) {
 				file.set(key, null);
 				return;
 			}
-			String subtype = file.getString(pos + ".subtype");
 			T t = factory.apply(subtype, pos);
-			MachineUtils.loadMachine(t, file);
+			t.read(file);
+			t.start();
 			map.put(pos, t);
 		} catch (Exception e) {
-			StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " at " + pos);
+			StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " (" + subtype + ")" + " at " + pos);
 			e.printStackTrace();
 		}
 

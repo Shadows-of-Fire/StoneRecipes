@@ -8,7 +8,6 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
-import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
@@ -58,7 +57,8 @@ public class NoteTileType<T extends NoteTileEntity> {
 				return;
 			}
 			T t = factory.apply(pos);
-			MachineUtils.loadMachine(t, file);
+			t.read(file);
+			t.start();
 			map.put(pos, t);
 		} catch (Exception e) {
 			StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to load a " + this.getId() + " at " + pos);
@@ -72,11 +72,12 @@ public class NoteTileType<T extends NoteTileEntity> {
 	 */
 	public void save(PluginFile file, T t) {
 		try {
-			MachineUtils.saveMachine(file, t);
+			t.write(file);
 		} catch (Exception e) {
 			StoneRecipes.INSTANCE.getLogger().info("An error occurred while trying to save a " + this.getId() + " at " + t.getPos());
 			e.printStackTrace();
 		}
+		t.unload();
 		map.remove(t.getPos());
 	}
 

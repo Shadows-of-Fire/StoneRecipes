@@ -54,4 +54,11 @@ public class NoteTypes {
 		}
 		return null;
 	}
+
+	public static NoteTileType<?> getTypeById(String id) {
+		for (NoteTileType<?> t : REGISTRY.values()) {
+			if (t.getId().equals(id)) return t;
+		}
+		return null;
+	}
 }

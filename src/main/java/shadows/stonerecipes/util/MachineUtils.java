@@ -44,32 +44,6 @@ public class MachineUtils {
 	}
 
 	/**
-	 * Saves a machine to disk and unloads it from the game.  Handlers should remove this machine from their maps after calling this method.
-	 */
-	public static void saveMachine(PluginFile file, NoteTileEntity tile) {
-		try {
-			tile.write(file);
-		} catch (Exception e) {
-			StoneRecipes.INSTANCE.getLogger().info("A machine has thrown an exception trying to write state, it will not persist!");
-			e.printStackTrace();
-		}
-		tile.unload();
-	}
-
-	/**
-	 * Loads a machine from disk and starts it's run cycle.  Handlers should add this machine to their maps.
-	 */
-	public static void loadMachine(NoteTileEntity machine, PluginFile file) {
-		try {
-			machine.read(file);
-		} catch (Exception e) {
-			StoneRecipes.INSTANCE.getLogger().info("A machine has thrown an exception trying to read state, it will not persist!");
-			e.printStackTrace();
-		}
-		machine.start();
-	}
-
-	/**
 	 * Creates a note block at the given location with the provided Instrument and Note.
 	 */
 	public static void placeNoteBlock(Block block, CustomBlock cBlock) {

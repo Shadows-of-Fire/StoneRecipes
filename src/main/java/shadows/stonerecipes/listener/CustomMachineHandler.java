@@ -51,11 +51,11 @@ public class CustomMachineHandler implements Listener {
 	public void load(Chunk chunk) {
 		PluginFile file = getFileFor(chunk);
 		for (String s : file.getKeys(false)) {
-			NoteTileType<?> type = NoteTypes.getTypeFor(file.getString(s + ".type"));
+			NoteTileType<?> type = NoteTypes.getTypeById(file.getString(s + ".type"));
 			try {
 				type.load(file, s);
 			} catch (Exception e) {
-				StoneRecipes.INSTANCE.getLogger().info(String.format("An error occurred while loading a macine at %s with tile type %s.", s, type == null ? "null" : type.getId()));
+				StoneRecipes.INSTANCE.getLogger().info(String.format("An error occurred while loading a macine at %s with tile type %s.", s, type == null ? file.getString(s + ".type") : type.getId()));
 				e.printStackTrace();
 			}
 		}
@@ -63,7 +63,7 @@ public class CustomMachineHandler implements Listener {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void save(Chunk chunk) {
-		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getName() + "/" + chunk.getX() + "_" + chunk.getZ());
+		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ());
 		if (trueFile.exists()) trueFile.delete();
 		PluginFile file = getFileFor(chunk);
 		WorldPos chunkPos = new WorldPos(chunk.getWorld().getUID(), chunk.getX(), 0, chunk.getZ());
@@ -72,7 +72,6 @@ public class CustomMachineHandler implements Listener {
 
 		for (NoteTileEntity tile : map.values()) {
 			NoteTileType type = tile.getType();
-			file.set(tile.getPos() + ".type", type.getId());
 			type.save(file, tile);
 		}
 
@@ -81,7 +80,7 @@ public class CustomMachineHandler implements Listener {
 	}
 
 	public static PluginFile getFileFor(Chunk chunk) {
-		return new PluginFile(StoneRecipes.INSTANCE, "data/" + chunk.getWorld().getName() + "/" + chunk.getX() + "_" + chunk.getZ());
+		return new PluginFile(StoneRecipes.INSTANCE, "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ());
 	}
 
 }

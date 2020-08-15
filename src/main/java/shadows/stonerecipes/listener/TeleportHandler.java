@@ -6,7 +6,9 @@ import java.util.WeakHashMap;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -126,7 +128,8 @@ public class TeleportHandler implements Listener {
 	@Nullable
 	public PlayerTeleporter hotloadPlayerT(WorldPos pos) {
 		if (Maps.PLAYER_TELEPORTERS.contains(pos)) return Maps.PLAYER_TELEPORTERS.get(pos);
-		StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
+		Chunk chunk = StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
+		if (chunk.getBlock(pos.x >> 4, pos.y, pos.z >> 4).getType() != Material.NOTE_BLOCK) return null;
 		return Maps.PLAYER_TELEPORTERS.get(pos);
 	}
 
@@ -138,7 +141,8 @@ public class TeleportHandler implements Listener {
 	@Nullable
 	public ItemTeleporter hotloadItemT(WorldPos pos) {
 		if (Maps.ITEM_TELEPORTERS.contains(pos)) return Maps.ITEM_TELEPORTERS.get(pos);
-		StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
+		Chunk chunk = StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
+		if (chunk.getBlock(pos.x >> 4, pos.y, pos.z >> 4).getType() != Material.NOTE_BLOCK) return null;
 		return Maps.ITEM_TELEPORTERS.get(pos);
 	}
 
