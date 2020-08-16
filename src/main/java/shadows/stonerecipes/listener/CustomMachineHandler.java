@@ -63,7 +63,7 @@ public class CustomMachineHandler implements Listener {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void save(Chunk chunk) {
-		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ());
+		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ() + ".yml");
 		if (trueFile.exists()) trueFile.delete();
 		PluginFile file = getFileFor(chunk);
 		WorldPos chunkPos = new WorldPos(chunk.getWorld().getUID(), chunk.getX(), 0, chunk.getZ());
@@ -80,7 +80,7 @@ public class CustomMachineHandler implements Listener {
 	}
 
 	public static PluginFile getFileFor(Chunk chunk) {
-		return new PluginFile(StoneRecipes.INSTANCE, "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ());
+		return new PluginFile(StoneRecipes.INSTANCE, "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ() + ".yml");
 	}
 
 }

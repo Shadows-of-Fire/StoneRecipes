@@ -49,6 +49,7 @@ public class PluginFile extends YamlConfiguration {
 		if (!file.exists()) {
 
 			try {
+				file.getParentFile().setWritable(true);
 				file.getParentFile().mkdirs();
 				file.createNewFile();
 

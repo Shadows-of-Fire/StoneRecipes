@@ -117,7 +117,7 @@ public class StoneRecipes extends JavaPlugin {
 		jetCost = getConfig().getInt("jetpack.cost");
 		jetTime = getConfig().getInt("jetpack.time");
 		getCommand("srbackup").setExecutor(new BackupTask());
-		BukkitLambda.runTimerAsync(new BackupTask(), 60 * 60 * 20);
+		BukkitLambda.runTimerAsync(new BackupTask(), 1200, 60 * 60 * 20);
 	}
 
 	@Override

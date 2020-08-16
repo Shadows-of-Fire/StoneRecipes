@@ -34,4 +34,8 @@ public class BukkitLambda extends BukkitRunnable {
 		return new BukkitLambda(r).runTaskTimerAsynchronously(StoneRecipes.INSTANCE, 0, timer);
 	}
 
+	public static BukkitTask runTimerAsync(Runnable r, int delay, int timer) {
+		return new BukkitLambda(r).runTaskTimerAsynchronously(StoneRecipes.INSTANCE, delay, timer);
+	}
+
 }

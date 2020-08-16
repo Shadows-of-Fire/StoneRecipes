@@ -39,12 +39,23 @@ public class BackupTask implements Runnable, CommandExecutor {
 			try (FileOutputStream fos = new FileOutputStream(backup)) {
 				ZipOutputStream zos = new ZipOutputStream(fos);
 				for (File f : dataFolder.listFiles()) {
-					zos.putNextEntry(new ZipEntry(f.getName()));
-					FileInputStream fis = new FileInputStream(f);
-					byte[] bytes = IOUtils.toByteArray(fis);
-					fis.close();
-					zos.write(bytes, 0, bytes.length);
-					zos.closeEntry();
+					if (f.isDirectory()) {
+						for (File f2 : f.listFiles()) {
+							zos.putNextEntry(new ZipEntry(f2.getName()));
+							FileInputStream fis = new FileInputStream(f2);
+							byte[] bytes = IOUtils.toByteArray(fis);
+							fis.close();
+							zos.write(bytes, 0, bytes.length);
+							zos.closeEntry();
+						}
+					} else {
+						zos.putNextEntry(new ZipEntry(f.getName()));
+						FileInputStream fis = new FileInputStream(f);
+						byte[] bytes = IOUtils.toByteArray(fis);
+						fis.close();
+						zos.write(bytes, 0, bytes.length);
+						zos.closeEntry();
+					}
 				}
 				zos.close();
 				StoneRecipes.INSTANCE.getLogger().info("Created a backup of ./StoneRecipes/data at ./StoneRecipes/backups/" + backup.getName());
