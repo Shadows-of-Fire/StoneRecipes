@@ -10,7 +10,6 @@ public class TickHandler {
 	private static final List<ITickable> TICKERS = new ArrayList<>();
 
 	public static void tick() {
-		StoneRecipes.debug("Preparing to tick %s note block tiles...", TICKERS.size());
 		for (int i = 0; i < TICKERS.size(); i++) {
 			ITickable tick = TICKERS.get(i);
 			if (tick.isDead()) TICKERS.remove(i--);

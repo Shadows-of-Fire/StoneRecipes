@@ -106,7 +106,6 @@ public class StoneRecipes extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new CustomBlockHandler(), this);
 		getServer().getPluginManager().registerEvents(machines, this);
 		getCommand("giveitem").setExecutor(new GiveCommand(this));
-		dataHandler.load();
 		for (World w : Bukkit.getWorlds()) {
 			for (Chunk c : w.getLoadedChunks()) {
 				dataHandler.onChunkLoad(c);
@@ -125,7 +124,6 @@ public class StoneRecipes extends JavaPlugin {
 		for (World w : Bukkit.getWorlds()) {
 			dataHandler.onWorldUnload(w);
 		}
-		dataHandler.save();
 		for (Player p : getServer().getOnlinePlayers()) {
 			p.closeInventory();
 			gunHandler.unscope(p);

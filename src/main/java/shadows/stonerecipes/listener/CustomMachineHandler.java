@@ -49,6 +49,8 @@ public class CustomMachineHandler implements Listener {
 	}
 
 	public void load(Chunk chunk) {
+		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ() + ".yml");
+		if (!trueFile.exists()) return;
 		PluginFile file = getFileFor(chunk);
 		for (String s : file.getKeys(false)) {
 			NoteTileType<?> type = NoteTypes.getTypeById(file.getString(s + ".type"));
@@ -59,16 +61,18 @@ public class CustomMachineHandler implements Listener {
 				e.printStackTrace();
 			}
 		}
+		StoneRecipes.debug("Attempted to load %s machines for chunk (%s,%s)", file.getKeys(false).size(), chunk.getX(), chunk.getZ());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void save(Chunk chunk) {
-		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ() + ".yml");
-		if (trueFile.exists()) trueFile.delete();
-		PluginFile file = getFileFor(chunk);
 		WorldPos chunkPos = new WorldPos(chunk.getWorld().getUID(), chunk.getX(), 0, chunk.getZ());
 		Map<WorldPos, NoteTileEntity> map = Maps.ALL_MACHINES.remove(chunkPos);
 		if (map == null || map.isEmpty()) return;
+
+		File trueFile = new File(StoneRecipes.INSTANCE.getDataFolder(), "data/" + chunk.getWorld().getUID() + "/" + chunk.getX() + "_" + chunk.getZ() + ".yml");
+		if (trueFile.exists()) trueFile.delete();
+		PluginFile file = getFileFor(chunk);
 
 		for (NoteTileEntity tile : map.values()) {
 			NoteTileType type = tile.getType();
@@ -77,6 +81,7 @@ public class CustomMachineHandler implements Listener {
 
 		if (StoneRecipes.INSTANCE.isEnabled()) BukkitLambda.runAsync(file::save);
 		else file.save();
+		StoneRecipes.debug("Saving %s machines for chunk (%s,%s)", file.getKeys(false).size(), chunk.getX(), chunk.getZ());
 	}
 
 	public static PluginFile getFileFor(Chunk chunk) {

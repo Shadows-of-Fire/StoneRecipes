@@ -4,13 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.LongSet;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -30,18 +26,12 @@ import shadows.stonerecipes.tileentity.machine.NuclearReactor;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
 import shadows.stonerecipes.tileentity.machine.PowerGenerator;
 import shadows.stonerecipes.tileentity.machine.TypedMachine;
-import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
 /**
  * Handles the world loading and unloading which triggers general loads for various systems.
  */
 public class DataHandler implements Listener {
-
-	private static Map<UUID, LongSet> needsUnload = new HashMap<>();
-	private static Map<UUID, LongSet> needsLoad = new HashMap<>();
-
-	private PluginFile data = new PluginFile(StoneRecipes.INSTANCE, "data/chunks.yml");
 
 	@EventHandler
 	public void onChunkLoad(ChunkLoadEvent e) {
@@ -59,17 +49,12 @@ public class DataHandler implements Listener {
 	}
 
 	public void onChunkLoad(Chunk chunk) {
-		if (!needsLoad.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).contains(toLong(chunk))) return;
 		StoneRecipes.INSTANCE.getMachineHandler().load(chunk);
-		needsLoad.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).remove(toLong(chunk));
 		StoneRecipes.debug("Loaded chunk (%s,%s)", chunk.getX(), chunk.getZ());
 	}
 
 	public void onChunkUnload(Chunk chunk) {
-		if (!needsUnload.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).contains(toLong(chunk))) return;
 		StoneRecipes.INSTANCE.getMachineHandler().save(chunk);
-		needsUnload.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).remove(toLong(chunk));
-		needsLoad.computeIfAbsent(chunk.getWorld().getUID(), u -> new LongOpenHashSet()).add(toLong(chunk));
 		StoneRecipes.debug("Unloaded chunk (%s,%s)", chunk.getX(), chunk.getZ());
 	}
 
@@ -78,33 +63,8 @@ public class DataHandler implements Listener {
 			onChunkUnload(c);
 	}
 
-	public static void needsUnload(Chunk c) {
-		needsUnload.computeIfAbsent(c.getWorld().getUID(), u -> new LongOpenHashSet()).add(toLong(c));
-	}
-
 	public static long toLong(Chunk c) {
 		return (long) c.getX() << 32L | c.getZ() & 0xffffffffL;
-	}
-
-	public void load() {
-		for (String s : data.getKeys(false)) {
-			UUID id = UUID.fromString(s);
-			LongSet chunks = new LongOpenHashSet();
-			for (String chunk : data.getConfigurationSection(s).getKeys(false)) {
-				chunks.add(Long.parseLong(chunk));
-			}
-			needsLoad.put(id, chunks);
-		}
-	}
-
-	public void save() {
-		for (UUID id : needsLoad.keySet()) {
-			ConfigurationSection sec = data.createSection(id.toString());
-			for (Long s : needsLoad.get(id)) {
-				sec.set(String.valueOf(s), 'c');
-			}
-		}
-		data.save();
 	}
 
 	public static class Maps {

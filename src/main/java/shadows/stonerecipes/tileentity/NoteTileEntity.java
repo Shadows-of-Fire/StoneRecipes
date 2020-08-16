@@ -17,7 +17,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
-import shadows.stonerecipes.listener.DataHandler;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
@@ -79,7 +78,6 @@ public abstract class NoteTileEntity implements ITickable {
 		this.timer = Math.max(1, this.timer);
 		TickHandler.registerTickable(this);
 		this.loadConfigData(new PluginFile(StoneRecipes.INSTANCE, file));
-		DataHandler.needsUnload(location.getChunk());
 	}
 
 	/**
