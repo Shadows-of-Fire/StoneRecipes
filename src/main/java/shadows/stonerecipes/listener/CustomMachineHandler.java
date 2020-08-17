@@ -33,7 +33,7 @@ public class CustomMachineHandler implements Listener {
 
 	@EventHandler
 	public void placed(NoteBlockPlacedEvent e) {
-		NoteTileType<?> t = NoteTypes.getTypeFor(e.getItemId());
+		NoteTileType<?> t = NoteTypes.getTypeFor(e.getItem());
 		if (t != null) {
 			t.place(e);
 		}

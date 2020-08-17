@@ -35,7 +35,7 @@ import me.lucko.luckperms.api.Node;
 import me.lucko.luckperms.api.User;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
-import shadows.stonerecipes.util.ItemData;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.util.NBTShapelessRecipe;
 import shadows.stonerecipes.util.PluginFile;
 

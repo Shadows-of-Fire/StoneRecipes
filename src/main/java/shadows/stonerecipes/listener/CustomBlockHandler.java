@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,8 +16,6 @@ import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Result;
@@ -48,8 +45,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.ImmutableSet;
 
-import joptsimple.internal.Strings;
-import net.minecraft.server.v1_15_R1.AxisAlignedBB;
 import net.minecraft.server.v1_15_R1.BlockPosition;
 import net.minecraft.server.v1_15_R1.Blocks;
 import net.minecraft.server.v1_15_R1.ChatComponentText;
@@ -61,15 +56,15 @@ import net.minecraft.server.v1_15_R1.PacketPlayOutSetSlot;
 import net.minecraft.server.v1_15_R1.WorldServer;
 import shadows.stoneblock.listeners.IslandProtection;
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.CustomItem;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.FlameParticleTask;
-import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.ReflectionHelper;
-import shadows.stonerecipes.util.RocketTask;
 
 public class CustomBlockHandler implements Listener {
 
@@ -101,47 +96,9 @@ public class CustomBlockHandler implements Listener {
 
 	private void processItem(PlayerInteractEvent e) {
 		if (e.getItem() == null || !e.getItem().hasItemMeta()) return;
-		String id = ItemData.getItemId(e.getItem());
-
-		if ("dimensional_key".equals(id) && e.getClickedBlock().getType() == Material.BLUE_ICE) {
-			e.getClickedBlock().setType(Material.AIR);
-			e.getItem().setAmount(0);
-			for (int x = -2; x <= 2; x++) {
-				for (int z = -2; z <= 2; z++) {
-					e.getClickedBlock().getRelative(x, 0, z).setType(Material.AIR);
-				}
-			}
-		}
-
-		if ("rocketship".equals(id) && e.getClickedBlock() != null) {
-			ArmorStand rocket = (ArmorStand) e.getPlayer().getWorld().spawnEntity(e.getClickedBlock().getLocation().clone().add(0.5, 0.5, 0.5), EntityType.ARMOR_STAND);
-			rocket.setInvulnerable(true);
-			rocket.setVisible(false);
-			rocket.getEquipment().setHelmet(e.getItem().clone());
-			e.getItem().setAmount(e.getItem().getAmount() - 1);
-			rocket.addPassenger(e.getPlayer());
-			new RocketTask().start(rocket, e.getPlayer());
-			return;
-		}
-
-		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
-		if (e.getItem().getType() != Material.DIAMOND_HOE || !block.getType().equals(Material.AIR)) return;
-
-		Location loc = block.getLocation();
-
-		if (!((CraftWorld) block.getWorld()).getHandle().getEntities(null, new AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1, loc.getZ() + 1)).isEmpty()) return;
-
-		if (Strings.isNullOrEmpty(id)) return;
-		CustomBlock cBlock = StoneRecipes.INSTANCE.getItems().getBlock(id);
-		if (cBlock != null) {
-			BlockPlaceEvent ev = new BlockPlaceEvent(block, block.getState(), block, e.getItem(), e.getPlayer(), true, e.getHand());
-			Bukkit.getServer().getPluginManager().callEvent(ev);
-			if (ev.isCancelled()) return;
-			MachineUtils.placeNoteBlock(block, cBlock);
-			if (block.getType() == Material.NOTE_BLOCK) StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(id, block, e.getItem(), e.getPlayer()));
-			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getItem().setAmount(e.getItem().getAmount() - 1);
-		}
-
+		CustomItem item = ItemData.getItem(e.getItem());
+		if (item == null) return;
+		item.onItemUse(e);
 	}
 
 	private boolean hasGui(Block block) {
@@ -441,19 +398,19 @@ public class CustomBlockHandler implements Listener {
 
 		static HandlerList handlers = new HandlerList();
 
-		protected final String itemId;
+		protected final CustomItem item;
 		protected final ItemStack placed;
 		protected final Player placer;
 
-		public NoteBlockPlacedEvent(String itemId, Block noteBlock, ItemStack placed, Player placer) {
+		public NoteBlockPlacedEvent(CustomItem item, Block noteBlock, ItemStack placed, Player placer) {
 			super(noteBlock);
-			this.itemId = itemId;
+			this.item = item;
 			this.placed = placed;
 			this.placer = placer;
 		}
 
-		public String getItemId() {
-			return itemId;
+		public CustomItem getItem() {
+			return item;
 		}
 
 		public ItemStack getPlaced() {

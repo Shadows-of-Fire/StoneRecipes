@@ -26,7 +26,7 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 	@Override
 	public void place(NoteBlockPlacedEvent e) {
 		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		T t = factory.apply(e.getItemId(), pos);
+		T t = factory.apply(e.getItem().getName(), pos);
 		t.start();
 		map.put(pos, t);
 		t.onPlaced(e.getPlacer());

@@ -1,4 +1,4 @@
-package shadows.stonerecipes.util;
+package shadows.stonerecipes.item;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,8 +30,12 @@ import joptsimple.internal.Strings;
 import net.minecraft.server.v1_15_R1.MojangsonParser;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.CustomItem.ItemFactory;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.machine.Charger;
+import shadows.stonerecipes.util.CustomBlock;
+import shadows.stonerecipes.util.InstrumentalNote;
+import shadows.stonerecipes.util.PluginFile;
 
 /**
  * Handles the loading, storage, and accession of custom items.
@@ -45,12 +49,15 @@ public class ItemData {
 	public static final NamespacedKey SPEED = new NamespacedKey(StoneRecipes.INSTANCE, "speed");
 	public static final ItemStack EMPTY = new ItemStack(Material.AIR);
 
+	protected final Map<String, ItemFactory> itemOverrides = new HashMap<>();
 	protected final Map<String, CustomItem> items = new HashMap<>();
 	protected final Map<CustomBlock, CustomItem> blockToItem = new HashMap<>();
 	protected final PluginFile itemFile;
 
 	public ItemData(StoneRecipes plugin) {
 		itemFile = new PluginFile(plugin, "items.yml");
+		itemOverrides.put("dimensional_key", DimKeyItem::new);
+		itemOverrides.put("rocketship", RocketshipItem::new);
 	}
 
 	public void loadData() {
@@ -136,7 +143,7 @@ public class ItemData {
 			}
 			item.setItemMeta(meta);
 			item.getItemMeta().getPersistentDataContainer().set(ITEM_ID, PersistentDataType.STRING, key);
-			CustomItem cItem = new CustomItem(key, item, block, sound);
+			CustomItem cItem = itemOverrides.getOrDefault(key, CustomItem::new).apply(key, item, block, sound);
 			items.put(key, cItem);
 			if (block != null) blockToItem.put(block, cItem);
 		}
@@ -242,6 +249,10 @@ public class ItemData {
 		String id = stack.getItemMeta().getPersistentDataContainer().get(ITEM_ID, PersistentDataType.STRING);
 		if (Strings.isNullOrEmpty(id)) return "";
 		return id;
+	}
+
+	public static CustomItem getItem(ItemStack stack) {
+		return StoneRecipes.INSTANCE.getItems().getItemHolder(getItemId(stack));
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.CustomItem;
 import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.listener.RecipeLoader;
@@ -48,9 +49,9 @@ public class NoteTypes {
 		return t;
 	}
 
-	public static NoteTileType<?> getTypeFor(String itemId) {
+	public static NoteTileType<?> getTypeFor(CustomItem item) {
 		for (NoteTileType<?> t : REGISTRY.values()) {
-			if (t.accepts(itemId)) return t;
+			if (t.accepts(item.getName())) return t;
 		}
 		return null;
 	}

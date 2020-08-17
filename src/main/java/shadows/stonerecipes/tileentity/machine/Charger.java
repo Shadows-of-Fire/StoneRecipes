@@ -13,10 +13,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
-import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;

@@ -46,7 +46,7 @@ import shadows.stonerecipes.guns.types.LittleGustav;
 import shadows.stonerecipes.guns.types.ParticleCannon;
 import shadows.stonerecipes.guns.types.PortableRailgun;
 import shadows.stonerecipes.guns.types.Vaporizer;
-import shadows.stonerecipes.util.ItemData;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.util.PluginFile;
 
 public class GunHandler implements Listener {

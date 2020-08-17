@@ -16,9 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.registry.NoteTileType;
-import shadows.stonerecipes.util.ItemData;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.TickHandler;
