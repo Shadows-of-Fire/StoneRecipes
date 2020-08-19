@@ -15,5 +15,8 @@ public class Keys {
 	public static final NamespacedKey DRILL_X_OFF = new NamespacedKey(StoneRecipes.INSTANCE, "drill_x_off");
 	public static final NamespacedKey DRILL_Y_OFF = new NamespacedKey(StoneRecipes.INSTANCE, "drill_y_off");
 	public static final NamespacedKey DRILL_COST = new NamespacedKey(StoneRecipes.INSTANCE, "drill_cost");
+	public static final NamespacedKey MAX_OXYGEN = new NamespacedKey(StoneRecipes.INSTANCE, "max_oxygen");
+	public static final NamespacedKey OXYGEN = new NamespacedKey(StoneRecipes.INSTANCE, "oxygen");
+	public static final NamespacedKey OXYGEN_COST = new NamespacedKey(StoneRecipes.INSTANCE, "oxygen_cost");
 
 }

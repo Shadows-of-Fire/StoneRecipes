@@ -137,6 +137,18 @@ public class ItemData {
 				meta.getPersistentDataContainer().set(Keys.MAX_POWER, PersistentDataType.INTEGER, max);
 				meta.getPersistentDataContainer().set(Keys.POWER, PersistentDataType.INTEGER, def);
 			}
+			if (itemFile.contains(key + ".oxygen")) {
+				int def = itemFile.getInt(key + ".oxygen.default");
+				int max = itemFile.getInt(key + ".oxygen.max");
+				int cost = itemFile.getInt(key + ".oxygen.cost");
+				List<String> lore = meta.getLore();
+				if (lore == null) lore = new ArrayList<>();
+				lore.add(0, ChatColor.translateAlternateColorCodes('&', String.format("&r&aOxygen: %d/%d", def, max)));
+				meta.setLore(lore);
+				meta.getPersistentDataContainer().set(Keys.MAX_OXYGEN, PersistentDataType.INTEGER, max);
+				meta.getPersistentDataContainer().set(Keys.OXYGEN, PersistentDataType.INTEGER, def);
+				meta.getPersistentDataContainer().set(Keys.OXYGEN_COST, PersistentDataType.INTEGER, cost);
+			}
 			if (itemFile.contains(key + ".drill")) {
 				int x = itemFile.getInt(key + ".drill.x", 1);
 				int y = itemFile.getInt(key + ".drill.y", 1);

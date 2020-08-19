@@ -24,6 +24,7 @@ import shadows.stonerecipes.listener.CustomBlockHandler;
 import shadows.stonerecipes.listener.CustomMachineHandler;
 import shadows.stonerecipes.listener.DataHandler;
 import shadows.stonerecipes.listener.DrillHandler;
+import shadows.stonerecipes.listener.MoonHandler;
 import shadows.stonerecipes.listener.GunHandler;
 import shadows.stonerecipes.listener.NanosuitHandler;
 import shadows.stonerecipes.listener.ReactorHandler;
@@ -75,6 +76,10 @@ public class StoneRecipes extends JavaPlugin {
 
 	public static int jetLevel, jetTime, jetCost;
 
+	public static int moonFeatherFall, moonJumpBoost;
+
+	public static String moonWorldName;
+
 	@Override
 	public void onEnable() {
 		INSTANCE = this;
@@ -107,6 +112,9 @@ public class StoneRecipes extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new CustomBlockHandler(), this);
 		getServer().getPluginManager().registerEvents(machines, this);
 		getServer().getPluginManager().registerEvents(new DrillHandler(), this);
+		MoonHandler moonHandler = new MoonHandler();
+		moonHandler.init();
+		getServer().getPluginManager().registerEvents(moonHandler, this);
 		getCommand("giveitem").setExecutor(new GiveCommand(this));
 		for (World w : Bukkit.getWorlds()) {
 			for (Chunk c : w.getLoadedChunks()) {
@@ -117,6 +125,9 @@ public class StoneRecipes extends JavaPlugin {
 		jetLevel = getConfig().getInt("jetpack.level");
 		jetCost = getConfig().getInt("jetpack.cost");
 		jetTime = getConfig().getInt("jetpack.time");
+		moonFeatherFall = getConfig().getInt("moon.feather-falling-power");
+		moonJumpBoost = getConfig().getInt("moon.jump-boost-power");
+		moonWorldName = getConfig().getString("moon.world-name");
 		getCommand("srbackup").setExecutor(new BackupTask());
 		BukkitLambda.runTimerAsync(new BackupTask(), 1200, 60 * 60 * 20);
 	}
