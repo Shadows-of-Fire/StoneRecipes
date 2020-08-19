@@ -31,10 +31,10 @@ import net.minecraft.server.v1_15_R1.MojangsonParser;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.CustomItem.ItemFactory;
-import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.InstrumentalNote;
+import shadows.stonerecipes.util.Keys;
 import shadows.stonerecipes.util.PluginFile;
 
 /**
@@ -43,10 +43,6 @@ import shadows.stonerecipes.util.PluginFile;
  */
 public class ItemData {
 
-	public static final NamespacedKey ITEM_ID = new NamespacedKey(StoneRecipes.INSTANCE, "item_id");
-	public static final NamespacedKey MAX_POWER = new NamespacedKey(StoneRecipes.INSTANCE, "max_power");
-	public static final NamespacedKey POWER = new NamespacedKey(StoneRecipes.INSTANCE, "power");
-	public static final NamespacedKey SPEED = new NamespacedKey(StoneRecipes.INSTANCE, "speed");
 	public static final ItemStack EMPTY = new ItemStack(Material.AIR);
 
 	protected final Map<String, ItemFactory> itemOverrides = new HashMap<>();
@@ -110,7 +106,7 @@ public class ItemData {
 				}
 			}
 			if (itemFile.contains(key + ".speed")) {
-				meta.getPersistentDataContainer().set(SPEED, PersistentDataType.SHORT, (short) Math.max(1, itemFile.getInt(key + ".speed")));
+				meta.getPersistentDataContainer().set(Keys.SPEED, PersistentDataType.SHORT, (short) Math.max(1, itemFile.getInt(key + ".speed")));
 			}
 			CustomBlock block = null;
 			if (itemFile.contains(key + ".block")) {
@@ -138,11 +134,23 @@ public class ItemData {
 				if (lore == null) lore = new ArrayList<>();
 				lore.add(0, ChatColor.translateAlternateColorCodes('&', String.format("&r&aPower: %d/%d", def, max)));
 				meta.setLore(lore);
-				meta.getPersistentDataContainer().set(MAX_POWER, PersistentDataType.INTEGER, max);
-				meta.getPersistentDataContainer().set(POWER, PersistentDataType.INTEGER, def);
+				meta.getPersistentDataContainer().set(Keys.MAX_POWER, PersistentDataType.INTEGER, max);
+				meta.getPersistentDataContainer().set(Keys.POWER, PersistentDataType.INTEGER, def);
+			}
+			if (itemFile.contains(key + ".drill")) {
+				int x = itemFile.getInt(key + ".drill.x", 1);
+				int y = itemFile.getInt(key + ".drill.y", 1);
+				int xOffset = itemFile.getInt(key + ".drill.x_offset", 0);
+				int yOffset = itemFile.getInt(key + ".drill.y_offset", 0);
+				int cost = itemFile.getInt(key + ".drill.cost", 5);
+				meta.getPersistentDataContainer().set(Keys.DRILL_X, PersistentDataType.INTEGER, x);
+				meta.getPersistentDataContainer().set(Keys.DRILL_Y, PersistentDataType.INTEGER, y);
+				meta.getPersistentDataContainer().set(Keys.DRILL_X_OFF, PersistentDataType.INTEGER, xOffset);
+				meta.getPersistentDataContainer().set(Keys.DRILL_Y_OFF, PersistentDataType.INTEGER, yOffset);
+				meta.getPersistentDataContainer().set(Keys.DRILL_COST, PersistentDataType.INTEGER, cost);
 			}
 			item.setItemMeta(meta);
-			item.getItemMeta().getPersistentDataContainer().set(ITEM_ID, PersistentDataType.STRING, key);
+			item.getItemMeta().getPersistentDataContainer().set(Keys.ITEM_ID, PersistentDataType.STRING, key);
 			CustomItem cItem = itemOverrides.getOrDefault(key, CustomItem::new).apply(key, item, block, sound);
 			items.put(key, cItem);
 			if (block != null) blockToItem.put(block, cItem);
@@ -154,7 +162,7 @@ public class ItemData {
 
 		if (one == null && two != null || two == null && one != null) return false;
 
-		if (NoteTileEntity.isEmpty(one) != NoteTileEntity.isEmpty(two)) return false;
+		if (ItemData.isEmpty(one) != ItemData.isEmpty(two)) return false;
 
 		if (!one.getType().equals(two.getType())) { return false; }
 
@@ -244,9 +252,16 @@ public class ItemData {
 		return items.get(id);
 	}
 
+	/**
+	 * Checks if the given stack represents nothing.
+	 */
+	public static boolean isEmpty(ItemStack stack) {
+		return stack == null || stack.getAmount() <= 0 || stack.getType() == Material.AIR;
+	}
+
 	public static String getItemId(ItemStack stack) {
-		if (NoteTileEntity.isEmpty(stack) || !stack.hasItemMeta()) return "";
-		String id = stack.getItemMeta().getPersistentDataContainer().get(ITEM_ID, PersistentDataType.STRING);
+		if (ItemData.isEmpty(stack) || !stack.hasItemMeta()) return "";
+		String id = stack.getItemMeta().getPersistentDataContainer().get(Keys.ITEM_ID, PersistentDataType.STRING);
 		if (Strings.isNullOrEmpty(id)) return "";
 		return id;
 	}

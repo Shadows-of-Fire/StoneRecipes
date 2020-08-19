@@ -143,14 +143,14 @@ public class ItemTeleporter extends PoweredMachine {
 			return;
 		}
 		ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			if (inv == inventory) {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				attemptMerge(inventory, clicked, 9, 54);
-				if (!isEmpty(clicked)) {
+				if (!ItemData.isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}
@@ -179,9 +179,9 @@ public class ItemTeleporter extends PoweredMachine {
 		NoteTileEntity above = Maps.ALL_MACHINES.getOrDefault(this.pos.toChunkCoords(), Collections.emptyMap()).get(this.pos.up());
 		if (above != null) {
 			ItemStack ext = above.extractItem(64, true);
-			if (isEmpty(ext)) return;
+			if (ItemData.isEmpty(ext)) return;
 			ItemStack res = this.insertItem(ext, false);
-			above.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
+			above.extractItem(ext.getAmount() - (ItemData.isEmpty(res) ? 0 : res.getAmount()), false);
 		} else {
 			Block b = this.location.getWorld().getBlockAt(location.clone().add(0, 1, 0));
 			BlockState state = b.getState();
@@ -191,15 +191,15 @@ public class ItemTeleporter extends PoweredMachine {
 				int slot = -1;
 				for (int i = 0; i < inv.getSize(); i++) {
 					ItemStack s = inv.getItem(i);
-					if (!isEmpty(s)) {
+					if (!ItemData.isEmpty(s)) {
 						ext = s;
 						slot = i;
 						break;
 					}
 				}
-				if (isEmpty(ext)) return;
+				if (ItemData.isEmpty(ext)) return;
 				ItemStack res = this.insertItem(ext, false);
-				ext.setAmount(isEmpty(res) ? 0 : res.getAmount());
+				ext.setAmount(ItemData.isEmpty(res) ? 0 : res.getAmount());
 				inv.setItem(slot, ext);
 			}
 		}
@@ -210,18 +210,18 @@ public class ItemTeleporter extends PoweredMachine {
 			NoteTileEntity below = Maps.ALL_MACHINES.getOrDefault(this.pos.toChunkCoords(), Collections.emptyMap()).get(this.pos.down());
 			if (below != null) {
 				ItemStack ext = this.extractItem(64, true);
-				if (isEmpty(ext)) return;
+				if (ItemData.isEmpty(ext)) return;
 				ItemStack res = below.insertItem(ext, false);
-				this.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
+				this.extractItem(ext.getAmount() - (ItemData.isEmpty(res) ? 0 : res.getAmount()), false);
 			} else {
 				Block b = this.location.getWorld().getBlockAt(location.clone().add(0, -1, 0));
 				BlockState state = b.getState();
 				if (state instanceof InventoryHolder) {
 					Inventory inv = state instanceof Chest ? ((Chest) state).getBlockInventory() : ((InventoryHolder) state).getInventory();
 					ItemStack ext = this.extractItem(64, true);
-					if (isEmpty(ext)) return;
+					if (ItemData.isEmpty(ext)) return;
 					ItemStack res = insertItemVanilla(inv, ext, false);
-					this.extractItem(ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount()), false);
+					this.extractItem(ext.getAmount() - (ItemData.isEmpty(res) ? 0 : res.getAmount()), false);
 				}
 			}
 		} else {
@@ -232,10 +232,10 @@ public class ItemTeleporter extends PoweredMachine {
 			}
 			if (this.getPower() == 0) return;
 			ItemStack ext = this.extractItem(Math.min(this.getPower(), 64), true);
-			if (isEmpty(ext)) return;
+			if (ItemData.isEmpty(ext)) return;
 			ItemStack res = link.insertItem(ext, false);
-			if (!isEmpty(res) && ext.getAmount() == res.getAmount()) return;
-			int sent = ext.getAmount() - (isEmpty(res) ? 0 : res.getAmount());
+			if (!ItemData.isEmpty(res) && ext.getAmount() == res.getAmount()) return;
+			int sent = ext.getAmount() - (ItemData.isEmpty(res) ? 0 : res.getAmount());
 			this.extractItem(sent, false);
 			new Laser(this.location.clone().add(0.5, 0.5, 0.5), this.destination.toLocation().add(0.5, 0.5, 0.5), Color.BLUE).connect();
 			this.usePower(sent);
@@ -264,7 +264,7 @@ public class ItemTeleporter extends PoweredMachine {
 	private static ItemStack insertItemVanilla(Inventory inv, ItemStack stack, boolean simulate) {
 		int max = Math.min(inv.getMaxStackSize(), stack.getMaxStackSize());
 		for (int i = 0; i < inv.getSize(); i++) {
-			if (isEmpty(stack)) return ItemData.EMPTY;
+			if (ItemData.isEmpty(stack)) return ItemData.EMPTY;
 			ItemStack slot = inv.getItem(i);
 			if (ItemData.isSimilar(slot, stack) && slot.getAmount() < max) {
 				ItemStack sClone = stack.clone();
@@ -277,7 +277,7 @@ public class ItemTeleporter extends PoweredMachine {
 					sClone.setAmount(sClone.getAmount() - (slot.getAmount() - old));
 				}
 				stack = sClone;
-			} else if (isEmpty(slot)) {
+			} else if (ItemData.isEmpty(slot)) {
 				inv.setItem(i, stack.clone());
 				return ItemData.EMPTY;
 			}

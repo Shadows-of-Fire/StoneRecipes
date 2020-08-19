@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.PluginFile;
@@ -136,14 +137,14 @@ public class CoalGenerator extends PowerGenerator {
 			return;
 		}
 		ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			if (inv == inventory) {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				if (clicked.getType() == Material.COAL) attemptMerge(inventory, clicked, Slots.COAL_GEN_INPUT, Slots.COAL_GEN_INPUT + 1);
-				if (!isEmpty(clicked)) {
+				if (!ItemData.isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}

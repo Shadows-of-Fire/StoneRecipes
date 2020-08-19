@@ -18,6 +18,7 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
+import shadows.stonerecipes.util.Keys;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;
@@ -109,7 +110,7 @@ public class TypedMachine extends PoweredMachine {
 		for (int i : Slots.UPGRADES) {
 			ItemStack s = this.inventory.getItem(i);
 			if (s != null && s.hasItemMeta()) {
-				if (upgradeTicks % s.getItemMeta().getPersistentDataContainer().getOrDefault(ItemData.SPEED, PersistentDataType.SHORT, Short.MAX_VALUE) == 0) {
+				if (upgradeTicks % s.getItemMeta().getPersistentDataContainer().getOrDefault(Keys.SPEED, PersistentDataType.SHORT, Short.MAX_VALUE) == 0) {
 					bonus++;
 				}
 			}
@@ -143,18 +144,18 @@ public class TypedMachine extends PoweredMachine {
 			return;
 		}
 		ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			if (inv == inventory) {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				if (StoneRecipes.INSTANCE.getRecipes().getMachineOutput(type, clicked) != null) attemptMerge(inventory, clicked, Slots.INPUT, Slots.INPUT + 1);
-				if (clicked.hasItemMeta() && clicked.getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT)) {
+				if (clicked.hasItemMeta() && clicked.getItemMeta().getPersistentDataContainer().has(Keys.SPEED, PersistentDataType.SHORT)) {
 					attemptMerge(inventory, clicked, Slots.UPGRADE_0, Slots.UPGRADE_1 + 1);
-					if (!isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.UPGRADE_2, Slots.UPGRADE_3 + 1);
+					if (!ItemData.isEmpty(clicked)) attemptMerge(inventory, clicked, Slots.UPGRADE_2, Slots.UPGRADE_3 + 1);
 				}
-				if (!isEmpty(clicked)) {
+				if (!ItemData.isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}
@@ -170,7 +171,7 @@ public class TypedMachine extends PoweredMachine {
 			updateAndCancel(e);
 		}
 		if (e.getSlot() == Slots.UPGRADE_0 || e.getSlot() == Slots.UPGRADE_1 || e.getSlot() == Slots.UPGRADE_2 || e.getSlot() == Slots.UPGRADE_3) {
-			if (e.getCursor() != null && e.getCursor().getType() != Material.AIR && (!e.getCursor().hasItemMeta() || !e.getCursor().getItemMeta().getPersistentDataContainer().has(ItemData.SPEED, PersistentDataType.SHORT))) {
+			if (e.getCursor() != null && e.getCursor().getType() != Material.AIR && (!e.getCursor().hasItemMeta() || !e.getCursor().getItemMeta().getPersistentDataContainer().has(Keys.SPEED, PersistentDataType.SHORT))) {
 				updateAndCancel(e);
 			}
 		}

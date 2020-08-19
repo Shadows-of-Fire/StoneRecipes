@@ -101,7 +101,7 @@ public class AutoCrafter extends PoweredMachine {
 			for (int i = 0; i < 9; i++) {
 				int slot = i < 3 ? i : i < 6 ? i - 3 + 9 : i - 6 + 18;
 				org.bukkit.inventory.ItemStack s = this.inventory.getItem(slot);
-				if (!isEmpty(s)) {
+				if (!ItemData.isEmpty(s)) {
 					boolean matched = false;
 					for (int j = 9 * 4; j < this.inventory.getSize(); j++) {
 						org.bukkit.inventory.ItemStack s2 = this.inventory.getItem(j);
@@ -185,14 +185,14 @@ public class AutoCrafter extends PoweredMachine {
 			return;
 		}
 		org.bukkit.inventory.ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			if (inv == inventory) {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				attemptMerge(inventory, clicked, 9 * 4, inventory.getSize());
-				if (!isEmpty(clicked)) {
+				if (!ItemData.isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}
@@ -218,7 +218,7 @@ public class AutoCrafter extends PoweredMachine {
 	public ItemStack getInputItem(int i) {
 		int slot = i < 3 ? i : i < 6 ? i - 3 + 9 : i - 6 + 18;
 		org.bukkit.inventory.ItemStack s = this.inventory.getItem(slot);
-		if (isEmpty(s)) return ItemStack.a;
+		if (ItemData.isEmpty(s)) return ItemStack.a;
 		return CraftItemStack.asNMSCopy(s);
 	}
 

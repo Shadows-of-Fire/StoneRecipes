@@ -41,6 +41,7 @@ import net.minecraft.server.v1_15_R1.TileEntity;
 import net.minecraft.server.v1_15_R1.World;
 import net.minecraft.server.v1_15_R1.WorldServer;
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.FakePlayer;
@@ -125,7 +126,7 @@ public class AutoBreaker extends PoweredMachine {
 					List<Item> items = toBreak.getWorld().getNearbyEntities(toBreak.getLocation(), 1.5, 1.5, 1.5).stream().filter(t -> t instanceof Item).map(t -> (Item) t).collect(Collectors.toList());
 					for (Item i : items) {
 						ItemStack res = this.insertItem(i.getItemStack(), false);
-						if (!isEmpty(res)) i.setItemStack(res);
+						if (!ItemData.isEmpty(res)) i.setItemStack(res);
 						else i.remove();
 					}
 					this.usePower(powerCost);
@@ -195,14 +196,14 @@ public class AutoBreaker extends PoweredMachine {
 		}
 		Inventory inv = e.getClickedInventory();
 		org.bukkit.inventory.ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			if (inv == inventory) {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				attemptMerge(inventory, clicked, 9 * 3, inventory.getSize());
-				if (!isEmpty(clicked)) {
+				if (!ItemData.isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}

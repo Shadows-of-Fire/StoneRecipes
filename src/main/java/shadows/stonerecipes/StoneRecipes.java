@@ -23,6 +23,7 @@ import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.listener.CustomBlockHandler;
 import shadows.stonerecipes.listener.CustomMachineHandler;
 import shadows.stonerecipes.listener.DataHandler;
+import shadows.stonerecipes.listener.DrillHandler;
 import shadows.stonerecipes.listener.GunHandler;
 import shadows.stonerecipes.listener.NanosuitHandler;
 import shadows.stonerecipes.listener.ReactorHandler;
@@ -105,6 +106,7 @@ public class StoneRecipes extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(dataHandler, this);
 		getServer().getPluginManager().registerEvents(new CustomBlockHandler(), this);
 		getServer().getPluginManager().registerEvents(machines, this);
+		getServer().getPluginManager().registerEvents(new DrillHandler(), this);
 		getCommand("giveitem").setExecutor(new GiveCommand(this));
 		for (World w : Bukkit.getWorlds()) {
 			for (Chunk c : w.getLoadedChunks()) {

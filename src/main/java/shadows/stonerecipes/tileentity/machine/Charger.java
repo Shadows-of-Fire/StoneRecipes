@@ -16,7 +16,7 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
-import shadows.stonerecipes.tileentity.NoteTileEntity;
+import shadows.stonerecipes.util.Keys;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;
@@ -109,14 +109,14 @@ public class Charger extends PoweredMachine implements Listener {
 			return;
 		}
 		ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			if (inv == inventory) {
 				vanillaInvInsert(e.getView().getBottomInventory(), clicked);
 			} else {
 				boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 				if (getPower(clicked) != -1) attemptMerge(inventory, clicked, Slots.COAL_GEN_INPUT - 1, Slots.COAL_GEN_INPUT + 2);
-				if (!isEmpty(clicked)) {
+				if (!ItemData.isEmpty(clicked)) {
 					if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
 					else attemptMerge(e.getClickedInventory(), clicked, 0, 9);
 				}
@@ -126,21 +126,21 @@ public class Charger extends PoweredMachine implements Listener {
 	}
 
 	public static int getPower(ItemStack stack) {
-		if (NoteTileEntity.isEmpty(stack) || !stack.hasItemMeta()) return -1;
-		return stack.getItemMeta().getPersistentDataContainer().getOrDefault(ItemData.POWER, PersistentDataType.INTEGER, -1);
+		if (ItemData.isEmpty(stack) || !stack.hasItemMeta()) return -1;
+		return stack.getItemMeta().getPersistentDataContainer().getOrDefault(Keys.POWER, PersistentDataType.INTEGER, -1);
 	}
 
 	public static int getMaxPower(ItemStack stack) {
-		if (NoteTileEntity.isEmpty(stack) || !stack.hasItemMeta()) return -1;
-		return stack.getItemMeta().getPersistentDataContainer().getOrDefault(ItemData.MAX_POWER, PersistentDataType.INTEGER, -1);
+		if (ItemData.isEmpty(stack) || !stack.hasItemMeta()) return -1;
+		return stack.getItemMeta().getPersistentDataContainer().getOrDefault(Keys.MAX_POWER, PersistentDataType.INTEGER, -1);
 	}
 
 	public static void setPower(ItemStack stack, int power) {
-		if (NoteTileEntity.isEmpty(stack) || !stack.hasItemMeta()) return;
+		if (ItemData.isEmpty(stack) || !stack.hasItemMeta()) return;
 		int max = getMaxPower(stack);
 		if (power > max) power = max;
 		ItemMeta meta = stack.getItemMeta();
-		meta.getPersistentDataContainer().set(ItemData.POWER, PersistentDataType.INTEGER, power);
+		meta.getPersistentDataContainer().set(Keys.POWER, PersistentDataType.INTEGER, power);
 		List<String> lore = meta.getLore();
 		lore.set(0, ChatColor.translateAlternateColorCodes('&', String.format("&r&aPower: %d/%d", power, max)));
 		meta.setLore(lore);

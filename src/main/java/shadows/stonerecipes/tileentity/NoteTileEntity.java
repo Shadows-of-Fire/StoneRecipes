@@ -259,7 +259,7 @@ public abstract class NoteTileEntity implements ITickable {
 			return;
 		}
 		ItemStack clicked = e.getCurrentItem();
-		if (isEmpty(clicked)) return;
+		if (ItemData.isEmpty(clicked)) return;
 		else {
 			boolean hotbar = e.getSlot() >= 0 && e.getSlot() < 9;
 			if (hotbar) attemptMerge(e.getClickedInventory(), clicked, 9, 36);
@@ -288,7 +288,7 @@ public abstract class NoteTileEntity implements ITickable {
 	public static void attemptMerge(Inventory inv, ItemStack stack, int slotStart, int slotEnd) {
 		for (int i = slotStart; i < slotEnd; i++) {
 			ItemStack cur = inv.getItem(i);
-			if (isEmpty(cur)) {
+			if (ItemData.isEmpty(cur)) {
 				inv.setItem(i, stack.clone());
 				stack.setAmount(0);
 				return;
@@ -297,7 +297,7 @@ public abstract class NoteTileEntity implements ITickable {
 				int taken = newCur - cur.getAmount();
 				cur.setAmount(cur.getAmount() + taken);
 				stack.setAmount(stack.getAmount() - taken);
-				if (isEmpty(stack)) return;
+				if (ItemData.isEmpty(stack)) return;
 			}
 		}
 	}
@@ -308,7 +308,7 @@ public abstract class NoteTileEntity implements ITickable {
 	public static void attemptMergeReverse(Inventory inv, ItemStack stack, int slotStart, int slotEnd) {
 		for (int i = slotStart; i > slotEnd; i--) {
 			ItemStack cur = inv.getItem(i);
-			if (isEmpty(cur)) {
+			if (ItemData.isEmpty(cur)) {
 				inv.setItem(i, stack.clone());
 				stack.setAmount(0);
 				return;
@@ -317,7 +317,7 @@ public abstract class NoteTileEntity implements ITickable {
 				int taken = newCur - cur.getAmount();
 				cur.setAmount(cur.getAmount() + taken);
 				stack.setAmount(stack.getAmount() - taken);
-				if (isEmpty(stack)) return;
+				if (ItemData.isEmpty(stack)) return;
 			}
 		}
 	}
@@ -327,16 +327,9 @@ public abstract class NoteTileEntity implements ITickable {
 	 */
 	public static void vanillaInvInsert(Inventory inv, ItemStack stack) {
 		for (int i = 0; i < 4; i++) {
-			if (isEmpty(stack)) return;
+			if (ItemData.isEmpty(stack)) return;
 			attemptMergeReverse(inv, stack, 8 + 9 * i, -1 + 9 * i);
 		}
-	}
-
-	/**
-	 * Checks if the given stack represents nothing.
-	 */
-	public static boolean isEmpty(ItemStack stack) {
-		return stack == null || stack.getAmount() <= 0 || stack.getType() == Material.AIR;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -367,7 +360,7 @@ public abstract class NoteTileEntity implements ITickable {
 	public ItemStack extractItem(int maxCount, boolean simulate) {
 		for (int i : getOutputSlots()) {
 			ItemStack s = this.inventory.getItem(i);
-			if (!isEmpty(s) && canExtract(s)) {
+			if (!ItemData.isEmpty(s) && canExtract(s)) {
 				ItemStack clone = s.clone();
 				clone.setAmount(Math.min(clone.getAmount(), maxCount));
 				if (!simulate) {
@@ -387,7 +380,7 @@ public abstract class NoteTileEntity implements ITickable {
 	public ItemStack insertItem(ItemStack stack, boolean simulate) {
 		int max = Math.min(inventory.getMaxStackSize(), stack.getMaxStackSize());
 		for (int i : getInputSlots()) {
-			if (isEmpty(stack)) return ItemData.EMPTY;
+			if (ItemData.isEmpty(stack)) return ItemData.EMPTY;
 			ItemStack slot = this.inventory.getItem(i);
 			if (ItemData.isSimilar(slot, stack) && slot.getAmount() < max) {
 				ItemStack sClone = stack.clone();
@@ -400,7 +393,7 @@ public abstract class NoteTileEntity implements ITickable {
 					sClone.setAmount(sClone.getAmount() - (slot.getAmount() - old));
 				}
 				stack = sClone;
-			} else if (isEmpty(slot)) {
+			} else if (ItemData.isEmpty(slot)) {
 				inventory.setItemInternal(i, stack.clone());
 				return ItemData.EMPTY;
 			}
