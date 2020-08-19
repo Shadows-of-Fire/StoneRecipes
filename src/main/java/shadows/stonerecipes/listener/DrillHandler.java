@@ -46,7 +46,7 @@ public final class DrillHandler implements Listener {
 		for (int iy = lowerY; iy < upperY; iy++) {
 			for (int ix = lowerX; ix < upperX; ix++) {
 				Block block = world.getBlockAt(getRelative(e.getBlock().getLocation(), face, ix + xOffset, iy + yOffset));
-				if (block.getType() != Material.AIR) block.breakNaturally();
+				if (block.getType() != Material.AIR) block.breakNaturally(drill);
 			}
 		}
 		Charger.usePower(drill, cost);

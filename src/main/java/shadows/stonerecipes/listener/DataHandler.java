@@ -15,17 +15,6 @@ import org.bukkit.event.world.WorldUnloadEvent;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
-import shadows.stonerecipes.tileentity.OreVeinTile;
-import shadows.stonerecipes.tileentity.machine.AutoBreaker;
-import shadows.stonerecipes.tileentity.machine.AutoCrafter;
-import shadows.stonerecipes.tileentity.machine.Charger;
-import shadows.stonerecipes.tileentity.machine.DualTypedMachine;
-import shadows.stonerecipes.tileentity.machine.IndustrialTypedMachine;
-import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
-import shadows.stonerecipes.tileentity.machine.NuclearReactor;
-import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
-import shadows.stonerecipes.tileentity.machine.PowerGenerator;
-import shadows.stonerecipes.tileentity.machine.TypedMachine;
 import shadows.stonerecipes.util.WorldPos;
 
 /**
@@ -75,23 +64,12 @@ public class DataHandler implements Listener {
 		 * Main machine map.  This map is a map of chunk coordinates to individual positions.
 		 */
 		public static final Map<WorldPos, Map<WorldPos, NoteTileEntity>> ALL_MACHINES = new HashMap<>();
-		public static final MapWrapper<Charger> CHARGERS = new MapWrapper<>();
-		public static final MapWrapper<TypedMachine> TYPED_MACHINES = new MapWrapper<>();
-		public static final MapWrapper<DualTypedMachine> DUAL_TYPED_MACHINES = new MapWrapper<>();
-		public static final MapWrapper<PowerGenerator> GENERATORS = new MapWrapper<>();
-		public static final MapWrapper<OreVeinTile> VEINS = new MapWrapper<>();
-		public static final MapWrapper<NuclearReactor> REACTORS = new MapWrapper<>();
-		public static final MapWrapper<PlayerTeleporter> PLAYER_TELEPORTERS = new MapWrapper<>();
-		public static final MapWrapper<ItemTeleporter> ITEM_TELEPORTERS = new MapWrapper<>();
-		public static final MapWrapper<AutoCrafter> AUTOCRAFTERS = new MapWrapper<>();
-		public static final MapWrapper<IndustrialTypedMachine> INDUSTRIAL_TYPED_MACHINES = new MapWrapper<>();
-		public static final MapWrapper<AutoBreaker> BREAKERS = new MapWrapper<>();
 	}
 
 	public static class MapWrapper<T extends NoteTileEntity> {
 		private final Map<WorldPos, T> map;
 
-		MapWrapper() {
+		public MapWrapper() {
 			this.map = new HashMap<>();
 		}
 

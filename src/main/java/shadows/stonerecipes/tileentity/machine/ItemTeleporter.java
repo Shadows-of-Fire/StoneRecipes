@@ -225,7 +225,7 @@ public class ItemTeleporter extends PoweredMachine {
 				}
 			}
 		} else {
-			NoteTileEntity link = Maps.ITEM_TELEPORTERS.get(this.destination);
+			NoteTileEntity link = NoteTypes.ITEM_TELEPORTER.getMap().get(this.destination);
 			if (link == null) {
 				destination = WorldPos.INVALID;
 				return;

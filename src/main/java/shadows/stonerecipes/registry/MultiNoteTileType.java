@@ -7,7 +7,6 @@ import org.bukkit.Material;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
-import shadows.stonerecipes.listener.DataHandler.MapWrapper;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
@@ -17,8 +16,8 @@ public class MultiNoteTileType<T extends NoteTileEntity> extends NoteTileType<T>
 	protected final Collection<String> ids;
 	protected final BiFunction<String, WorldPos, T> factory;
 
-	public MultiNoteTileType(String id, Collection<String> ids, MapWrapper<T> map, BiFunction<String, WorldPos, T> factory) {
-		super(id, map, null);
+	public MultiNoteTileType(String id, Collection<String> ids, BiFunction<String, WorldPos, T> factory) {
+		super(id, null);
 		this.ids = ids;
 		this.factory = factory;
 	}

@@ -18,7 +18,6 @@ public final class Slots {
 	public static final int OUTPUT = 24;
 	public static final int INFO = OUTPUT + 9 + 2;
 
-	public static final int UNKNOWN_22 = 22;
 	public static final int COAL_GEN_INPUT = 22;
 
 	public static final int GUI_TEX_SLOT = 8;

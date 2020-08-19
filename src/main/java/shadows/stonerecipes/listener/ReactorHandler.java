@@ -14,7 +14,7 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
-import shadows.stonerecipes.listener.DataHandler.Maps;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.WorldPos;
 
@@ -39,8 +39,8 @@ public class ReactorHandler implements Listener {
 			for (BlockFace face : CHAMBER_FACES) {
 				if (e.getBlock().getRelative(face).getType().equals(Material.NOTE_BLOCK)) {
 					WorldPos pos2 = new WorldPos(e.getBlock().getRelative(face).getLocation());
-					if (Maps.REACTORS.contains(pos2)) {
-						Maps.REACTORS.get(pos2).openInventory(e.getClicker());
+					if (NoteTypes.REACTOR.getMap().contains(pos2)) {
+						NoteTypes.REACTOR.getMap().get(pos2).openInventory(e.getClicker());
 						e.setSuccess();
 						break;
 					}
@@ -52,8 +52,8 @@ public class ReactorHandler implements Listener {
 			for (BlockFace face : BATTERY_FACES) {
 				if (e.getBlock().getRelative(face).getType().equals(Material.NOTE_BLOCK)) {
 					WorldPos pos2 = new WorldPos(e.getBlock().getRelative(face).getLocation());
-					if (Maps.REACTORS.contains(pos2)) {
-						Maps.REACTORS.get(pos2).openPowerGUI(e.getClicker());
+					if (NoteTypes.REACTOR.getMap().contains(pos2)) {
+						NoteTypes.REACTOR.getMap().get(pos2).openPowerGUI(e.getClicker());
 						e.setSuccess();
 						break;
 					}
@@ -92,8 +92,8 @@ public class ReactorHandler implements Listener {
 		for (BlockFace face : CHAMBER_FACES) {
 			if (block.getRelative(face).getType().equals(Material.NOTE_BLOCK)) {
 				WorldPos pos = new WorldPos(block.getRelative(face).getLocation());
-				if (Maps.REACTORS.contains(pos)) {
-					Maps.REACTORS.get(pos).updateChambers();
+				if (NoteTypes.REACTOR.getMap().contains(pos)) {
+					NoteTypes.REACTOR.getMap().get(pos).updateChambers();
 				}
 			}
 		}

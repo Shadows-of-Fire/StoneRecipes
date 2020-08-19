@@ -14,12 +14,11 @@ import shadows.stonerecipes.util.WorldPos;
 public class NoteTileType<T extends NoteTileEntity> {
 
 	protected final String id;
-	protected final MapWrapper<T> map;
+	protected final MapWrapper<T> map = new MapWrapper<>();
 	protected final Function<WorldPos, T> factory;
 
-	public NoteTileType(String id, MapWrapper<T> map, Function<WorldPos, T> factory) {
+	public NoteTileType(String id, Function<WorldPos, T> factory) {
 		this.id = id;
-		this.map = map;
 		this.factory = factory;
 	}
 
@@ -83,6 +82,10 @@ public class NoteTileType<T extends NoteTileEntity> {
 
 	public String getId() {
 		return id;
+	}
+
+	public MapWrapper<T> getMap() {
+		return map;
 	}
 
 }

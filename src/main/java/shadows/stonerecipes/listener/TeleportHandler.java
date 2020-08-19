@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
-import shadows.stonerecipes.listener.DataHandler.Maps;
+import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
 import shadows.stonerecipes.util.WorldPos;
@@ -44,8 +44,8 @@ public class TeleportHandler implements Listener {
 		if (e.isSneaking()) {
 			Location loc = e.getPlayer().getLocation().subtract(0, 1, 0);
 			WorldPos pos = new WorldPos(loc);
-			if (Maps.PLAYER_TELEPORTERS.contains(pos)) {
-				Maps.PLAYER_TELEPORTERS.get(pos).teleport(e.getPlayer());
+			if (NoteTypes.PLAYER_TELEPORTER.getMap().contains(pos)) {
+				NoteTypes.PLAYER_TELEPORTER.getMap().get(pos).teleport(e.getPlayer());
 			}
 		}
 	}
@@ -56,8 +56,8 @@ public class TeleportHandler implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onNoteClick(NoteBlockClickedEvent e) {
 		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		if (Maps.PLAYER_TELEPORTERS.contains(pos)) {
-			PlayerTeleporter teleporter = Maps.PLAYER_TELEPORTERS.get(pos);
+		if (NoteTypes.PLAYER_TELEPORTER.getMap().contains(pos)) {
+			PlayerTeleporter teleporter = NoteTypes.PLAYER_TELEPORTER.getMap().get(pos);
 			if (e.getClicker().isSneaking()) {
 				if (playerLinks.containsKey(e.getClicker())) {
 					attemptLink(teleporter, e.getClicker(), pos);
@@ -73,7 +73,7 @@ public class TeleportHandler implements Listener {
 					e.setSuccess();
 				}
 			}
-		} else if (Maps.ITEM_TELEPORTERS.contains(pos)) {
+		} else if (NoteTypes.ITEM_TELEPORTER.getMap().contains(pos)) {
 			if (e.getClicker().isSneaking()) {
 				if (itemLinks.containsKey(e.getClicker())) {
 					WorldPos sourcePos = itemLinks.get(e.getClicker());
@@ -127,10 +127,10 @@ public class TeleportHandler implements Listener {
 	 */
 	@Nullable
 	public PlayerTeleporter hotloadPlayerT(WorldPos pos) {
-		if (Maps.PLAYER_TELEPORTERS.contains(pos)) return Maps.PLAYER_TELEPORTERS.get(pos);
+		if (NoteTypes.PLAYER_TELEPORTER.getMap().contains(pos)) return NoteTypes.PLAYER_TELEPORTER.getMap().get(pos);
 		Chunk chunk = StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
 		if (chunk.getBlock(pos.x >> 4, pos.y, pos.z >> 4).getType() != Material.NOTE_BLOCK) return null;
-		return Maps.PLAYER_TELEPORTERS.get(pos);
+		return NoteTypes.PLAYER_TELEPORTER.getMap().get(pos);
 	}
 
 	/**
@@ -140,10 +140,10 @@ public class TeleportHandler implements Listener {
 	 */
 	@Nullable
 	public ItemTeleporter hotloadItemT(WorldPos pos) {
-		if (Maps.ITEM_TELEPORTERS.contains(pos)) return Maps.ITEM_TELEPORTERS.get(pos);
+		if (NoteTypes.ITEM_TELEPORTER.getMap().contains(pos)) return NoteTypes.ITEM_TELEPORTER.getMap().get(pos);
 		Chunk chunk = StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
 		if (chunk.getBlock(pos.x >> 4, pos.y, pos.z >> 4).getType() != Material.NOTE_BLOCK) return null;
-		return Maps.ITEM_TELEPORTERS.get(pos);
+		return NoteTypes.ITEM_TELEPORTER.getMap().get(pos);
 	}
 
 }
