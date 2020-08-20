@@ -1,7 +1,11 @@
 package shadows.stonerecipes.tileentity.machine;
 
+import java.lang.ref.WeakReference;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -18,6 +22,8 @@ import shadows.stonerecipes.util.WorldPos;
 
 public class OxygenCompressor extends PoweredMachine implements Listener {
 
+	private WeakReference<World> moonWorld = new WeakReference<>(null);
+
 	public OxygenCompressor(WorldPos pos) {
 		super("oxygen_compressor", "Oxygen Compressor", "config.yml", pos);
 	}
@@ -31,7 +37,8 @@ public class OxygenCompressor extends PoweredMachine implements Listener {
 	@Override
 	@SuppressWarnings("deprecation")
 	protected void timerTick() {
-		if (getPower() == 0 || !canCharge(21) && !canCharge(22) && !canCharge(23)) {
+		if (moonWorld.get() == null) moonWorld = new WeakReference<>(Bukkit.getWorld(StoneRecipes.moonWorldName));
+		if (this.pos.getDim().equals(moonWorld.get().getUID()) || getPower() == 0 || !canCharge(21) && !canCharge(22) && !canCharge(23)) {
 			progress = 0;
 			guiTex.setDurability((short) (start_progress + progress));
 			return;
@@ -139,7 +146,7 @@ public class OxygenCompressor extends PoweredMachine implements Listener {
 
 	@Override
 	public NoteTileType<?> getType() {
-		return NoteTypes.CHARGER;
+		return NoteTypes.OXYGEN_COMPRESSOR;
 	}
 
 }
