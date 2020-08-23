@@ -42,6 +42,7 @@ public class QuantumStorageHive extends PoweredMachine {
 	public void loadConfigData(PluginFile file) {
 		this.powerCost = file.getInt(configId + ".powerCost");
 		this.maxPower = Math.max(maxPower, powerCost);
+		this.timer = 20;
 	}
 
 	@Override
