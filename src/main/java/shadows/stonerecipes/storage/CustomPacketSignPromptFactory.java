@@ -26,7 +26,7 @@ public class CustomPacketSignPromptFactory implements SignPromptFactory {
 	public void openPrompt(Player player, List<String> lines, SignPromptFactory.ResponseHandler responseHandler) {
 		Location location = player.getLocation().clone();
 		location.setY(255);
-		Players.sendBlockChange(player, location, Material.OAK_WALL_SIGN);
+		Players.sendBlockChange(player, location, Material.OAK_SIGN);
 
 		BlockPosition position = new BlockPosition(location.toVector());
 		PacketContainer writeToSign = new PacketContainer(PacketType.Play.Server.TILE_ENTITY_DATA);

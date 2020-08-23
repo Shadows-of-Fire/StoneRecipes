@@ -66,7 +66,7 @@ public class QuantumStorageHive extends PoweredMachine {
 	}
 
 	public int calculateCombs(Location loc, Set<WorldPos> traversed) {
-		int count = 0;
+		int count = 1;
 		for (BlockFace face : FACES) {
 			Block block = loc.getBlock().getRelative(face);
 			WorldPos pos = new WorldPos(block.getLocation());
