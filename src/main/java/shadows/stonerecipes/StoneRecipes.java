@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -24,8 +25,9 @@ import shadows.stonerecipes.listener.CustomBlockHandler;
 import shadows.stonerecipes.listener.CustomMachineHandler;
 import shadows.stonerecipes.listener.DataHandler;
 import shadows.stonerecipes.listener.DrillHandler;
-import shadows.stonerecipes.listener.MoonHandler;
 import shadows.stonerecipes.listener.GunHandler;
+import shadows.stonerecipes.listener.MassStorageHandler;
+import shadows.stonerecipes.listener.MoonHandler;
 import shadows.stonerecipes.listener.NanosuitHandler;
 import shadows.stonerecipes.listener.ReactorHandler;
 import shadows.stonerecipes.listener.RecipeLoader;
@@ -65,12 +67,11 @@ public class StoneRecipes extends JavaPlugin {
 
 	private ItemData itemData;
 	private CustomMachineHandler machines;
-	private TeleportHandler teleportHandler;
-	private NanosuitHandler powerArmorHandler;
 	private ReactorHandler reactorHandler;
 	private RecipeLoader recipeLoader;
 	private GunHandler gunHandler;
 	private DataHandler dataHandler;
+	private MassStorageHandler storageHandler;
 	private BukkitTask tickTask;
 	private List<String> oreVeins = new ArrayList<>();
 
@@ -89,32 +90,14 @@ public class StoneRecipes extends JavaPlugin {
 			oreVeins.add(generator);
 		}
 		itemData = new ItemData(this);
-		itemData.loadData();
 		recipeLoader = new RecipeLoader(this);
-		recipeLoader.loadRecipes();
-		recipeLoader.loadFurnaceRecipes();
-		recipeLoader.loadBlastRecipes();
-		recipeLoader.loadMachineRecipes();
-		recipeLoader.loadPermissions();
 		dataHandler = new DataHandler();
 		machines = new CustomMachineHandler();
-		powerArmorHandler = new NanosuitHandler();
-		teleportHandler = new TeleportHandler();
 		reactorHandler = new ReactorHandler(this);
 		gunHandler = new GunHandler(this);
 		gunHandler.loadGuns();
-		getServer().getPluginManager().registerEvents(recipeLoader, this);
-		getServer().getPluginManager().registerEvents(gunHandler, this);
-		getServer().getPluginManager().registerEvents(powerArmorHandler, this);
-		getServer().getPluginManager().registerEvents(teleportHandler, this);
-		getServer().getPluginManager().registerEvents(reactorHandler, this);
-		getServer().getPluginManager().registerEvents(dataHandler, this);
-		getServer().getPluginManager().registerEvents(new CustomBlockHandler(), this);
-		getServer().getPluginManager().registerEvents(machines, this);
-		getServer().getPluginManager().registerEvents(new DrillHandler(), this);
-		MoonHandler moonHandler = new MoonHandler();
-		moonHandler.init();
-		getServer().getPluginManager().registerEvents(moonHandler, this);
+		storageHandler = new MassStorageHandler();
+		registerEvents(recipeLoader, gunHandler, new NanosuitHandler(), new TeleportHandler(), reactorHandler, dataHandler, new CustomBlockHandler(), machines, new DrillHandler(), new MoonHandler(), storageHandler);
 		getCommand("giveitem").setExecutor(new GiveCommand(this));
 		for (World w : Bukkit.getWorlds()) {
 			for (Chunk c : w.getLoadedChunks()) {
@@ -130,6 +113,11 @@ public class StoneRecipes extends JavaPlugin {
 		moonWorldName = getConfig().getString("moon.world-name");
 		getCommand("srbackup").setExecutor(new BackupTask());
 		BukkitLambda.runTimerAsync(new BackupTask(), 1200, 60 * 60 * 20);
+	}
+
+	private void registerEvents(Listener... listeners) {
+		for (Listener l : listeners)
+			getServer().getPluginManager().registerEvents(l, this);
 	}
 
 	@Override
@@ -170,6 +158,10 @@ public class StoneRecipes extends JavaPlugin {
 
 	public RecipeLoader getRecipes() {
 		return recipeLoader;
+	}
+
+	public MassStorageHandler getMassStorage() {
+		return storageHandler;
 	}
 
 }

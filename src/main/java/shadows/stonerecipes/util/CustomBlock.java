@@ -1,6 +1,7 @@
 package shadows.stonerecipes.util;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -9,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.NoteBlock;
 
-public class CustomBlock {
+public class CustomBlock implements Predicate<NoteBlock> {
 
 	protected final Material block;
 	protected final BlockData data;
@@ -34,7 +35,8 @@ public class CustomBlock {
 		if (data != null) block.setBlockData(data.clone());
 	}
 
-	public boolean match(NoteBlock note) {
+	@Override
+	public boolean test(NoteBlock note) {
 		return block == Material.NOTE_BLOCK && note.equals(data);
 	}
 

@@ -1,9 +1,7 @@
 plugins {
-    id 'java'
-    id 'maven'
-
-    id 'idea'
-    id 'eclipse'
+	id 'java'
+	id 'maven'
+	id 'eclipse'
 }
 
 defaultTasks 'clean', 'build'
@@ -12,34 +10,40 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 group = 'shadows.stonerecipes'
-version = '3.0.2'
+version = '3.1.0'
 
 ext.projectName = 'StoneRecipes'
 ext.inceptionYear = '2020'
 ext.packaging = 'jar'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 	maven {
-        name 'spigot'
-        url 'https://hub.spigotmc.org/nexus/content/groups/public/'
-    }
+		name 'spigot'
+		url 'https://hub.spigotmc.org/nexus/content/groups/public/'
+	}
+	maven {
+		name 'ProtocolLib'
+   		url "https://repo.dmulloy2.net/nexus/repository/public/" 
+	}
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
+	compile 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
 	compile fileTree(dir: 'libs', include: '*.jar')
+	compile 'com.comphenix.protocol:ProtocolLib:4.5.1'
+	compile 'me.lucko:helper:5.6.2'
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 }
 
 jar.manifest.mainAttributes(
-        'Implementation-Title': name,
-        'Implementation-Version': version
+	'Implementation-Title': name,
+	'Implementation-Version': version
 )
 
 artifacts {
-    archives jar
+	archives jar
 }

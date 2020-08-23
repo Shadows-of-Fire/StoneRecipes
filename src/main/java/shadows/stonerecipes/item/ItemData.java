@@ -31,6 +31,7 @@ import net.minecraft.server.v1_15_R1.MojangsonParser;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.CustomItem.ItemFactory;
+import shadows.stonerecipes.listener.MoonHandler;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.InstrumentalNote;
@@ -54,9 +55,10 @@ public class ItemData {
 		itemFile = new PluginFile(plugin, "items.yml");
 		itemOverrides.put("dimensional_key", DimKeyItem::new);
 		itemOverrides.put("rocketship", RocketshipItem::new);
+		this.loadData();
 	}
 
-	public void loadData() {
+	protected void loadData() {
 		items.clear();
 		loadItems();
 	}
@@ -218,7 +220,7 @@ public class ItemData {
 
 	/**
 	 * Gets an item from our custom items, or defaults to a Material type name.
-	 * Does some special things for automatic recipe handling, like setting power levels to 0.
+	 * Does some special post-processing, like setting power levels to 0.
 	 */
 	public ItemStack getItemForRecipe(String itemName) {
 		ItemStack item = null;
@@ -227,6 +229,7 @@ public class ItemData {
 		}
 		if (item == null) item = new ItemStack(Material.valueOf(itemName));
 		if (Charger.getPower(item) > 0) Charger.setPower(item, 0);
+		if (MoonHandler.getOxygen(item) > 0) MoonHandler.setOxygen(item, 0);
 		return item;
 	}
 

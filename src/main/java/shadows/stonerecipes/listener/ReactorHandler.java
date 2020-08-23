@@ -15,7 +15,6 @@ import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockPlacedEvent;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockRemovedEvent;
 import shadows.stonerecipes.registry.NoteTypes;
-import shadows.stonerecipes.util.CustomBlock;
 import shadows.stonerecipes.util.WorldPos;
 
 public class ReactorHandler implements Listener {
@@ -27,10 +26,8 @@ public class ReactorHandler implements Listener {
 	protected final Predicate<NoteBlock> battery;
 
 	public ReactorHandler(StoneRecipes plugin) {
-		CustomBlock note = plugin.getItems().getBlock("reactor_chamber");
-		this.chamber = n -> note.match(n);
-		CustomBlock note2 = plugin.getItems().getBlock("industrial_battery");
-		this.battery = n -> note2.match(n);
+		this.chamber = plugin.getItems().getBlock("reactor_chamber");
+		this.battery = plugin.getItems().getBlock("industrial_battery");
 	}
 
 	@EventHandler

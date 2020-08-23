@@ -37,7 +37,7 @@ public final class MoonHandler implements Listener {
 	private final Map<UUID, Integer> suffocating = new HashMap<>();
 	private WeakReference<World> moonWorld = new WeakReference<>(null);
 
-	public void init() {
+	public MoonHandler() {
 		BukkitLambda.runTimerAsync(() -> {
 			if (moonWorld.get() == null) moonWorld = new WeakReference<>(Bukkit.getWorld(StoneRecipes.moonWorldName));
 			for (Player p : moonWorld.get().getPlayers()) {

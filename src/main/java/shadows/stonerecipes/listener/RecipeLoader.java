@@ -66,9 +66,21 @@ public class RecipeLoader implements Listener {
 	public RecipeLoader(StoneRecipes plugin) {
 		this.plugin = plugin;
 		recipeFile = new PluginFile(plugin, "recipes.yml");
+		this.loadAllRecipes();
 	}
 
-	public void loadRecipes() {
+	protected void loadAllRecipes() {
+		this.loadRecipes();
+		this.loadFurnaceRecipes();
+		this.loadBlastRecipes();
+		this.loadMachineRecipes();
+		this.loadPermissions();
+	}
+
+	/**
+	 * Handles the load of crafting recipes from the recipe file.
+	 */
+	protected void loadRecipes() {
 		for (String recipe : recipeFile.getKeys(false)) {
 			if (recipe.startsWith("SHAPELESS_")) {
 				loadShapelessRecipe(recipe.replace("SHAPELESS_", ""));
@@ -79,41 +91,7 @@ public class RecipeLoader implements Listener {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void loadFurnaceRecipes() {
-		PluginFile recipes = new PluginFile(plugin, "furnaceRecipes.yml");
-		for (String output : recipes.getKeys(false)) {
-			RecipeChoice c;
-			if (!plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).hasItemMeta()) {
-				List<Material> materials = new ArrayList<>();
-				materials.add(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).getType());
-				c = new RecipeChoice.MaterialChoice(materials);
-			} else {
-				c = new RecipeChoice.ExactChoice(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")));
-			}
-			FurnaceRecipe rec = new FurnaceRecipe(new NamespacedKey(plugin, "recipe_" + id++), plugin.getItems().getItemForRecipe(output), c, recipes.getInt(output + ".exp"), recipes.getInt(output + ".burntime"));
-			plugin.getServer().addRecipe(rec);
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public void loadBlastRecipes() {
-		PluginFile recipes = new PluginFile(plugin, "blastRecipes.yml");
-		for (String output : recipes.getKeys(false)) {
-			RecipeChoice c;
-			if (!plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).hasItemMeta()) {
-				List<Material> materials = new ArrayList<>();
-				materials.add(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).getType());
-				c = new RecipeChoice.MaterialChoice(materials);
-			} else {
-				c = new RecipeChoice.ExactChoice(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")));
-			}
-			BlastingRecipe rec = new BlastingRecipe(new NamespacedKey(plugin, "recipe_" + id++), plugin.getItems().getItemForRecipe(output), c, recipes.getInt(output + ".exp"), recipes.getInt(output + ".burntime"));
-			plugin.getServer().addRecipe(rec);
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public void loadShapelessRecipe(String recipe) {
+	protected void loadShapelessRecipe(String recipe) {
 		try {
 			ShapelessRecipe rec = new ShapelessRecipe(new NamespacedKey(plugin, "recipe_" + id++), getRecipeOutput(recipe));
 			for (String ingredient : recipeFile.getStringList("SHAPELESS_" + recipe)) {
@@ -135,7 +113,7 @@ public class RecipeLoader implements Listener {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void loadShapedRecipe(String recipe) {
+	protected void loadShapedRecipe(String recipe) {
 		try {
 			ShapedRecipe rec = new ShapedRecipe(new NamespacedKey(plugin, "recipe_" + id++), getRecipeOutput(recipe));
 			String[] shape = { "ABC", "DEF", "GHI" };
@@ -165,20 +143,51 @@ public class RecipeLoader implements Listener {
 		}
 	}
 
-	private ItemStack getRecipeOutput(String key) {
-		String[] split = key.split(",");
-		ItemStack stack = plugin.getItems().getItemForRecipe(split[0]);
-		if (split.length == 2) stack.setAmount(Integer.parseInt(split[1]));
-		return stack;
+	/**
+	 * Handles the load of furnace recipes from the furnace recipe file.
+	 */
+	@SuppressWarnings("deprecation")
+	protected void loadFurnaceRecipes() {
+		PluginFile recipes = new PluginFile(plugin, "furnaceRecipes.yml");
+		for (String output : recipes.getKeys(false)) {
+			RecipeChoice c;
+			if (!plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).hasItemMeta()) {
+				List<Material> materials = new ArrayList<>();
+				materials.add(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).getType());
+				c = new RecipeChoice.MaterialChoice(materials);
+			} else {
+				c = new RecipeChoice.ExactChoice(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")));
+			}
+			FurnaceRecipe rec = new FurnaceRecipe(new NamespacedKey(plugin, "recipe_" + id++), plugin.getItems().getItemForRecipe(output), c, recipes.getInt(output + ".exp"), recipes.getInt(output + ".burntime"));
+			plugin.getServer().addRecipe(rec);
+		}
 	}
 
-	@EventHandler
-	public void onlogin(PlayerJoinEvent e) {
-		EntityPlayer player = ((CraftPlayer) e.getPlayer()).getHandle();
-		player.discoverRecipes(player.server.getCraftingManager().recipes.values().stream().flatMap(r -> r.values().stream()).collect(Collectors.toSet()));
+	/**
+	 * Handles the load of blast furnace recipes from the blast furnace recipe file.
+	 */
+	@SuppressWarnings("deprecation")
+	protected void loadBlastRecipes() {
+		PluginFile recipes = new PluginFile(plugin, "blastRecipes.yml");
+		for (String output : recipes.getKeys(false)) {
+			RecipeChoice c;
+			if (!plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).hasItemMeta()) {
+				List<Material> materials = new ArrayList<>();
+				materials.add(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")).getType());
+				c = new RecipeChoice.MaterialChoice(materials);
+			} else {
+				c = new RecipeChoice.ExactChoice(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")));
+			}
+			BlastingRecipe rec = new BlastingRecipe(new NamespacedKey(plugin, "recipe_" + id++), plugin.getItems().getItemForRecipe(output), c, recipes.getInt(output + ".exp"), recipes.getInt(output + ".burntime"));
+			plugin.getServer().addRecipe(rec);
+		}
 	}
 
-	public void loadMachineRecipes() {
+	/**
+	 * Handles the load of custom machine recipes from each respective recipe file.
+	 * Also loads dual recipes.
+	 */
+	protected void loadMachineRecipes() {
 		RECIPES.clear();
 		PluginFile machineTypes = new PluginFile(StoneRecipes.INSTANCE, "machines.yml");
 		for (String type : machineTypes.getKeys(false)) {
@@ -226,6 +235,29 @@ public class RecipeLoader implements Listener {
 		}
 	}
 
+	protected void loadPermissions() {
+		PluginFile perms = new PluginFile(StoneRecipes.INSTANCE, "recipeperms.yml");
+		for (String s : perms.getKeys(false)) {
+			Set<String> permset = new HashSet<>();
+			for (String perm : perms.getStringList(s)) {
+				permset.add(perm);
+			}
+			PERMISSIONS.put(s, permset);
+		}
+	}
+
+	/**
+	 * Parses a string key into a recipe output.
+	 * Format for input string is <ITEM NAME>,<STACK SIZE>
+	 * Stack size and comma are optional.
+	 */
+	protected ItemStack getRecipeOutput(String key) {
+		String[] split = key.split(",");
+		ItemStack stack = plugin.getItems().getItemForRecipe(split[0]);
+		if (split.length == 2) stack.setAmount(Integer.parseInt(split[1]));
+		return stack;
+	}
+
 	@Nullable
 	public ItemStack getMachineOutput(String type, ItemStack input) {
 		return RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey(), input)).map(e -> e.getValue()).findFirst().orElse(null);
@@ -244,15 +276,10 @@ public class RecipeLoader implements Listener {
 		return DUAL_RECIPES.get(type).entrySet().stream().filter(e -> ItemData.isSimilar(e.getKey().getRight(), right)).findAny().isPresent();
 	}
 
-	public void loadPermissions() {
-		PluginFile perms = new PluginFile(StoneRecipes.INSTANCE, "recipeperms.yml");
-		for (String s : perms.getKeys(false)) {
-			Set<String> permset = new HashSet<>();
-			for (String perm : perms.getStringList(s)) {
-				permset.add(perm);
-			}
-			PERMISSIONS.put(s, permset);
-		}
+	@EventHandler
+	public void onlogin(PlayerJoinEvent e) {
+		EntityPlayer player = ((CraftPlayer) e.getPlayer()).getHandle();
+		player.discoverRecipes(player.server.getCraftingManager().recipes.values().stream().flatMap(r -> r.values().stream()).collect(Collectors.toSet()));
 	}
 
 	@EventHandler
@@ -268,7 +295,13 @@ public class RecipeLoader implements Listener {
 		}
 	}
 
-	static boolean hasPerm(Player player, Set<String> perm) {
+	/**
+	 * Checks if a player has any of the permissions contained in the passed set.
+	 * @param player The player to check permissions for.
+	 * @param perm A set of desired permissions.
+	 * @return If the player has at least one of the perms in the set.
+	 */
+	public static boolean hasPerm(Player player, Set<String> perm) {
 		LuckPermsApi api = LuckPerms.getApiSafe().orElse(null);
 		if (api == null) return false;
 		User u = api.getUserSafe(player.getUniqueId()).orElse(null);

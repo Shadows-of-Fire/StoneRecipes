@@ -20,6 +20,7 @@ import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.NuclearReactor;
 import shadows.stonerecipes.tileentity.machine.OxygenCompressor;
 import shadows.stonerecipes.tileentity.machine.PowerGenerator;
+import shadows.stonerecipes.tileentity.machine.QuantumStorageHive;
 import shadows.stonerecipes.tileentity.machine.TypedMachine;
 import shadows.stonerecipes.util.WorldPos;
 
@@ -39,6 +40,7 @@ public class NoteTypes {
 	public static final NoteTileType<IndustrialTypedMachine> INDUSTRIAL_TYPED_MACHINE = register(new MultiNoteTileType<>("industrial_typed_machine", RecipeLoader.RECIPES.keySet().stream().map(s -> "industrial_" + s).collect(Collectors.toSet()), IndustrialTypedMachine::new));
 	public static final NoteTileType<AutoBreaker> BREAKER = register("auto_breaker", AutoBreaker::new);
 	public static final NoteTileType<OxygenCompressor> OXYGEN_COMPRESSOR = register("oxygen_compressor", OxygenCompressor::new);
+	public static final NoteTileType<QuantumStorageHive> STORAGE_HIVE = register("storage_hive", QuantumStorageHive::new);
 
 	private static <T extends NoteTileEntity> NoteTileType<T> register(String id, Function<WorldPos, T> factory) {
 		return register(new NoteTileType<>(id, factory));
