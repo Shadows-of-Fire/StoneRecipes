@@ -28,11 +28,11 @@ public final class DrillHandler implements Listener {
 		if (ItemData.isEmpty(drill)) return;
 		if (drill.getItemMeta() == null) return;
 		PersistentDataContainer ctr = drill.getItemMeta().getPersistentDataContainer();
-		int x = ctr.get(Keys.DRILL_X, PersistentDataType.INTEGER);
-		int y = ctr.get(Keys.DRILL_Y, PersistentDataType.INTEGER);
-		int xOffset = ctr.get(Keys.DRILL_X_OFF, PersistentDataType.INTEGER);
-		int yOffset = ctr.get(Keys.DRILL_Y_OFF, PersistentDataType.INTEGER);
-		int cost = ctr.get(Keys.DRILL_COST, PersistentDataType.INTEGER);
+		int x = ctr.getOrDefault(Keys.DRILL_X, PersistentDataType.INTEGER, 0);
+		int y = ctr.getOrDefault(Keys.DRILL_Y, PersistentDataType.INTEGER, 0);
+		int xOffset = ctr.getOrDefault(Keys.DRILL_X_OFF, PersistentDataType.INTEGER, 0);
+		int yOffset = ctr.getOrDefault(Keys.DRILL_Y_OFF, PersistentDataType.INTEGER, 0);
+		int cost = ctr.getOrDefault(Keys.DRILL_COST, PersistentDataType.INTEGER, 0);
 		if (x < 2 && y < 2) return;
 		if (Charger.getPower(drill) < cost) return;
 		int lowerY = (int) Math.ceil(-y / 2D), upperY = (int) Math.round(y / 2D);

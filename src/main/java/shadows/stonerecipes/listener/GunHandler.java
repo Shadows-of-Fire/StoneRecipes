@@ -83,8 +83,8 @@ public class GunHandler implements Listener {
 			meta.setLore(lore);
 			gun.setItemMeta(meta);
 		} catch (Throwable t) {
-			plugin.getLogger().severe("Failed to load gun " + name);
-			t.printStackTrace();
+			StoneRecipes.debug("Failed to load gun %s.", name);
+			if (StoneRecipes.DEBUG) t.printStackTrace();
 		}
 	}
 

@@ -39,6 +39,7 @@ public final class MoonHandler implements Listener {
 
 	public MoonHandler() {
 		BukkitLambda.runTimerAsync(() -> {
+			if (StoneRecipes.moonWorldName == null) return;
 			if (moonWorld.get() == null) moonWorld = new WeakReference<>(Bukkit.getWorld(StoneRecipes.moonWorldName));
 			for (Player p : moonWorld.get().getPlayers()) {
 
