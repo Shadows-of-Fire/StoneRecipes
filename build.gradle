@@ -10,7 +10,7 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 group = 'shadows.stonerecipes'
-version = '4.0.0'
+version = '4.1.0'
 
 ext.projectName = 'StoneRecipes'
 ext.inceptionYear = '2020'

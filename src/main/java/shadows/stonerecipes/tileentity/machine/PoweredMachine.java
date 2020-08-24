@@ -117,7 +117,7 @@ public abstract class PoweredMachine extends NoteTileEntity {
 			for (int z = -1; z < 2; z++) {
 				WorldPos chunk = new WorldPos(curChunk.getDim(), curChunk.x + x, 0, curChunk.z + z);
 				for (NoteTileEntity te : Maps.ALL_MACHINES.getOrDefault(chunk, Collections.emptyMap()).values()) {
-					if (te instanceof PowerGenerator) {
+					if (te instanceof PowerGenerator && te.getLocation().distanceSquared(machine.getLocation()) < 16 * 16) {
 						PowerGenerator gen = (PowerGenerator) te;
 						power += gen.usePower(amount);
 						amount -= power;
