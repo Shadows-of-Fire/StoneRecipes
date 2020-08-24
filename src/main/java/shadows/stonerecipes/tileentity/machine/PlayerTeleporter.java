@@ -15,6 +15,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import shadows.stonerecipes.StoneRecipes;
+import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
+import shadows.stonerecipes.listener.TeleportHandler;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.BukkitLambda;
@@ -58,6 +60,25 @@ public class PlayerTeleporter extends PoweredMachine {
 	public void setupContainer() {
 		super.setupContainer();
 		onPowerChange();
+	}
+
+	@Override
+	public void onClicked(NoteBlockClickedEvent e) {
+		if (e.getClicker().isSneaking()) {
+			if (TeleportHandler.PLAYER_LINKS.containsKey(e.getClicker())) {
+				TeleportHandler.attemptLink(this, e.getClicker(), pos);
+				e.setSuccess();
+			} else {
+				TeleportHandler.PLAYER_LINKS.put(e.getClicker(), pos);
+				if (!this.getLink().equals(WorldPos.INVALID)) {
+					PlayerTeleporter target = TeleportHandler.hotloadPlayerT(this.getLink());
+					if (target != null) target.setLink(WorldPos.INVALID);
+					this.setLink(WorldPos.INVALID);
+				}
+				e.getClicker().sendMessage(ChatColor.GREEN + "Shift-right click another Player Teleporter to link!");
+				e.setSuccess();
+			}
+		} else super.onClicked(e);
 	}
 
 	@SuppressWarnings("deprecation")

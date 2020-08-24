@@ -23,18 +23,19 @@ import shadows.stonerecipes.util.WorldPos;
 
 /**
  * Handler for item and player teleportation.
+ * Handles the actual teleportation of players as that information is not relayed back to the teleporters, and linking.
  */
 public class TeleportHandler implements Listener {
 
 	/**
 	 * Map of actively linking player teleporters.  This is a map of linking players -> source teleporter.
 	 */
-	protected final Map<Player, WorldPos> playerLinks = new WeakHashMap<>();
+	public static final Map<Player, WorldPos> PLAYER_LINKS = new WeakHashMap<>();
 
 	/**
 	 * Map of actively linking item teleporters.  This is a map of linking players -> source teleporter.
 	 */
-	protected final Map<Player, WorldPos> itemLinks = new WeakHashMap<>();
+	public static final Map<Player, WorldPos> ITEM_LINKS = new WeakHashMap<>();
 
 	/**
 	 * Tries to teleport a player when they start sneaking.
@@ -51,61 +52,13 @@ public class TeleportHandler implements Listener {
 	}
 
 	/**
-	 * Handles teleporter linking.
-	 */
-	@EventHandler(ignoreCancelled = true)
-	public void onNoteClick(NoteBlockClickedEvent e) {
-		WorldPos pos = new WorldPos(e.getBlock().getLocation());
-		if (NoteTypes.PLAYER_TELEPORTER.getMap().contains(pos)) {
-			PlayerTeleporter teleporter = NoteTypes.PLAYER_TELEPORTER.getMap().get(pos);
-			if (e.getClicker().isSneaking()) {
-				if (playerLinks.containsKey(e.getClicker())) {
-					attemptLink(teleporter, e.getClicker(), pos);
-					e.setSuccess();
-				} else {
-					playerLinks.put(e.getClicker(), pos);
-					if (!teleporter.getLink().equals(WorldPos.INVALID)) {
-						PlayerTeleporter target = hotloadPlayerT(teleporter.getLink());
-						if (target != null) target.setLink(WorldPos.INVALID);
-						teleporter.setLink(WorldPos.INVALID);
-					}
-					e.getClicker().sendMessage(ChatColor.GREEN + "Shift-right click another Player Teleporter to link!");
-					e.setSuccess();
-				}
-			}
-		} else if (NoteTypes.ITEM_TELEPORTER.getMap().contains(pos)) {
-			if (e.getClicker().isSneaking()) {
-				if (itemLinks.containsKey(e.getClicker())) {
-					WorldPos sourcePos = itemLinks.get(e.getClicker());
-					if (sourcePos.equals(pos)) {
-						e.getClicker().sendMessage(ChatColor.GREEN + "You cannot link a teleporter to itself.");
-						e.setSuccess();
-						return;
-					}
-					ItemTeleporter source = hotloadItemT(sourcePos);
-					if (source != null) {
-						source.setDestination(pos);
-						e.getClicker().sendMessage(ChatColor.GREEN + "The teleporter at " + sourcePos.translated() + " is now targetting " + pos.translated() + ".");
-					} else e.getClicker().sendMessage(ChatColor.RED + "The teleporter at " + sourcePos.translated() + " no longer exists!");
-					itemLinks.remove(e.getClicker());
-					e.setSuccess();
-				} else {
-					itemLinks.put(e.getClicker(), pos);
-					e.getClicker().sendMessage(ChatColor.GREEN + "Shift-right click another Item Teleporter to target!");
-					e.setSuccess();
-				}
-			}
-		}
-	}
-
-	/**
 	 * Attempts to link two teleporters.  The source teleporter is determined from the player -> source link maps.
 	 * @param teleporter The target teleporter that will be linked to.
 	 * @param linker The player doing the linking.
 	 * @param pos The position of the target teleporter.
 	 */
-	private void attemptLink(PlayerTeleporter teleporter, Player linker, WorldPos pos) {
-		Map<Player, WorldPos> curLinkers = playerLinks;
+	public static void attemptLink(PlayerTeleporter teleporter, Player linker, WorldPos pos) {
+		Map<Player, WorldPos> curLinkers = PLAYER_LINKS;
 		WorldPos sourcePos = curLinkers.get(linker);
 		if (sourcePos.equals(pos)) {
 			linker.sendMessage(ChatColor.GREEN + "You cannot link a teleporter to itself.");
@@ -126,7 +79,7 @@ public class TeleportHandler implements Listener {
 	 * If the teleporter isn't loaded, the chunk will be loaded, and it will be rechecked if the tile is present.
 	 */
 	@Nullable
-	public PlayerTeleporter hotloadPlayerT(WorldPos pos) {
+	public static PlayerTeleporter hotloadPlayerT(WorldPos pos) {
 		if (NoteTypes.PLAYER_TELEPORTER.getMap().contains(pos)) return NoteTypes.PLAYER_TELEPORTER.getMap().get(pos);
 		Chunk chunk = StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
 		if (chunk.getBlock(pos.x >> 4, pos.y, pos.z >> 4).getType() != Material.NOTE_BLOCK) return null;
@@ -139,7 +92,7 @@ public class TeleportHandler implements Listener {
 	 * If the teleporter isn't loaded, the chunk will be loaded, and it will be rechecked if the tile is present.
 	 */
 	@Nullable
-	public ItemTeleporter hotloadItemT(WorldPos pos) {
+	public static ItemTeleporter hotloadItemT(WorldPos pos) {
 		if (NoteTypes.ITEM_TELEPORTER.getMap().contains(pos)) return NoteTypes.ITEM_TELEPORTER.getMap().get(pos);
 		Chunk chunk = StoneRecipes.INSTANCE.getServer().getWorld(pos.getDim()).getChunkAt(pos.toChunkCoords().toLocation());
 		if (chunk.getBlock(pos.x >> 4, pos.y, pos.z >> 4).getType() != Material.NOTE_BLOCK) return null;

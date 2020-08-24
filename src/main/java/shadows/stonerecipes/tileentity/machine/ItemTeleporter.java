@@ -22,7 +22,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
+import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.DataHandler.Maps;
+import shadows.stonerecipes.listener.TeleportHandler;
 import shadows.stonerecipes.registry.NoteTileType;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
@@ -86,6 +88,31 @@ public class ItemTeleporter extends PoweredMachine {
 		if (e.getSlot() == Slots.GUI_TEX_SLOT) {
 			e.setCancelled(true);
 		}
+	}
+
+	@Override
+	public void onClicked(NoteBlockClickedEvent e) {
+		if (e.getClicker().isSneaking()) {
+			if (TeleportHandler.ITEM_LINKS.containsKey(e.getClicker())) {
+				WorldPos sourcePos = TeleportHandler.ITEM_LINKS.get(e.getClicker());
+				if (sourcePos.equals(this.pos)) {
+					e.getClicker().sendMessage(ChatColor.GREEN + "You cannot link a teleporter to itself.");
+					e.setSuccess();
+					return;
+				}
+				ItemTeleporter source = TeleportHandler.hotloadItemT(sourcePos);
+				if (source != null) {
+					source.setDestination(this.pos);
+					e.getClicker().sendMessage(ChatColor.GREEN + "The teleporter at " + sourcePos.translated() + " is now targetting " + this.pos.translated() + ".");
+				} else e.getClicker().sendMessage(ChatColor.RED + "The teleporter at " + sourcePos.translated() + " no longer exists!");
+				TeleportHandler.ITEM_LINKS.remove(e.getClicker());
+				e.setSuccess();
+			} else {
+				TeleportHandler.ITEM_LINKS.put(e.getClicker(), this.pos);
+				e.getClicker().sendMessage(ChatColor.GREEN + "Shift-right click another Item Teleporter to target!");
+				e.setSuccess();
+			}
+		} else super.onClicked(e);
 	}
 
 	@Override
