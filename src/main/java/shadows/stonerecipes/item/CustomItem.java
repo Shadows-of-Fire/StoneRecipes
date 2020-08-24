@@ -65,6 +65,9 @@ public class CustomItem {
 		return sound;
 	}
 
+	/**
+	 * Called when the item is used on a block.  The item may only be in the main hand.
+	 */
 	public void onItemUse(PlayerInteractEvent e) {
 		Block block = e.getClickedBlock().getRelative(e.getBlockFace());
 		if (e.getItem().getType() != Material.DIAMOND_HOE || !block.getType().equals(Material.AIR)) return;
@@ -82,6 +85,13 @@ public class CustomItem {
 			if (block.getType() == Material.NOTE_BLOCK) StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(new NoteBlockPlacedEvent(this, block, e.getItem(), e.getPlayer()));
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) e.getItem().setAmount(e.getItem().getAmount() - 1);
 		}
+	}
+
+	/**
+	 * Called when the item is used on air.  The item may be in either hand.
+	 */
+	public boolean onItemRightClick(PlayerInteractEvent e) {
+		return false;
 	}
 
 	public static interface ItemFactory {

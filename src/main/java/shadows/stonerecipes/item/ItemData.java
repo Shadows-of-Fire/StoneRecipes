@@ -55,6 +55,9 @@ public class ItemData {
 		itemFile = new PluginFile(plugin, "items.yml");
 		itemOverrides.put("dimensional_key", DimKeyItem::new);
 		itemOverrides.put("rocketship", RocketshipItem::new);
+		itemOverrides.put("jetpack_controller", JetpackControllerItem::new);
+		itemOverrides.put("jetpack", JetpackItem::new);
+		itemOverrides.put("battery_pack", BatteryPackItem::new);
 		this.loadData();
 	}
 

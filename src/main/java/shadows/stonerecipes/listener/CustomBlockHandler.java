@@ -40,8 +40,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -59,10 +57,8 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.CustomItem;
 import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
-import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.BukkitLambda;
 import shadows.stonerecipes.util.CustomBlock;
-import shadows.stonerecipes.util.FlameParticleTask;
 import shadows.stonerecipes.util.MachineUtils;
 import shadows.stonerecipes.util.ReflectionHelper;
 
@@ -72,10 +68,12 @@ public class CustomBlockHandler implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent e) {
-		if (handleJetpackClicks(e)) return;
-		if (handleBatteryPack(e)) return;
+		if (e.getItem() != null && e.getItem().hasItemMeta() && e.getAction() == Action.RIGHT_CLICK_AIR) {
+			CustomItem item = ItemData.getItem(e.getItem());
+			if (item != null && !batteryPackCancellation(e)) e.setCancelled(item.onItemRightClick(e));
+		}
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getHand() != EquipmentSlot.HAND || e.getClickedBlock() == null) return;
-		if (HOEABLE.contains(e.getClickedBlock().getType()) && e.getItem() != null && e.getItem().getType() == Material.DIAMOND_HOE) e.setUseItemInHand(Result.DENY);
+		if (HOEABLE.contains(e.getClickedBlock().getType()) && e.getItem().getType() == Material.DIAMOND_HOE) e.setUseItemInHand(Result.DENY);
 		if (!IslandProtection.canAccess(e.getPlayer(), e.getClickedBlock().getLocation())) return;
 		if (e.getPlayer().isSneaking() && e.getItem() != null) {
 			processItem(e);
@@ -327,69 +325,18 @@ public class CustomBlockHandler implements Listener {
 			world.notify(pos.up(i), Blocks.AIR.getBlockData(), Blocks.ZOMBIE_HEAD.getBlockData(), 3);
 	}
 
-	public static boolean handleJetpackClicks(PlayerInteractEvent e) {
-		String id = ItemData.getItemId(e.getItem());
-		if ("jetpack_controller".equals(id)) {
-			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
-			if ("jetpack".equals(ItemData.getItemId(helm)) && Charger.getPower(helm) >= StoneRecipes.jetCost) {
-				if (e.getPlayer().getPotionEffect(PotionEffectType.LEVITATION) == null) {
-					Charger.usePower(helm, StoneRecipes.jetCost);
-					e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, StoneRecipes.jetTime, StoneRecipes.jetLevel - 1));
-					new FlameParticleTask(e.getPlayer()).start();
-					return true;
-				}
-			}
-		}
-
-		if ("jetpack".equals(id)) {
-			ItemStack helm = e.getPlayer().getEquipment().getHelmet();
-			EquipmentSlot slot = e.getHand();
-			e.getPlayer().getEquipment().setHelmet(e.getItem());
-			if (helm == null) helm = ItemData.EMPTY;
-			if (slot == EquipmentSlot.HAND) {
-				e.getPlayer().getEquipment().setItemInMainHand(helm);
-			} else e.getPlayer().getEquipment().setItemInOffHand(helm);
-			return true;
-		}
-		return false;
-	}
-
-	public static boolean handleBatteryPack(PlayerInteractEvent e) {
-		String id = ItemData.getItemId(e.getItem());
+	/**
+	 * Cancels usage of the item in the opposite hand if the player has a battery pack in the other hand.
+	 */
+	public static boolean batteryPackCancellation(PlayerInteractEvent e) {
 		EquipmentSlot hand = e.getHand();
 		Player player = e.getPlayer();
-		if ("battery_pack".equals(id)) {
-			ItemStack battery = e.getItem();
-			int power = Charger.getPower(battery);
-			if (power <= 0) return false;
-			ItemStack stack;
-			if (hand == EquipmentSlot.HAND) stack = player.getInventory().getItemInOffHand();
-			else stack = player.getInventory().getItemInMainHand();
-
-			if (stack == null || Charger.getMaxPower(stack) <= 0) return false;
-			int reqPower = Charger.getMaxPower(stack) - Charger.getPower(stack);
-
-			if (reqPower <= 0) return false;
-			Charger.usePower(stack, -Math.min(reqPower, power));
-			Charger.usePower(battery, Math.min(reqPower, power));
-			if (hand == EquipmentSlot.HAND) {
-				player.getInventory().setItemInMainHand(battery);
-				player.getInventory().setItemInOffHand(stack);
-			} else {
-				player.getInventory().setItemInOffHand(battery);
-				player.getInventory().setItemInMainHand(stack);
-			}
-
-			e.setUseItemInHand(Result.ALLOW);
+		ItemStack stack;
+		if (hand == EquipmentSlot.HAND) stack = player.getInventory().getItemInOffHand();
+		else stack = player.getInventory().getItemInMainHand();
+		if ("battery_pack".equals(ItemData.getItemId(stack))) {
+			e.setCancelled(true);
 			return true;
-		} else {
-			ItemStack stack;
-			if (hand == EquipmentSlot.HAND) stack = player.getInventory().getItemInOffHand();
-			else stack = player.getInventory().getItemInMainHand();
-			if ("battery_pack".equals(ItemData.getItemId(stack))) {
-				e.setCancelled(true);
-				return true;
-			}
 		}
 		return false;
 	}
