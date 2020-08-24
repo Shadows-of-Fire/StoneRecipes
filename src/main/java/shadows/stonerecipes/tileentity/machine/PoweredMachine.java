@@ -1,5 +1,7 @@
 package shadows.stonerecipes.tileentity.machine;
 
+import java.util.Collections;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -7,7 +9,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import shadows.stonerecipes.registry.NoteTypes;
+import shadows.stonerecipes.listener.DataHandler.Maps;
 import shadows.stonerecipes.tileentity.NoteTileEntity;
 import shadows.stonerecipes.util.Laser;
 import shadows.stonerecipes.util.PluginFile;
@@ -102,22 +104,27 @@ public abstract class PoweredMachine extends NoteTileEntity {
 	public void onPowerChanged() {
 	}
 
+	/**
+	 * Attempts to request power from all nearby generators (in a 3x3 chunk grid centered on the chunk this machine is in).
+	 * @param machine The machine requesting power.
+	 * @param amount The maximum amount of power needed.
+	 * @return The amount of power gathered.
+	 */
 	public static int receivePower(PoweredMachine machine, int amount) {
 		int power = 0;
-		for (PowerGenerator gen : NoteTypes.GENERATOR.getMap().values()) {
-			if (gen.getLocation().getWorld() == machine.getLocation().getWorld() && gen.getLocation().distanceSquared(machine.getLocation()) < 16 * 16) {
-				power += gen.usePower(amount);
-				amount -= power;
-				if (power > 0) new Laser(gen.getPos(), machine.getPos()).connect();
-				if (amount <= 0) break;
-			}
-		}
-		if (amount != 0) for (PowerGenerator gen : NoteTypes.REACTOR.getMap().values()) {
-			if (gen.getLocation().getWorld() == machine.getLocation().getWorld() && gen.getLocation().distanceSquared(machine.getLocation()) < 16 * 16) {
-				power += gen.usePower(amount);
-				amount -= power;
-				if (power > 0) new Laser(gen.getPos(), machine.getPos()).connect();
-				if (amount <= 0) break;
+		WorldPos curChunk = machine.pos.toChunkCoords();
+		for (int x = -1; x < 2; x++) {
+			for (int z = -1; z < 2; z++) {
+				WorldPos chunk = new WorldPos(curChunk.getDim(), curChunk.x + x, 0, curChunk.z + z);
+				for (NoteTileEntity te : Maps.ALL_MACHINES.getOrDefault(chunk, Collections.emptyMap()).values()) {
+					if (te instanceof PowerGenerator) {
+						PowerGenerator gen = (PowerGenerator) te;
+						power += gen.usePower(amount);
+						amount -= power;
+						if (power > 0) new Laser(gen.getPos(), machine.getPos()).connect();
+						if (amount <= 0) return power;
+					}
+				}
 			}
 		}
 		return power;
