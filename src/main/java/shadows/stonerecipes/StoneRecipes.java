@@ -14,6 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import net.minecraft.server.v1_16_R2.Block;
+import net.minecraft.server.v1_16_R2.BlockBase;
+import net.minecraft.server.v1_16_R2.BlockBase.BlockData;
 import net.minecraft.server.v1_16_R2.Blocks;
 import net.minecraft.server.v1_16_R2.Item;
 import net.minecraft.server.v1_16_R2.ItemTool;
@@ -52,17 +54,19 @@ public class StoneRecipes extends JavaPlugin {
 	 * The relevant class, BlockNote.class, is within the plugin jar.  It must go inside the spigot jar's net/minecraft/server/v1_14_R1 folder
 	 */
 	static {
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, Material.BANNER, "material");
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, SoundEffectType.d, "stepSound");
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 2F, "strength");
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.NOTE_BLOCK, 2F, "durability");
+		ReflectionHelper.setPrivateValue(BlockBase.class, Blocks.NOTE_BLOCK, Material.BANNER, "material");
+		ReflectionHelper.setPrivateValue(BlockBase.class, Blocks.NOTE_BLOCK, SoundEffectType.d, "stepSound");
+		for (BlockData d : Blocks.NOTE_BLOCK.getStates().a()) {
+			ReflectionHelper.setPrivateValue(BlockData.class, d, 2F, "strength");
+		}
+		ReflectionHelper.setPrivateValue(BlockBase.class, Blocks.NOTE_BLOCK, 2F, "durability");
 		ReflectionHelper.setPrivateValue(Item.class, Items.DIAMOND_HOE, 64, "maxStackSize");
-		for (Item i : new Item[] { Items.DIAMOND_PICKAXE, Items.STONE_PICKAXE, Items.WOODEN_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE }) {
+		for (Item i : new Item[] { Items.DIAMOND_PICKAXE, Items.STONE_PICKAXE, Items.WOODEN_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE, Items.NETHERITE_PICKAXE }) {
 			Set<Block> blocks = new HashSet<>(ReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) i, "a"));
 			blocks.add(Blocks.NOTE_BLOCK);
 			ReflectionHelper.setPrivateValue(ItemTool.class, (ItemTool) i, blocks, "a");
 		}
-		ReflectionHelper.setPrivateValue(Block.class, Blocks.BLUE_ICE, Material.BANNER, "material");
+		ReflectionHelper.setPrivateValue(BlockBase.class, Blocks.BLUE_ICE, Material.BANNER, "material");
 	}
 
 	private ItemData itemData;
