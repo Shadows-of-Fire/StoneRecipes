@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import shadows.stonerecipes.StoneRecipes;
-import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.tileentity.machine.ItemTeleporter;
 import shadows.stonerecipes.tileentity.machine.PlayerTeleporter;
