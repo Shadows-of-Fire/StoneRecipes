@@ -13,10 +13,13 @@ import org.bukkit.craftbukkit.v1_16_R2.util.CraftNamespacedKey;
 import org.bukkit.inventory.RecipeChoice;
 
 import net.minecraft.server.v1_16_R2.InventoryCrafting;
+import net.minecraft.server.v1_16_R2.ItemStack;
+import net.minecraft.server.v1_16_R2.MinecraftKey;
 import net.minecraft.server.v1_16_R2.MinecraftServer;
 import net.minecraft.server.v1_16_R2.NonNullList;
 import net.minecraft.server.v1_16_R2.RecipeItemStack;
 import net.minecraft.server.v1_16_R2.ShapelessRecipes;
+import net.minecraft.server.v1_16_R2.World;
 
 public class NBTShapelessRecipe extends ShapelessRecipes {
 

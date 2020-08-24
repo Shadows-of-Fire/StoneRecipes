@@ -13,6 +13,7 @@ public class DimKeyItem extends CustomItem {
 		super(name, stack, block, sound);
 	}
 
+	@Override
 	public void onItemUse(PlayerInteractEvent e) {
 		if (e.getClickedBlock().getType() == Material.BLUE_ICE) {
 			e.getClickedBlock().setType(Material.AIR);

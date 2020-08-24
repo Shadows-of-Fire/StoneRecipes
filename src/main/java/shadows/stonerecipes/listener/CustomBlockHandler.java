@@ -45,6 +45,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.server.v1_16_R2.BlockPosition;
+import net.minecraft.server.v1_16_R2.Blocks;
 import net.minecraft.server.v1_16_R2.ChatComponentText;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
 import net.minecraft.server.v1_16_R2.IBlockData;
@@ -179,7 +181,7 @@ public class CustomBlockHandler implements Listener {
 		e.blockList().removeIf(b -> b.getType() == Material.BLUE_ICE);
 	}
 
-	static net.minecraft.server.v1_15_R1.ItemStack invisHoe = new net.minecraft.server.v1_15_R1.ItemStack(Items.DIAMOND_HOE);
+	static net.minecraft.server.v1_16_R2.ItemStack invisHoe = new net.minecraft.server.v1_16_R2.ItemStack(Items.DIAMOND_HOE);
 	static {
 		invisHoe.setDamage(66);
 		invisHoe.getTag().setBoolean("Unbreakable", true);
@@ -252,7 +254,7 @@ public class CustomBlockHandler implements Listener {
 			e.setCancelled(true);
 			EntityPlayer player = (EntityPlayer) ReflectionHelper.getPrivateValue(CraftEntity.class, (CraftEntity) e.getPlayer(), "entity");
 			int idx = player.inventory.itemInHandIndex;
-			net.minecraft.server.v1_15_R1.ItemStack stack;
+			net.minecraft.server.v1_16_R2.ItemStack stack;
 			if (!player.getItemInMainHand().isEmpty()) stack = player.getItemInMainHand().cloneItemStack();
 			else stack = invisHoe;
 			if (!stack.hasTag()) stack.setTag(new NBTTagCompound());
@@ -262,7 +264,7 @@ public class CustomBlockHandler implements Listener {
 			e.setCancelled(true);
 			EntityPlayer player = (EntityPlayer) ReflectionHelper.getPrivateValue(CraftEntity.class, (CraftEntity) e.getPlayer(), "entity");
 			int idx = player.inventory.itemInHandIndex;
-			net.minecraft.server.v1_15_R1.ItemStack stack;
+			net.minecraft.server.v1_16_R2.ItemStack stack;
 			if (!player.getItemInMainHand().isEmpty()) stack = player.getItemInMainHand().cloneItemStack();
 			else stack = invisHoe;
 			if (!stack.hasTag()) stack.setTag(new NBTTagCompound());
@@ -307,7 +309,7 @@ public class CustomBlockHandler implements Listener {
 		AnvilInventory inv = e.getInventory();
 		ItemStack input = inv.getItem(0);
 		if (input != null) {
-			net.minecraft.server.v1_15_R1.ItemStack nms = CraftItemStack.asNMSCopy(input);
+			net.minecraft.server.v1_16_R2.ItemStack nms = CraftItemStack.asNMSCopy(input);
 			if (nms.hasTag() && nms.getTag().hasKey("CustomModelData")) {
 				e.setResult(null);
 				e.getViewers().forEach(p -> ((Player) p).updateInventory());

@@ -27,6 +27,8 @@ import org.bukkit.persistence.PersistentDataType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import joptsimple.internal.Strings;
+import net.minecraft.server.v1_16_R2.MojangsonParser;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.CustomItem.ItemFactory;
 import shadows.stonerecipes.listener.MoonHandler;
@@ -69,7 +71,7 @@ public class ItemData {
 				String nbt = itemFile.getString(key + ".nbt");
 				try {
 					NBTTagCompound tag = MojangsonParser.parse(nbt);
-					net.minecraft.server.v1_15_R1.ItemStack stk = CraftItemStack.asNMSCopy(item);
+					net.minecraft.server.v1_16_R2.ItemStack stk = CraftItemStack.asNMSCopy(item);
 					stk.setTag(tag);
 					item = CraftItemStack.asBukkitCopy(stk);
 				} catch (CommandSyntaxException e) {

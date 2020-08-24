@@ -19,6 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import net.minecraft.server.v1_16_R2.IInventory;
 import net.minecraft.server.v1_16_R2.IRecipe;
 import net.minecraft.server.v1_16_R2.InventoryCrafting;
+import net.minecraft.server.v1_16_R2.ItemStack;
+import net.minecraft.server.v1_16_R2.MinecraftKey;
 import net.minecraft.server.v1_16_R2.MinecraftServer;
 import net.minecraft.server.v1_16_R2.Recipes;
 import shadows.stonerecipes.StoneRecipes;
@@ -216,7 +218,7 @@ public class AutoCrafter extends PoweredMachine {
 	public ItemStack getInputItem(int i) {
 		int slot = i < 3 ? i : i < 6 ? i - 3 + 9 : i - 6 + 18;
 		org.bukkit.inventory.ItemStack s = this.inventory.getItem(slot);
-		if (ItemData.isEmpty(s)) return ItemStack.a;
+		if (ItemData.isEmpty(s)) return ItemStack.b;
 		return CraftItemStack.asNMSCopy(s);
 	}
 
@@ -256,7 +258,7 @@ public class AutoCrafter extends PoweredMachine {
 
 		@Override
 		public ItemStack getItem(int i) {
-			return i >= this.getSize() ? ItemStack.a : AutoCrafter.this.getInputItem(i);
+			return i >= this.getSize() ? ItemStack.b : AutoCrafter.this.getInputItem(i);
 		}
 
 	}

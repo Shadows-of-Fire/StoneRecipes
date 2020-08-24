@@ -70,7 +70,7 @@ public class Storage implements GsonSerializable {
 		inv.setItem(52, FILL);
 
 		int invIndex = 0;
-		for (int i = 0 + ((page - 1) * 45); i < 45 * page; i++) {
+		for (int i = 0 + (page - 1) * 45; i < 45 * page; i++) {
 			try {
 				ItemStack item = this.items.get(i);
 				if (item == null) {
@@ -141,7 +141,7 @@ public class Storage implements GsonSerializable {
 	}
 
 	private int mapIndex(int index) {
-		return index + ((currentlyOpenedPage - 1) * 45);
+		return index + (currentlyOpenedPage - 1) * 45;
 	}
 
 	public void query(String query) {

@@ -38,7 +38,6 @@ import net.minecraft.server.v1_16_R2.EnumItemSlot;
 import net.minecraft.server.v1_16_R2.IBlockData;
 import net.minecraft.server.v1_16_R2.PlayerInteractManager;
 import net.minecraft.server.v1_16_R2.TileEntity;
-import net.minecraft.server.v1_16_R2.World;
 import net.minecraft.server.v1_16_R2.WorldServer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
@@ -119,8 +118,8 @@ public class AutoBreaker extends PoweredMachine {
 			Block toBreak = this.location.getBlock().getRelative(facing);
 			if (toBreak.getType() != Material.AIR) {
 				BlockState state = toBreak.getState();
-				World world = ((CraftWorld) this.location.getWorld()).getHandle();
-				FakePlayer player = fakePlayer == null ? (fakePlayer = new FakePlayer((WorldServer) world, playerId)) : fakePlayer;
+				WorldServer world = ((CraftWorld) this.location.getWorld()).getHandle();
+				FakePlayer player = fakePlayer == null ? (fakePlayer = new FakePlayer(world, playerId)) : fakePlayer;
 				breakBlock(world, new BlockPosition(toBreak.getX(), toBreak.getY(), toBreak.getZ()), player);
 				if (!toBreak.getState().equals(state)) {
 					List<Item> items = toBreak.getWorld().getNearbyEntities(toBreak.getLocation(), 1.5, 1.5, 1.5).stream().filter(t -> t instanceof Item).map(t -> (Item) t).collect(Collectors.toList());
@@ -226,7 +225,7 @@ public class AutoBreaker extends PoweredMachine {
 		IBlockData iblockdata = world.getType(blockposition);
 		org.bukkit.block.Block bblock = CraftBlock.at(world, blockposition);
 		BlockBreakEvent event = new BlockBreakEvent(bblock, player.getBukkitEntity());
-		event.setCancelled(iblockdata.getBlock().strength < 0);
+		event.setCancelled(!player.getItemInMainHand().getItem().a(iblockdata, world, blockposition, player));
 		IBlockData nmsData = world.getType(blockposition);
 		net.minecraft.server.v1_16_R2.Block nmsBlock = nmsData.getBlock();
 		net.minecraft.server.v1_16_R2.ItemStack itemstack = player.getEquipment(EnumItemSlot.MAINHAND);

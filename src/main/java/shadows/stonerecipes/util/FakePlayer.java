@@ -2,22 +2,22 @@ package shadows.stonerecipes.util;
 
 import java.io.File;
 import java.util.OptionalInt;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
-
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.server.v1_16_R2.AdvancementDataPlayer;
 import net.minecraft.server.v1_16_R2.DamageSource;
-import net.minecraft.server.v1_16_R2.DimensionManager;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
 import net.minecraft.server.v1_16_R2.EnumGamemode;
 import net.minecraft.server.v1_16_R2.IChatBaseComponent;
 import net.minecraft.server.v1_16_R2.ITileInventory;
 import net.minecraft.server.v1_16_R2.PacketPlayInSettings;
 import net.minecraft.server.v1_16_R2.PlayerInteractManager;
+import net.minecraft.server.v1_16_R2.PlayerList;
+import net.minecraft.server.v1_16_R2.SavedFile;
 import net.minecraft.server.v1_16_R2.Statistic;
 import net.minecraft.server.v1_16_R2.Vec3D;
 import net.minecraft.server.v1_16_R2.WorldServer;
@@ -43,11 +43,6 @@ public class FakePlayer extends EntityPlayer {
 	}
 
 	@Override
-	public Entity a(DimensionManager dimensionmanager, TeleportCause cause) {
-		return this;
-	}
-
-	@Override
 	public OptionalInt openContainer(@Nullable ITileInventory itileinventory) {
 		return OptionalInt.empty();
 	}
@@ -57,7 +52,11 @@ public class FakePlayer extends EntityPlayer {
 	}
 
 	@Override
-	public void sendMessage(IChatBaseComponent ichatbasecomponent) {
+	public void sendMessage(IChatBaseComponent ichatbasecomponent, UUID uuid) {
+	}
+
+	@Override
+	public void sendMessage(IChatBaseComponent[] ichatbasecomponent) {
 	}
 
 	@Override
@@ -77,21 +76,26 @@ public class FakePlayer extends EntityPlayer {
 		return true;
 	}
 
-	@Override
-	public boolean p(boolean flag) {
-		return true;
-	}
-
 	AdvancementDataPlayer data;
 
 	@Override
 	public AdvancementDataPlayer getAdvancementData() {
 		if (data == null) {
-			File file = new File(this.server.getWorldServer(DimensionManager.OVERWORLD).getDataManager().getDirectory(), "advancements");
-			File file1 = new File(file, "fake.json");
-			data = new AdvancementDataPlayer(this.server, file1, this);
+			data = genAdvancementData();
 		}
 		return data;
+	}
+
+	public AdvancementDataPlayer genAdvancementData() {
+		PlayerList list = this.server.getPlayerList();
+		AdvancementDataPlayer advancementdataplayer = this.getAdvancementData();
+		if (advancementdataplayer == null) {
+			File file = this.server.a(SavedFile.ADVANCEMENTS).toFile();
+			File file1 = new File(file, "fake.json");
+			advancementdataplayer = new AdvancementDataPlayer(this.server.getDataFixer(), list, this.server.getAdvancementData(), file1, this);
+		}
+		advancementdataplayer.a(this);
+		return advancementdataplayer;
 	}
 
 }

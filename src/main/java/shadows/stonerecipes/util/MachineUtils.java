@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.minecraft.server.v1_16_R2.EntityHuman;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
+import net.minecraft.server.v1_16_R2.MinecraftKey;
 import net.minecraft.server.v1_16_R2.PacketPlayOutCustomSoundEffect;
 import net.minecraft.server.v1_16_R2.Vec3D;
 import shadows.stonerecipes.StoneRecipes;
@@ -67,12 +68,12 @@ public class MachineUtils {
 			double x = loc.getX();
 			double y = loc.getY();
 			double z = loc.getZ();
-			net.minecraft.server.v1_15_R1.World world = ((CraftWorld) loc.getWorld()).getHandle();
+			net.minecraft.server.v1_16_R2.World world = ((CraftWorld) loc.getWorld()).getHandle();
 			for (EntityHuman p : world.getPlayers()) {
 				double radsq = radius * radius;
-				if (p.g(loc.getX(), loc.getY(), loc.getZ()) < radsq) { //getDistanceSq
-					float realVol = 1F - (float) (p.g(loc.getX(), loc.getY(), loc.getZ()) / radsq);
-					PacketPlayOutCustomSoundEffect packet = new PacketPlayOutCustomSoundEffect(new MinecraftKey(sound), net.minecraft.server.v1_15_R1.SoundCategory.valueOf(category.name()), new Vec3D(x, y, z), realVol, pitch);
+				if (p.h(loc.getX(), loc.getY(), loc.getZ()) < radsq) { //getDistanceSq
+					float realVol = 1F - (float) (p.h(loc.getX(), loc.getY(), loc.getZ()) / radsq);
+					PacketPlayOutCustomSoundEffect packet = new PacketPlayOutCustomSoundEffect(new MinecraftKey(sound), net.minecraft.server.v1_16_R2.SoundCategory.valueOf(category.name()), new Vec3D(x, y, z), realVol, pitch);
 					((EntityPlayer) p).playerConnection.sendPacket(packet);
 				}
 			}
