@@ -16,7 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Powerable;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +27,6 @@ import org.bukkit.persistence.PersistentDataType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import joptsimple.internal.Strings;
-import net.minecraft.server.v1_15_R1.MojangsonParser;
-import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.CustomItem.ItemFactory;
 import shadows.stonerecipes.listener.MoonHandler;

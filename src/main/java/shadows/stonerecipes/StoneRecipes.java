@@ -13,13 +13,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import net.minecraft.server.v1_15_R1.Block;
-import net.minecraft.server.v1_15_R1.Blocks;
-import net.minecraft.server.v1_15_R1.Item;
-import net.minecraft.server.v1_15_R1.ItemTool;
-import net.minecraft.server.v1_15_R1.Items;
-import net.minecraft.server.v1_15_R1.Material;
-import net.minecraft.server.v1_15_R1.SoundEffectType;
+import net.minecraft.server.v1_16_R2.ItemTool;
+import net.minecraft.server.v1_16_R2.Items;
+import net.minecraft.server.v1_16_R2.SoundEffectType;
 import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.listener.CustomBlockHandler;
 import shadows.stonerecipes.listener.CustomMachineHandler;

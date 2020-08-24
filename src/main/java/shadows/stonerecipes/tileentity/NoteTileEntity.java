@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftInventoryCustom;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

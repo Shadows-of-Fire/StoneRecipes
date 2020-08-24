@@ -9,19 +9,18 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.server.v1_15_R1.AdvancementDataPlayer;
-import net.minecraft.server.v1_15_R1.DamageSource;
-import net.minecraft.server.v1_15_R1.DimensionManager;
-import net.minecraft.server.v1_15_R1.Entity;
-import net.minecraft.server.v1_15_R1.EntityPlayer;
-import net.minecraft.server.v1_15_R1.EnumGamemode;
-import net.minecraft.server.v1_15_R1.IChatBaseComponent;
-import net.minecraft.server.v1_15_R1.ITileInventory;
-import net.minecraft.server.v1_15_R1.PacketPlayInSettings;
-import net.minecraft.server.v1_15_R1.PlayerInteractManager;
-import net.minecraft.server.v1_15_R1.Statistic;
-import net.minecraft.server.v1_15_R1.Vec3D;
-import net.minecraft.server.v1_15_R1.WorldServer;
+import net.minecraft.server.v1_16_R2.AdvancementDataPlayer;
+import net.minecraft.server.v1_16_R2.DamageSource;
+import net.minecraft.server.v1_16_R2.DimensionManager;
+import net.minecraft.server.v1_16_R2.EntityPlayer;
+import net.minecraft.server.v1_16_R2.EnumGamemode;
+import net.minecraft.server.v1_16_R2.IChatBaseComponent;
+import net.minecraft.server.v1_16_R2.ITileInventory;
+import net.minecraft.server.v1_16_R2.PacketPlayInSettings;
+import net.minecraft.server.v1_16_R2.PlayerInteractManager;
+import net.minecraft.server.v1_16_R2.Statistic;
+import net.minecraft.server.v1_16_R2.Vec3D;
+import net.minecraft.server.v1_16_R2.WorldServer;
 
 public class FakePlayer extends EntityPlayer {
 

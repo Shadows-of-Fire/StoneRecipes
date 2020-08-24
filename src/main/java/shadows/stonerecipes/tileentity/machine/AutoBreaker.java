@@ -13,10 +13,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_15_R1.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R2.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R2.event.CraftEventFactory;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -28,18 +28,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.server.v1_15_R1.BlockCommand;
-import net.minecraft.server.v1_15_R1.BlockJigsaw;
-import net.minecraft.server.v1_15_R1.BlockPosition;
-import net.minecraft.server.v1_15_R1.BlockStructure;
-import net.minecraft.server.v1_15_R1.EntityPlayer;
-import net.minecraft.server.v1_15_R1.EnumGamemode;
-import net.minecraft.server.v1_15_R1.EnumItemSlot;
-import net.minecraft.server.v1_15_R1.IBlockData;
-import net.minecraft.server.v1_15_R1.PlayerInteractManager;
-import net.minecraft.server.v1_15_R1.TileEntity;
-import net.minecraft.server.v1_15_R1.World;
-import net.minecraft.server.v1_15_R1.WorldServer;
+import net.minecraft.server.v1_16_R2.BlockCommand;
+import net.minecraft.server.v1_16_R2.BlockJigsaw;
+import net.minecraft.server.v1_16_R2.BlockPosition;
+import net.minecraft.server.v1_16_R2.BlockStructure;
+import net.minecraft.server.v1_16_R2.EntityPlayer;
+import net.minecraft.server.v1_16_R2.EnumGamemode;
+import net.minecraft.server.v1_16_R2.EnumItemSlot;
+import net.minecraft.server.v1_16_R2.IBlockData;
+import net.minecraft.server.v1_16_R2.PlayerInteractManager;
+import net.minecraft.server.v1_16_R2.TileEntity;
+import net.minecraft.server.v1_16_R2.World;
+import net.minecraft.server.v1_16_R2.WorldServer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
 import shadows.stonerecipes.registry.NoteTileType;
@@ -222,14 +222,14 @@ public class AutoBreaker extends PoweredMachine {
 	 * @param blockposition The location of the block to break.
 	 * @return If a block was successfully broken.
 	 */
-	public static boolean breakBlock(World world, BlockPosition blockposition, EntityPlayer player) {
+	public static boolean breakBlock(WorldServer world, BlockPosition blockposition, EntityPlayer player) {
 		IBlockData iblockdata = world.getType(blockposition);
 		org.bukkit.block.Block bblock = CraftBlock.at(world, blockposition);
 		BlockBreakEvent event = new BlockBreakEvent(bblock, player.getBukkitEntity());
 		event.setCancelled(iblockdata.getBlock().strength < 0);
 		IBlockData nmsData = world.getType(blockposition);
-		net.minecraft.server.v1_15_R1.Block nmsBlock = nmsData.getBlock();
-		net.minecraft.server.v1_15_R1.ItemStack itemstack = player.getEquipment(EnumItemSlot.MAINHAND);
+		net.minecraft.server.v1_16_R2.Block nmsBlock = nmsData.getBlock();
+		net.minecraft.server.v1_16_R2.ItemStack itemstack = player.getEquipment(EnumItemSlot.MAINHAND);
 		if (nmsBlock != null && !event.isCancelled() && player.hasBlock(nmsBlock.getBlockData())) {
 			event.setExpToDrop(nmsBlock.getExpDrop(nmsData, world, blockposition, itemstack));
 		}
@@ -242,7 +242,7 @@ public class AutoBreaker extends PoweredMachine {
 			return false;
 		} else {
 			TileEntity tileentity = world.getTileEntity(blockposition);
-			net.minecraft.server.v1_15_R1.Block block = iblockdata.getBlock();
+			net.minecraft.server.v1_16_R2.Block block = iblockdata.getBlock();
 			if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !player.isCreativeAndOp()) {
 				world.notify(blockposition, iblockdata, iblockdata, 3);
 				return false;
@@ -258,7 +258,7 @@ public class AutoBreaker extends PoweredMachine {
 				}
 
 				itemstack = player.getItemInMainHand();
-				net.minecraft.server.v1_15_R1.ItemStack itemstack1 = itemstack.cloneItemStack();
+				net.minecraft.server.v1_16_R2.ItemStack itemstack1 = itemstack.cloneItemStack();
 				itemstack.a(world, iblockdata, blockposition, player);
 				if (flag && event.isDropItems()) {
 					block.a(world, player, blockposition, iblockdata, tileentity, itemstack1);

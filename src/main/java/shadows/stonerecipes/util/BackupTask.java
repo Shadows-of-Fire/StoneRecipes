@@ -12,7 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
-import org.bukkit.craftbukkit.v1_15_R1.command.ServerCommandSender;
+import org.bukkit.craftbukkit.v1_16_R2.command.ServerCommandSender;
 
 import shadows.stonerecipes.StoneRecipes;
 
