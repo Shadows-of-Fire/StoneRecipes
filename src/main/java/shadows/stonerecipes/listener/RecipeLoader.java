@@ -1,12 +1,12 @@
 package shadows.stonerecipes.listener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -28,11 +28,10 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import me.lucko.luckperms.LuckPerms;
-import me.lucko.luckperms.api.LocalizedNode;
-import me.lucko.luckperms.api.LuckPermsApi;
-import me.lucko.luckperms.api.Node;
-import me.lucko.luckperms.api.User;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
@@ -302,15 +301,13 @@ public class RecipeLoader implements Listener {
 	 * @return If the player has at least one of the perms in the set.
 	 */
 	public static boolean hasPerm(Player player, Set<String> perm) {
-		LuckPermsApi api = LuckPerms.getApiSafe().orElse(null);
+		LuckPerms api = LuckPermsProvider.get();
 		if (api == null) return false;
-		User u = api.getUserSafe(player.getUniqueId()).orElse(null);
+		User u = api.getUserManager().getUser(player.getUniqueId());
 		if (u == null) return false;
-		SortedSet<LocalizedNode> nodes = u.getAllNodes();
+		Collection<Node> nodes = u.getNodes();
 		if (nodes != null) {
-			if (nodes.stream().map(LocalizedNode::getNode).map(Node::getPermission).anyMatch(perm::contains)) {
-				return true;
-			}
+			if (nodes.stream().map(Node::getKey).anyMatch(perm::contains)) return true;
 		}
 		return false;
 	}
