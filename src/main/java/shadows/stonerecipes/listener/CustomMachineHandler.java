@@ -28,6 +28,7 @@ public class CustomMachineHandler implements Listener {
 		NoteTileEntity t = Maps.ALL_MACHINES.getOrDefault(pos.toChunkCoords(), Collections.emptyMap()).get(pos);
 		if (t != null) {
 			t.onClicked(e);
+			StoneRecipes.debug("Triggered click action for tile entity %s.", t.getType().getId());
 		}
 	}
 

@@ -97,7 +97,10 @@ public class CustomBlockHandler implements Listener {
 	private void processItem(PlayerInteractEvent e) {
 		if (e.getItem() == null || !e.getItem().hasItemMeta()) return;
 		CustomItem item = ItemData.getItem(e.getItem());
+		StoneRecipes.debug("keys:%s", e.getItem().getItemMeta().getPersistentDataContainer().getKeys());
+		StoneRecipes.debug("Item %s has id %s which searched up custom item %s.", e.getItem(), ItemData.getItemId(e.getItem()), item);
 		if (item == null) return;
+		StoneRecipes.debug("Triggered usage for custom item %s", item.getName());
 		item.onItemUse(e);
 	}
 

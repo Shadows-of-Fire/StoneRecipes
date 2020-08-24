@@ -88,4 +88,9 @@ public class CustomItem {
 		CustomItem apply(String id, ItemStack stack, CustomBlock block, NamespacedKey sound);
 	}
 
+	@Override
+	public String toString() {
+		return "SR Item - ID: " + this.name;
+	}
+
 }

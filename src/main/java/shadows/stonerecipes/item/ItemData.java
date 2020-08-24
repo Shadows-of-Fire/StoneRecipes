@@ -163,11 +163,14 @@ public class ItemData {
 				meta.getPersistentDataContainer().set(Keys.DRILL_Y_OFF, PersistentDataType.INTEGER, yOffset);
 				meta.getPersistentDataContainer().set(Keys.DRILL_COST, PersistentDataType.INTEGER, cost);
 			}
+			meta.getPersistentDataContainer().set(Keys.ITEM_ID, PersistentDataType.STRING, key);
 			item.setItemMeta(meta);
-			item.getItemMeta().getPersistentDataContainer().set(Keys.ITEM_ID, PersistentDataType.STRING, key);
 			CustomItem cItem = itemOverrides.getOrDefault(key, CustomItem::new).apply(key, item, block, sound);
 			items.put(key, cItem);
-			if (block != null) blockToItem.put(block, cItem);
+			if (block != null) {
+				blockToItem.put(block, cItem);
+				StoneRecipes.debug("Loaded item %s with block form %s.", cItem.getName(), block.getData().getAsString());
+			} else StoneRecipes.debug("Loaded item %s.", cItem.getName());
 		}
 	}
 
