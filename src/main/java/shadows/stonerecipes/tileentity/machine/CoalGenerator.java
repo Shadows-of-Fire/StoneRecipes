@@ -121,7 +121,6 @@ public class CoalGenerator extends PowerGenerator {
 		if (input.getType() != Material.COAL) return;
 		input.setAmount(input.getAmount() - 1);
 		addPower(coalPower);
-		this.onPowerChanged();
 	}
 
 	@Override
