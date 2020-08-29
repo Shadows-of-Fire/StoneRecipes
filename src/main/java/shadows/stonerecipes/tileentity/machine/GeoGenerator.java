@@ -1,7 +1,9 @@
 package shadows.stonerecipes.tileentity.machine;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Levelled;
 
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
@@ -30,7 +32,8 @@ public class GeoGenerator extends PowerGenerator {
 	public void timerTick() {
 		int lava = 0;
 		for (BlockFace face : ReactorHandler.CHAMBER_FACES) {
-			if (this.location.getBlock().getRelative(face).getType() == Material.LAVA) {
+			Block b = this.location.getBlock().getRelative(face);
+			if (b.getType() == Material.LAVA && ((Levelled) b.getBlockData()).getLevel() == 0) {
 				lava++;
 			}
 		}
