@@ -53,8 +53,10 @@ public class RocketTask implements Runnable {
 			this.rocket.getWorld().spawnParticle(Particle.SMOKE_LARGE, rocket.getLocation().clone().add(0.5, -2, 0.5), 3, 0.5, 0, 0.5, 0, null);
 			this.rocket.removePotionEffect(PotionEffectType.LEVITATION);
 			this.rocket.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 9999, 5 + this.ticksExisted / 3, false, false));
-			if (block == null && this.player.getLocation().getY() < 254) {
-				block = this.player.getWorld().getBlockAt(this.player.getLocation().clone().add(0, 1, 0));
+			if (block == null) {
+				Location loc = this.player.getLocation();
+				if (loc.getY() < 254) block = this.player.getWorld().getBlockAt(loc.clone().add(0, 1, 0));
+				else block = this.player.getWorld().getBlockAt(new Location(loc.getWorld(), loc.getX(), 255, loc.getZ()));
 				if (block.getType() == Material.BARRIER) {
 					block.setType(Material.AIR);
 				} else if (block.getType() != Material.AIR) {
