@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +19,7 @@ import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;
 
-public class OxygenCompressor extends PoweredMachine implements Listener {
+public class OxygenCompressor extends PoweredMachine {
 
 	private WeakReference<World> moonWorld = new WeakReference<>(null);
 
@@ -82,7 +81,7 @@ public class OxygenCompressor extends PoweredMachine implements Listener {
 		int max = MoonHandler.getMaxOxygen(item);
 		if (oxygen == -1 || oxygen >= max) return;
 		else {
-			int needed = Math.min(100, max - oxygen);
+			int needed = Math.min(1, max - oxygen);
 			int received = this.usePower(needed);
 			MoonHandler.setOxygen(item, oxygen + received);
 		}

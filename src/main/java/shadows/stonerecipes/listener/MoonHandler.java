@@ -63,7 +63,7 @@ public final class MoonHandler implements Listener {
 					return;
 				} else {
 					suffocating.remove(p.getUniqueId());
-					useOxygen(p.getInventory().getHelmet(), getOxygenCost(p.getInventory().getHelmet()));
+					BukkitLambda.runLater(() -> useOxygen(p.getInventory().getHelmet(), getOxygenCost(p.getInventory().getHelmet())), 0);
 					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(getActionBar(10, 10)));
 				}
 

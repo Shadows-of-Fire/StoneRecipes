@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +20,7 @@ import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.Slots;
 import shadows.stonerecipes.util.WorldPos;
 
-public class Charger extends PoweredMachine implements Listener {
+public class Charger extends PoweredMachine {
 
 	public Charger(WorldPos pos) {
 		super("armor_charger", "Charger", "config.yml", pos);
