@@ -1,5 +1,7 @@
 package shadows.stonerecipes.tileentity.machine;
 
+import java.util.function.Supplier;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,16 +11,19 @@ import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.listener.CustomBlockHandler.NoteBlockClickedEvent;
 import shadows.stonerecipes.listener.ReactorHandler;
 import shadows.stonerecipes.registry.NoteTileType;
-import shadows.stonerecipes.registry.NoteTypes;
 import shadows.stonerecipes.util.PluginFile;
 import shadows.stonerecipes.util.WorldPos;
 
 public class GeoGenerator extends PowerGenerator {
 
+	protected final Supplier<NoteTileType<?>> type;
+	protected final String configId;
 	protected int powerPerLava;
 
-	public GeoGenerator(WorldPos pos) {
+	public GeoGenerator(Supplier<NoteTileType<?>> type, String configId, WorldPos pos) {
 		super("geo_generator", "Geothermal Generator", pos);
+		this.type = type;
+		this.configId = configId;
 	}
 
 	@Override
@@ -46,7 +51,7 @@ public class GeoGenerator extends PowerGenerator {
 
 	@Override
 	public NoteTileType<?> getType() {
-		return NoteTypes.GEO_GENERATOR;
+		return type.get();
 	}
 
 }

@@ -42,7 +42,9 @@ public class NoteTypes {
 	public static final NoteTileType<AutoBreaker> BREAKER = register("auto_breaker", AutoBreaker::new);
 	public static final NoteTileType<OxygenCompressor> OXYGEN_COMPRESSOR = register("oxygen_compressor", OxygenCompressor::new);
 	public static final NoteTileType<QuantumStorageHive> STORAGE_HIVE = register("quantum_storage_hive", QuantumStorageHive::new);
-	public static final NoteTileType<GeoGenerator> GEO_GENERATOR = register("geo_generator", GeoGenerator::new);
+	public static final NoteTileType<GeoGenerator> GEO_GENERATOR = register("geo_generator", wp -> new GeoGenerator(() -> NoteTypes.GEO_GENERATOR, "geo_generator", wp));
+	public static final NoteTileType<GeoGenerator> GEO_GENERATOR_MK2 = register("geo_generator_mk2", wp -> new GeoGenerator(() -> NoteTypes.GEO_GENERATOR_MK2, "geo_generator_mk2", wp));
+	public static final NoteTileType<GeoGenerator> GEO_GENERATOR_MK3 = register("geo_generator_mk3", wp -> new GeoGenerator(() -> NoteTypes.GEO_GENERATOR_MK3, "geo_generator_mk3", wp));
 
 	private static <T extends NoteTileEntity> NoteTileType<T> register(String id, Function<WorldPos, T> factory) {
 		return register(new NoteTileType<>(id, factory));
