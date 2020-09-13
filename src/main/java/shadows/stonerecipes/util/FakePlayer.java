@@ -88,12 +88,9 @@ public class FakePlayer extends EntityPlayer {
 
 	public AdvancementDataPlayer genAdvancementData() {
 		PlayerList list = this.server.getPlayerList();
-		AdvancementDataPlayer advancementdataplayer = this.getAdvancementData();
-		if (advancementdataplayer == null) {
-			File file = this.server.a(SavedFile.ADVANCEMENTS).toFile();
-			File file1 = new File(file, "fake.json");
-			advancementdataplayer = new AdvancementDataPlayer(this.server.getDataFixer(), list, this.server.getAdvancementData(), file1, this);
-		}
+		File file = this.server.a(SavedFile.ADVANCEMENTS).toFile();
+		File file1 = new File(file, "fake.json");
+		AdvancementDataPlayer advancementdataplayer = new AdvancementDataPlayer(this.server.getDataFixer(), list, this.server.getAdvancementData(), file1, this);
 		advancementdataplayer.a(this);
 		return advancementdataplayer;
 	}

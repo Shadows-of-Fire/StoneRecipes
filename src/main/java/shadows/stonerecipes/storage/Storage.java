@@ -13,27 +13,28 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import me.lucko.helper.gson.GsonProvider;
 import me.lucko.helper.gson.GsonSerializable;
 import me.lucko.helper.gson.JsonBuilder;
 import me.lucko.helper.item.ItemStackBuilder;
-import me.lucko.helper.serialize.Serializers;
 import shadows.stonerecipes.listener.MassStorageHandler;
 
 @SuppressWarnings("deprecation")
 public class Storage implements GsonSerializable {
 
-	public static final ItemStack NEXT_PAGE = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 2)).breakable(false).name("Next Page").build();
-	public static final ItemStack PREV_PAGE = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 3)).breakable(false).name("Previous Page").build();
-	public static final ItemStack CANCEL_SEARCH = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 5)).breakable(false).name("Cancel Search").build();
-	public static final ItemStack SEARCH = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 4)).breakable(false).name("Search").build();
+	public static final ItemStack NEXT_PAGE = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 442)).breakable(false).name("Next Page").build();
+	public static final ItemStack PREV_PAGE = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 279)).breakable(false).name("Previous Page").build();
+	public static final ItemStack SEARCH = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 462)).breakable(false).name("Search").build();
 	public static final ItemStack FILL = ItemStackBuilder.of(new ItemStack(Material.DIAMOND_HOE, 1, (short) 47)).breakable(false).name("&a").build();
 
 	protected UUID owner;
@@ -97,36 +98,22 @@ public class Storage implements GsonSerializable {
 	@Nonnull
 	@Override
 	public JsonElement serialize() {
-		return JsonBuilder.object().addIfAbsent("owner", this.owner.toString()).addIfAbsent("pages", pages).addIfAbsent("items", Serializers.serializeItemstacks(getItemsArray())).build();
+		List<net.minecraft.server.v1_16_R2.ItemStack> nmsItems = items.stream().map(s -> CraftItemStack.asNMSCopy(s)).collect(Collectors.toList());
+		return JsonBuilder.object().add("owner", this.owner.toString()).add("pages", pages).add("items", new JsonPrimitive(MassStorageHandler.GSON.toJson(nmsItems))).build();
 	}
+
+	private static final TypeToken<List<net.minecraft.server.v1_16_R2.ItemStack>> STACK_LIST = new TypeToken<List<net.minecraft.server.v1_16_R2.ItemStack>>() {
+	};
 
 	public static Storage load(FileReader reader) {
 		JsonObject obj = GsonProvider.readObject(reader);
 
 		UUID owner = UUID.fromString(obj.get("owner").getAsString());
 		int pages = obj.get("pages").getAsInt();
-		ItemStack[] items = Serializers.deserializeItemstacks(obj.get("items"));
-
-		return new Storage(owner, pages, getItemsArrayList(items));
-	}
-
-	private ItemStack[] getItemsArray() {
-		ItemStack[] array = new ItemStack[this.items.size()];
-		for (int i = 0; i < this.items.size(); i++) {
-			array[i] = this.items.get(i);
-		}
-		return array;
-	}
-
-	public static ArrayList<ItemStack> getItemsArrayList(ItemStack[] array) {
-		ArrayList<ItemStack> list = new ArrayList<>();
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == null) {
-				continue;
-			}
-			list.add(array[i]);
-		}
-		return list;
+		List<net.minecraft.server.v1_16_R2.ItemStack> nmsItems = MassStorageHandler.GSON.fromJson(obj.get("items"), STACK_LIST.getType());
+		List<ItemStack> items = new ArrayList<>(nmsItems.size());
+		nmsItems.stream().map(s -> CraftItemStack.asCraftMirror(s)).forEach(items::add);
+		return new Storage(owner, pages, items);
 	}
 
 	public void updateItems(ItemStack[] contents) {

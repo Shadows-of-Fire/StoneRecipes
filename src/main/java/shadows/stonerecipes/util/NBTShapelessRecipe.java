@@ -23,6 +23,8 @@ import net.minecraft.server.v1_16_R2.World;
 
 public class NBTShapelessRecipe extends ShapelessRecipes {
 
+	protected List<Predicate<ItemStack>> stackPredicates;
+
 	public NBTShapelessRecipe(MinecraftKey name, String group, ItemStack output, NonNullList<RecipeItemStack> input) {
 		super(name, group, output, input);
 	}
@@ -36,7 +38,12 @@ public class NBTShapelessRecipe extends ShapelessRecipes {
 			data.set(i, original.toNMS(ingred.get(i), true));
 		}
 
-		MinecraftServer.getServer().getCraftingManager().addRecipe(new NBTShapelessRecipe(CraftNamespacedKey.toMinecraft(original.getKey()), original.getGroup(), CraftItemStack.asNMSCopy(original.getResult()), data));
+		NBTShapelessRecipe recipe = new NBTShapelessRecipe(CraftNamespacedKey.toMinecraft(original.getKey()), original.getGroup(), CraftItemStack.asNMSCopy(original.getResult()), data);
+		recipe.stackPredicates = new ArrayList<>(ingred.size());
+		for (RecipeItemStack ingredient : data) {
+			recipe.stackPredicates.add(new SRItemIngredient(ingredient));
+		}
+		MinecraftServer.getServer().getCraftingManager().addRecipe(recipe);
 	}
 
 	@Override
@@ -49,7 +56,7 @@ public class NBTShapelessRecipe extends ShapelessRecipes {
 				inputs.add(itemstack);
 			}
 		}
-		return findMatches(inputs, this.a()) != null;
+		return findMatches(inputs, stackPredicates) != null;
 	}
 
 	/**

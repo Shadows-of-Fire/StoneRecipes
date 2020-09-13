@@ -16,17 +16,25 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.gson.GsonProvider;
 import me.lucko.helper.signprompt.SignPromptFactory;
 import me.lucko.helper.utils.Players;
+import net.minecraft.server.v1_16_R2.ItemStack;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.storage.CustomPacketSignPromptFactory;
 import shadows.stonerecipes.storage.Storage;
+import shadows.stonerecipes.util.ItemAdapter;
+import shadows.stonerecipes.util.ItemAdapter.NBTAdapter;
 
 public class MassStorageHandler implements Listener {
 
 	public static final File USERS_DIR = new File(StoneRecipes.INSTANCE.getDataFolder(), "mass_storage/users");
+	public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ItemStack.class, ItemAdapter.INSTANCE).registerTypeAdapter(NBTTagCompound.class, NBTAdapter.INSTANCE).create();
 
 	private final HashMap<UUID, Storage> storageCache = new HashMap<>();
 	private final HashMap<UUID, Storage> openInventories = new HashMap<>();
@@ -73,7 +81,7 @@ public class MassStorageHandler implements Listener {
 		if (this.openInventories.containsKey(e.getWhoClicked().getUniqueId()) && this.openInventories.get(e.getWhoClicked().getUniqueId()) != null && e.getCurrentItem() != null) {
 			Storage storage = this.openInventories.get(e.getWhoClicked().getUniqueId());
 
-			if (e.getCurrentItem().isSimilar(Storage.CANCEL_SEARCH) || e.getCurrentItem().isSimilar(Storage.FILL) || e.getCurrentItem().isSimilar(Storage.NEXT_PAGE) || e.getCurrentItem().isSimilar(Storage.PREV_PAGE) || e.getCurrentItem().isSimilar(Storage.SEARCH)) {
+			if (e.getCurrentItem().isSimilar(Storage.FILL) || e.getCurrentItem().isSimilar(Storage.NEXT_PAGE) || e.getCurrentItem().isSimilar(Storage.PREV_PAGE) || e.getCurrentItem().isSimilar(Storage.SEARCH)) {
 				e.setCancelled(true);
 			}
 			if (e.getCurrentItem().isSimilar(Storage.PREV_PAGE)) {

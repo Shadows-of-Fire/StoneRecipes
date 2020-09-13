@@ -2,6 +2,7 @@ package shadows.stonerecipes.tileentity;
 
 import java.util.Objects;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
@@ -78,6 +79,7 @@ public abstract class NoteTileEntity implements ITickable {
 		this.timer = Math.max(1, this.timer);
 		TickHandler.registerTickable(this);
 		this.loadConfigData(new PluginFile(StoneRecipes.INSTANCE, file));
+		this.fixItemNBT();
 	}
 
 	/**
@@ -425,6 +427,16 @@ public abstract class NoteTileEntity implements ITickable {
 
 	public void onPlaced(Player placer) {
 
+	}
+
+	protected void fixItemNBT() {
+		for (ItemStack i : this.inventory.getContents()) {
+			if (!ItemData.isEmpty(i) && i.hasItemMeta()) {
+				ItemMeta meta = i.getItemMeta();
+				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&r" + meta.getDisplayName()));
+				i.setItemMeta(meta);
+			}
+		}
 	}
 
 }

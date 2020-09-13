@@ -179,34 +179,11 @@ public class ItemData {
 
 	@SuppressWarnings("deprecation")
 	public static boolean isSimilar(ItemStack one, ItemStack two) {
-
-		if (one == null && two != null || two == null && one != null) return false;
-
 		if (ItemData.isEmpty(one) != ItemData.isEmpty(two)) return false;
-
-		if (!one.getType().equals(two.getType())) { return false; }
-
-		if (one.getDurability() != two.getDurability()) { return false; }
-
-		if (!one.hasItemMeta() && !two.hasItemMeta()) { return true; }
-
-		if (!one.hasItemMeta() && two.hasItemMeta()) {
-			if (!two.getItemMeta().hasDisplayName()) { return true; }
-		}
-
-		if (!two.hasItemMeta() && one.hasItemMeta()) {
-			if (!one.getItemMeta().hasDisplayName()) { return true; }
-		}
-
-		if (!one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) { return true; }
-
-		if (!one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName() || !two.getItemMeta().hasDisplayName() && one.getItemMeta().hasDisplayName()) {
-			return false;
-		}
-
-		if (one.getItemMeta().getDisplayName().equals(two.getItemMeta().getDisplayName())) { return true; }
-
-		return false;
+		if (!one.getType().equals(two.getType())) return false;
+		if (one.getDurability() != two.getDurability()) return false;
+		if (!one.hasItemMeta() && !two.hasItemMeta()) return true;
+		return getItemId(one).equals(getItemId(two));
 	}
 
 	/**

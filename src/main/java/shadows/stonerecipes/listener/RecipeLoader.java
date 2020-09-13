@@ -15,6 +15,9 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftBlastingRecipe;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftFurnaceRecipe;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftShapedRecipe;
 import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftShapelessRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +38,9 @@ import net.luckperms.api.node.Node;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
+import shadows.stonerecipes.util.NBTBlastingRecipe;
+import shadows.stonerecipes.util.NBTFurnaceRecipe;
+import shadows.stonerecipes.util.NBTShapedRecipe;
 import shadows.stonerecipes.util.NBTShapelessRecipe;
 import shadows.stonerecipes.util.PluginFile;
 
@@ -136,7 +142,7 @@ public class RecipeLoader implements Listener {
 					i++;
 				}
 			}
-			plugin.getServer().addRecipe(rec);
+			NBTShapedRecipe.createNBTRecipe(CraftShapedRecipe.fromBukkitRecipe(rec));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -158,7 +164,7 @@ public class RecipeLoader implements Listener {
 				c = new RecipeChoice.ExactChoice(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")));
 			}
 			FurnaceRecipe rec = new FurnaceRecipe(new NamespacedKey(plugin, "recipe_" + id++), plugin.getItems().getItemForRecipe(output), c, recipes.getInt(output + ".exp"), recipes.getInt(output + ".burntime"));
-			plugin.getServer().addRecipe(rec);
+			NBTFurnaceRecipe.createNBTRecipe(CraftFurnaceRecipe.fromBukkitRecipe(rec));
 		}
 	}
 
@@ -178,7 +184,7 @@ public class RecipeLoader implements Listener {
 				c = new RecipeChoice.ExactChoice(plugin.getItems().getItemForRecipe(recipes.getString(output + ".input")));
 			}
 			BlastingRecipe rec = new BlastingRecipe(new NamespacedKey(plugin, "recipe_" + id++), plugin.getItems().getItemForRecipe(output), c, recipes.getInt(output + ".exp"), recipes.getInt(output + ".burntime"));
-			plugin.getServer().addRecipe(rec);
+			NBTBlastingRecipe.createNBTRecipe(CraftBlastingRecipe.fromBukkitRecipe(rec));
 		}
 	}
 
