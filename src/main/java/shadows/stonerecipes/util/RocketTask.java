@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
+import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -67,7 +68,17 @@ public class RocketTask implements Runnable {
 			}
 			if (this.rocket.getLocation().getY() > 600) {
 				if (this.player.getLocation().getY() > 600) {
-					this.player.teleport(new Location(StoneRecipes.INSTANCE.getServer().getWorld(worldName), player.getLocation().getX(), 200, player.getLocation().getZ()), TeleportCause.PLUGIN);
+					Location loc = new Location(StoneRecipes.INSTANCE.getServer().getWorld(worldName), player.getLocation().getX(), 200, player.getLocation().getZ());
+					WorldBorder border = loc.getWorld().getWorldBorder();
+					if (!border.isInside(loc)) {
+						Location center = border.getCenter();
+						double dist = border.getSize() / 2;
+						if (loc.getX() > center.getX() + dist) loc.setX(center.getX() + dist);
+						else if (loc.getX() < center.getX() - dist) loc.setX(center.getX() - dist);
+						if (loc.getZ() > center.getZ() + dist) loc.setZ(center.getZ() + dist);
+						else if (loc.getZ() < center.getZ() - dist) loc.setZ(center.getZ() - dist);
+					}
+					this.player.teleport(loc, TeleportCause.PLUGIN);
 					this.player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 1000, 0));
 				}
 				this.rocket.remove();

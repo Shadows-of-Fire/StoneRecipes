@@ -134,6 +134,7 @@ public class StoneRecipes extends JavaPlugin {
 			gunHandler.unscope(p);
 		}
 		tickTask.cancel();
+		storageHandler.saveAll();
 	}
 
 	public ItemData getItems() {

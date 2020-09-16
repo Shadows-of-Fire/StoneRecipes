@@ -1,6 +1,7 @@
 package shadows.stonerecipes.listener;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,8 +47,7 @@ public class MassStorageHandler implements Listener {
 		Players.all().forEach(p -> loadPlayerStorage(p));
 	}
 
-	private void saveStorages() {
-		//NO ASYNC! Called onDisable
+	public void saveAll() {
 		for (Storage s : this.storageCache.values()) {
 
 			if (!s.getFile().exists()) {
@@ -141,9 +141,10 @@ public class MassStorageHandler implements Listener {
 		Schedulers.async().run(() -> {
 			try (FileReader reader = new FileReader(new File(USERS_DIR, player.getUniqueId().toString() + ".json"))) {
 				this.storageCache.put(player.getUniqueId(), Storage.load(reader));
-			} catch (IOException e) {
+			} catch (Exception e) {
 				//User does not have storage, create one
 				this.storageCache.put(player.getUniqueId(), new Storage(player.getUniqueId(), 1, new ArrayList<>(45)));
+				if (!(e instanceof FileNotFoundException)) e.printStackTrace();
 			}
 		});
 	}
@@ -157,10 +158,6 @@ public class MassStorageHandler implements Listener {
 		}
 
 		this.openInventories.put(p.getUniqueId(), storage.openPage(p, page));
-	}
-
-	public void disable() {
-		this.saveStorages();
 	}
 
 	public void setStorageCapacity(Player sender, int capacity) {

@@ -15,7 +15,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.v1_16_R2.IRegistry;
 import net.minecraft.server.v1_16_R2.Item;
 import net.minecraft.server.v1_16_R2.ItemStack;
-import net.minecraft.server.v1_16_R2.Items;
 import net.minecraft.server.v1_16_R2.MinecraftKey;
 import net.minecraft.server.v1_16_R2.MojangsonParser;
 import net.minecraft.server.v1_16_R2.NBTTagCompound;
@@ -29,7 +28,6 @@ public class ItemAdapter implements JsonDeserializer<ItemStack>, JsonSerializer<
 		JsonObject obj = json.getAsJsonObject();
 		MinecraftKey id = new MinecraftKey(obj.get("item").getAsString());
 		Item item = IRegistry.ITEM.get(id);
-		if (item == Items.AIR) throw new JsonParseException("Failed to read item " + id);
 		int count = obj.has("count") ? obj.get("count").getAsInt() : 1;
 		NBTTagCompound tag = obj.has("nbt") ? ctx.deserialize(obj.get("nbt"), NBTTagCompound.class) : null;
 		ItemStack stack = new ItemStack(item, count);

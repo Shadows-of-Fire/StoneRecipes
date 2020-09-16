@@ -35,6 +35,7 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
+import net.luckperms.api.query.QueryOptions;
 import net.minecraft.server.v1_16_R2.EntityPlayer;
 import shadows.stonerecipes.StoneRecipes;
 import shadows.stonerecipes.item.ItemData;
@@ -311,7 +312,7 @@ public class RecipeLoader implements Listener {
 		if (api == null) return false;
 		User u = api.getUserManager().getUser(player.getUniqueId());
 		if (u == null) return false;
-		Collection<Node> nodes = u.getNodes();
+		Collection<Node> nodes = u.resolveInheritedNodes(QueryOptions.nonContextual());
 		if (nodes != null) {
 			if (nodes.stream().map(Node::getKey).anyMatch(perm::contains)) return true;
 		}

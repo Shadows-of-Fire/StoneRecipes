@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 import me.lucko.helper.gson.GsonProvider;
@@ -99,7 +99,7 @@ public class Storage implements GsonSerializable {
 	@Override
 	public JsonElement serialize() {
 		List<net.minecraft.server.v1_16_R2.ItemStack> nmsItems = items.stream().map(s -> CraftItemStack.asNMSCopy(s)).collect(Collectors.toList());
-		return JsonBuilder.object().add("owner", this.owner.toString()).add("pages", pages).add("items", new JsonPrimitive(MassStorageHandler.GSON.toJson(nmsItems))).build();
+		return JsonBuilder.object().add("owner", this.owner.toString()).add("pages", pages).add("items", MassStorageHandler.GSON.toJsonTree(nmsItems, STACK_LIST.getType())).build();
 	}
 
 	private static final TypeToken<List<net.minecraft.server.v1_16_R2.ItemStack>> STACK_LIST = new TypeToken<List<net.minecraft.server.v1_16_R2.ItemStack>>() {
@@ -117,7 +117,6 @@ public class Storage implements GsonSerializable {
 	}
 
 	public void updateItems(ItemStack[] contents) {
-
 		for (int i = 0; i < 45; i++) {
 			try {
 				this.items.set(this.mapIndex(i), contents[i]);
@@ -133,7 +132,7 @@ public class Storage implements GsonSerializable {
 
 	public void query(String query) {
 		this.items = this.items.stream().filter(itemStack -> itemStack != null).collect(Collectors.toList());
-		this.items.sort(Comparator.comparing(itemStack -> itemStack.getType().name().toLowerCase().contains(query.toLowerCase())));
+		this.items.sort(Comparator.comparing(itemStack -> getSearchName(itemStack).toLowerCase(Locale.ROOT).contains(query.toLowerCase())));
 		Collections.reverse(this.items);
 	}
 
@@ -143,5 +142,12 @@ public class Storage implements GsonSerializable {
 
 	public void setPages(int pages) {
 		this.pages = pages;
+	}
+
+	private static String getSearchName(ItemStack stack) {
+		if (stack.hasItemMeta() && stack.getItemMeta().hasDisplayName()) {
+			return stack.getItemMeta().getDisplayName();
+		}
+		return stack.getType().name().toLowerCase();
 	}
 }

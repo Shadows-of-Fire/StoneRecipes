@@ -1,11 +1,18 @@
 package shadows.stonerecipes.listener;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Axis;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,15 +22,20 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import net.minecraft.server.v1_16_R2.BlockPosition;
 import shadows.stonerecipes.item.ItemData;
+import shadows.stonerecipes.tileentity.machine.AutoBreaker;
 import shadows.stonerecipes.tileentity.machine.Charger;
 import shadows.stonerecipes.util.Keys;
 
 public final class DrillHandler implements Listener {
 
+	private static Set<UUID> breakers = new HashSet<>();
+
 	@EventHandler
 	public void onDrillUsage(BlockBreakEvent e) {
-		if (e.isCancelled()) return;
+		Player player = e.getPlayer();
+		if (breakers.contains(player.getUniqueId()) || e.isCancelled()) return;
 		ItemStack drill = e.getPlayer().getInventory().getItemInMainHand();
 		if (ItemData.isEmpty(drill)) return;
 		if (drill.getItemMeta() == null) return;
@@ -43,12 +55,16 @@ public final class DrillHandler implements Listener {
 		BlockFace face = res.getHitBlockFace();
 		World world = res.getHitBlock().getWorld();
 
+		breakers.add(player.getUniqueId());
 		for (int iy = lowerY; iy < upperY; iy++) {
 			for (int ix = lowerX; ix < upperX; ix++) {
 				Block block = world.getBlockAt(getRelative(e.getBlock().getLocation(), face, ix + xOffset, iy + yOffset));
-				if (block.getType() != Material.AIR) block.breakNaturally(drill);
+				if (block.getType() != Material.AIR) {
+					AutoBreaker.breakBlock(((CraftWorld) world).getHandle(), new BlockPosition(block.getX(), block.getY(), block.getZ()), ((CraftPlayer) player).getHandle());
+				}
 			}
 		}
+		breakers.remove(player.getUniqueId());
 		Charger.usePower(drill, cost);
 	}
 
