@@ -28,9 +28,9 @@ public class GeoGenerator extends PowerGenerator {
 
 	@Override
 	public void loadConfigData(PluginFile file) {
-		this.timer = StoneRecipes.INSTANCE.getConfig().getInt("geo_generator.timer", 1);
-		this.maxPower = StoneRecipes.INSTANCE.getConfig().getInt("geo_generator.maxPower", 1000);
-		this.powerPerLava = StoneRecipes.INSTANCE.getConfig().getInt("geo_generator.powerPerLava", 1);
+		this.timer = StoneRecipes.INSTANCE.getConfig().getInt(configId + ".timer", 1);
+		this.maxPower = StoneRecipes.INSTANCE.getConfig().getInt(configId + ".maxPower", 1000);
+		this.powerPerLava = StoneRecipes.INSTANCE.getConfig().getInt(configId + ".powerPerLava", 1);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class GeoGenerator extends PowerGenerator {
 				lava++;
 			}
 		}
-		this.addPower(lava * powerPerLava);
+		if (lava > 0) this.addPower(lava * powerPerLava);
 	}
 
 	@Override
