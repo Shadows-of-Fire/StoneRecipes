@@ -56,7 +56,7 @@ public class ItemData {
 		itemOverrides.put("dimensional_key", DimKeyItem::new);
 		itemOverrides.put("rocketship", RocketshipItem::new);
 		itemOverrides.put("jetpack_controller", JetpackControllerItem::new);
-		itemOverrides.put("jetpack", JetpackItem::new);
+		itemOverrides.put("jetpack", HelmetItem::new);
 		itemOverrides.put("battery_pack", BatteryPackItem::new);
 		this.loadData();
 	}
@@ -169,6 +169,7 @@ public class ItemData {
 			meta.getPersistentDataContainer().set(Keys.ITEM_ID, PersistentDataType.STRING, key);
 			item.setItemMeta(meta);
 			CustomItem cItem = itemOverrides.getOrDefault(key, CustomItem::new).apply(key, item, block, sound);
+			if (itemFile.contains(key + ".oxygen")) cItem = new HelmetItem(key, item, block, sound);
 			items.put(key, cItem);
 			if (block != null) {
 				blockToItem.put(block, cItem);

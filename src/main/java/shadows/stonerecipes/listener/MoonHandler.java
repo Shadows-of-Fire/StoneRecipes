@@ -11,9 +11,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -101,15 +99,6 @@ public final class MoonHandler implements Listener {
 		} else {
 			e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, StoneRecipes.moonFeatherFall));
 			e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, StoneRecipes.moonJumpBoost));
-		}
-	}
-
-	@EventHandler
-	public void useHelmet(PlayerInteractEvent e) {
-		if (getMaxOxygen(e.getItem()) > 0 && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-			e.setCancelled(true);
-			e.getPlayer().getInventory().remove(e.getItem());
-			e.getPlayer().getInventory().setHelmet(e.getItem());
 		}
 	}
 

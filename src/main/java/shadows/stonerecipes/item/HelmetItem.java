@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 
 import shadows.stonerecipes.util.CustomBlock;
 
-public class JetpackItem extends CustomItem {
+public class HelmetItem extends CustomItem {
 
-	public JetpackItem(String name, ItemStack stack, CustomBlock block, NamespacedKey sound) {
+	public HelmetItem(String name, ItemStack stack, CustomBlock block, NamespacedKey sound) {
 		super(name, stack, block, sound);
 	}
 
