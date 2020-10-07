@@ -43,6 +43,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.ImmutableSet;
 
+import me.crafter.mc.lockettepro.Config;
+import me.crafter.mc.lockettepro.LocketteProAPI;
+import me.crafter.mc.lockettepro.Utils;
 import net.minecraft.server.v1_16_R2.BlockPosition;
 import net.minecraft.server.v1_16_R2.Blocks;
 import net.minecraft.server.v1_16_R2.ChatComponentText;
@@ -83,7 +86,7 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	private boolean processBlock(PlayerInteractEvent e) {
-		if (e.getClickedBlock().getType() == Material.NOTE_BLOCK) {
+		if (e.getClickedBlock().getType() == Material.NOTE_BLOCK && canAccessLockette(e.getPlayer(), e.getClickedBlock())) {
 			NoteBlockClickedEvent ev = new NoteBlockClickedEvent(e.getClickedBlock(), e.getPlayer());
 			StoneRecipes.INSTANCE.getServer().getPluginManager().callEvent(ev);
 			if (ev.success) e.setCancelled(true);
@@ -108,7 +111,7 @@ public class CustomBlockHandler implements Listener {
 	}
 
 	@SuppressWarnings("deprecation")
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerDestroyMachine(BlockBreakEvent e) {
 		if (e.isCancelled()) return;
 		CustomBlock cBlock = new CustomBlock(e.getBlock().getType(), e.getBlock().getBlockData());
@@ -339,6 +342,15 @@ public class CustomBlockHandler implements Listener {
 			return true;
 		}
 		return false;
+	}
+
+	public static boolean canAccessLockette(Player player, Block block) {
+		if (LocketteProAPI.isLocked(block) && !LocketteProAPI.isUser(block, player) && !player.hasPermission("lockettepro.admin.use")) {
+			Utils.sendMessages(player, Config.getLang("block-is-locked"));
+			Utils.playAccessDenyEffect(player, block);
+			return false;
+		}
+		return true;
 	}
 
 	/**
