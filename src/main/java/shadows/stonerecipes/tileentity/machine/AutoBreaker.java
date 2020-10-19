@@ -237,7 +237,7 @@ public class AutoBreaker extends PoweredMachine {
 		if (event.isCancelled()) { return false; }
 
 		iblockdata = world.getType(blockposition);
-		if (iblockdata.isAir()) {
+		if (iblockdata.isAir() || iblockdata.strength == -1) {
 			return false;
 		} else {
 			TileEntity tileentity = world.getTileEntity(blockposition);
